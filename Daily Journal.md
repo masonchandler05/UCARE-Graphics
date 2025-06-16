@@ -15,3 +15,7 @@ Found the data for 2 of the disabilities and imported it
 6/13/25:
 - create the visualizations for the data I found
 - create the other way to look for mis - shapenness of the circles (vert - hor vs mean) 
+
+6/16/25:
+- learned how to use github and push code
+- spent a lot of time debugging(I imported in datasets instead of actually loading them in and that causes a lot of issues that I had to fix)
