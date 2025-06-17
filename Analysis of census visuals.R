@@ -6,21 +6,12 @@ file_path <- "~/Downloads/IPUMS_microsample_data.csv"
 # Load the CSV file into a data frame
 census_data <- read.csv(file_path)
 
-# View the first few rows of the data
-head(census_data)
-
-
-
-#seperates the whole data frame into 2 smaller ones split by whether they are from 1860 or 1870 (this was just for veiwing purposes)
-
+#seperates the whole data frame into 2 smaller ones split by whether they are from 1860 or 1870 to garentee complete datasets from each 
 cen_1860 <- census_data[substr(census_data$SAMPLE,1,4) == "1860",]
 cen_1870 <- census_data[substr(census_data$SAMPLE,1,4) == "1870",]
 
-
-
 #creates a state lookup code to match state identifing number to the state: identifiers were copied straight from the IPUMS website 
 #joining this with the main dataset 
-
 library(dplyr)
 library(tibble)
 
@@ -48,29 +39,18 @@ census_data <- census_data %>%
   mutate(STATEFIP = as.character(STATEFIP)) %>%
   left_join(state_lookup_df, by = "STATEFIP")
 
-
-
-
 # filtering out only people that are either blind, deaf, dumb, idiotic, or insane
 ## 1538 of the 656954 met one of these criteria meaning a ~.235% disability rate amung these disabilities
-
 census_data_disability <- census_data[
   census_data$BLIND == 2 |
     census_data$DEAF == 2 |
     census_data$IDIOTIC == 2 |
     census_data$INSANE == 2,
 ]
-
-
 disability_rate <- (nrow(census_data_disability) / nrow(census_data)) * 100
 disability_rate
 
-
-
 # getting count data for each state seperated by year and state 
-
-library(dplyr)
-
 count_of_disability <- census_data_disability %>% 
   filter(!is.na(State)) %>%
   group_by(YEAR, STATEFIP) %>%
@@ -83,14 +63,9 @@ count_of_disability <- census_data_disability %>%
   left_join(state_lookup_df, by = "STATEFIP") %>%
   select(STATEFIP, State, everything())
 
-
-
 # 1860 has 0 in [Deleware, florida, kansas, nebraska]
 # 1870 has 0 in [oregon]
-
-#added to DF 
-
-
+# adding these to the dataset 
 missing_states <- data.frame(
   STATEFIP = c("10","12","20","31","41"),
   State = c("Delaware", "Florida", "Kansas", "Nebraska", "Oregon"),
@@ -102,27 +77,11 @@ missing_states <- data.frame(
   stringsAsFactors = FALSE
 )
 
-
 count_of_disability2 <- rbind(count_of_disability, missing_states)
 
-
-
-
-#turning pixel diameter measurements into areas 
-
-library(dplyr)
-# Set the file path (adjust the file name to match your actual CSV file)
+# turning pixel diameter measurements into areas 
 file_path <- "~/Desktop/UCARE project with Dr. VanderPlas/Gimp Pixel Measurements.csv"
-
-# Load the CSV file into a data frame
 Gimp_Pixel_Measurements_1 <- read.csv(file_path)
-
-# View the first few rows of the data
-head(Gimp_Pixel_Measurements_1)
-
-names(Gimp_Pixel_Measurements_1)
-
-
 
 pixel_counts <- Gimp_Pixel_Measurements_1 %>%
   mutate(
@@ -137,13 +96,10 @@ pixel_counts <- Gimp_Pixel_Measurements_1 %>%
     
     insane_area_top  = pi * (insane_count_top / 2)^2,
     insane_area_side = pi * (insane_count_side / 2)^2
-    
   )
 
 
-
 # gathering totals for converting to total populations using the 1% microsample 
-
 # 1860
 blind_total_60 <- sum(census_data_disability$BLIND == 2 & census_data_disability$YEAR == 1860) * 100
 deaf_total_60 <- sum(census_data_disability$DEAF == 2 & census_data_disability$YEAR == 1860) * 100
@@ -156,10 +112,7 @@ deaf_total_70 <- sum(census_data_disability$DEAF == 2 & census_data_disability$Y
 idiotic_total_70 <- sum(census_data_disability$IDIOTIC == 2 & census_data_disability$YEAR == 1870) * 100
 insane_total_70 <- sum(census_data_disability$INSANE == 2 & census_data_disability$YEAR == 1870) * 100
 
-
-
 # adding up area totals to scale back down to total populations 
-
 # 1860 totals
 blind_top_area_60    <- sum(pixel_counts$blind_area_top[pixel_counts$YEAR == 1860])
 blind_side_area_60   <- sum(pixel_counts$blind_area_side[pixel_counts$YEAR == 1860])
@@ -186,10 +139,7 @@ idiotic_side_area_70 <- sum(pixel_counts$idiotic_area_side[pixel_counts$YEAR == 
 insane_top_area_70   <- sum(pixel_counts$insane_area_top[pixel_counts$YEAR == 1870])
 insane_side_area_70  <- sum(pixel_counts$insane_area_side[pixel_counts$YEAR == 1870])
 
-
-
 # making scalars to convert area into population 
-
 # 1860 scalars
 blind_60_scalar_top    <- blind_total_60 / blind_top_area_60
 blind_60_scalar_side   <- blind_total_60 / blind_side_area_60
@@ -216,7 +166,6 @@ idiotic_70_scalar_side <- idiotic_total_70 / idiotic_side_area_70
 insane_70_scalar_top   <- insane_total_70 / insane_top_area_70
 insane_70_scalar_side  <- insane_total_70 / insane_side_area_70
 
-
 # dividing area by scalars to get into actual population sized as estimated by the 1% microsample 
 pixel_counts <- pixel_counts %>%
   mutate(
@@ -233,8 +182,6 @@ pixel_counts <- pixel_counts %>%
     insane_side_scaled = round(ifelse(YEAR == 1860, insane_area_side * insane_60_scalar_side, insane_area_side * insane_70_scalar_side))
   )
 
-
-
 # scaling microsample data into full data 
 count_of_disability2 <- count_of_disability2 %>%
   mutate(
@@ -244,22 +191,9 @@ count_of_disability2 <- count_of_disability2 %>%
     insane_count_scaled = insane_count * 100
   )
 
-
-
-
-
 # merginbg the dataset to plot 
 library(dplyr)
 merged_full_data <- inner_join(count_of_disability2, pixel_counts, by = c("State", "YEAR"))
-
-
-#debugging
-names(count_of_disability2)
-names(pixel_counts)
-head(count_of_disability2)
-head(pixel_counts)
-
-
 
 # Plotting estimated populations from 1% microsample and pixel approximations (seperated by top to bottom measurements and side to side measurements)(seperated by 1860 and 1870)
 ## This just shows a regression fit and does not take into account the sample size and variance(need further analysis on that)
@@ -275,8 +209,7 @@ ggplot(merged_full_data, aes(x = blind_count_scaled, y = blind_top_scaled)) +
     y = "Scaled Blind Area Top (Pixel Data)",
     title = "Blind Comparison - Top measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Blind Side
 ggplot(merged_full_data, aes(x = blind_count_scaled, y = blind_side_scaled)) +
@@ -288,9 +221,7 @@ ggplot(merged_full_data, aes(x = blind_count_scaled, y = blind_side_scaled)) +
     y = "Scaled Blind Area Side (Pixel Data)",
     title = "Blind Comparison - Side measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
-
+  facet_wrap(~YEAR) 
 # Deaf Top
 ggplot(merged_full_data, aes(x = deaf_count_scaled, y = deaf_top_scaled)) +
   geom_point() +
@@ -301,8 +232,7 @@ ggplot(merged_full_data, aes(x = deaf_count_scaled, y = deaf_top_scaled)) +
     y = "Scaled Deaf Area Top (Pixel Data)",
     title = "Deaf Comparison - Top measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Deaf Side
 ggplot(merged_full_data, aes(x = deaf_count_scaled, y = deaf_side_scaled)) +
@@ -314,8 +244,7 @@ ggplot(merged_full_data, aes(x = deaf_count_scaled, y = deaf_side_scaled)) +
     y = "Scaled Deaf Area Side (Pixel Data)",
     title = "Deaf Comparison - Side measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Insane Top
 ggplot(merged_full_data, aes(x = insane_count_scaled, y = insane_top_scaled)) +
@@ -327,8 +256,7 @@ ggplot(merged_full_data, aes(x = insane_count_scaled, y = insane_top_scaled)) +
     y = "Scaled Insane Area Top (Pixel Data)",
     title = "Insane Comparison - Top measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Insane Side
 ggplot(merged_full_data, aes(x = insane_count_scaled, y = insane_side_scaled)) +
@@ -340,8 +268,7 @@ ggplot(merged_full_data, aes(x = insane_count_scaled, y = insane_side_scaled)) +
     y = "Scaled Insane Area Side (Pixel Data)",
     title = "Insane Comparison - Side measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Idiotic Top
 ggplot(merged_full_data, aes(x = idiotic_count_scaled, y = idiotic_top_scaled)) +
@@ -353,8 +280,7 @@ ggplot(merged_full_data, aes(x = idiotic_count_scaled, y = idiotic_top_scaled)) 
     y = "Scaled Idiotic Area Top (Pixel Data)",
     title = "Idiotic Comparison - Top measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
+  facet_wrap(~YEAR) 
 
 # Idiotic Side
 ggplot(merged_full_data, aes(x = idiotic_count_scaled, y = idiotic_side_scaled)) +
@@ -366,40 +292,20 @@ ggplot(merged_full_data, aes(x = idiotic_count_scaled, y = idiotic_side_scaled))
     y = "Scaled Idiotic Area Side (Pixel Data)",
     title = "Idiotic Comparison - Side measurement"
   ) +
-  facet_wrap(~YEAR) + 
-  theme_minimal()
-
-
-
-
-
-
-
-
+  facet_wrap(~YEAR) 
 
 
 #BREAK TO PLOTTING WITH FULL CENSUS DATA 
 
-
-
-
-
 #importing data
-# Set the file path (adjust the file name to match your actual CSV file)
 file_path <- "~/Desktop/UCARE project with Dr. VanderPlas/Full data census.csv"
-
-# Load the CSV file into a data frame
 Full_data_census <- read.csv(file_path)
 
-# View the first few rows of the data
-head(Full_data_census)
-#Debugging
+#Debugging to ensure df merge properly 
 merged_full_data <- merged_full_data %>% mutate(YEAR = as.integer(YEAR))
 Full_data_census <- Full_data_census[!apply(Full_data_census, 1, function(row) all(is.na(row) | row == "")), ]
 
-
-# run this to change varibles, can change variables back through line 158 
-
+# making all the scalars and totals for the full census data
 #1860
 blind_total_60_1 <- Full_data_census %>% filter(YEAR == 1860) %>% pull(Blind) %>% sum(na.rm = TRUE)
 insane_total_60_1 <- Full_data_census %>% filter(YEAR == 1860) %>% pull(Insane) %>% sum(na.rm = TRUE)
@@ -408,8 +314,6 @@ blind_total_70_1 <- Full_data_census %>% filter(YEAR == 1870) %>% pull(Blind) %>
 deaf_total_70_1 <- Full_data_census %>% filter(YEAR == 1870) %>% pull(Deaf) %>% sum(na.rm = TRUE)
 idiotic_total_70_1 <- Full_data_census %>% filter(YEAR == 1870) %>% pull(Idiotic) %>% sum(na.rm = TRUE)
 insane_total_70_1 <- Full_data_census %>% filter(YEAR == 1870) %>% pull(Insane) %>% sum(na.rm = TRUE)
-
-
 
 # 1860 totals
 blind_top_area_60_1   <- sum(pixel_counts$blind_area_top[pixel_counts$YEAR == 1860])
@@ -431,10 +335,7 @@ idiotic_side_area_70_1 <- sum(pixel_counts$idiotic_area_side[pixel_counts$YEAR =
 insane_top_area_70_1   <- sum(pixel_counts$insane_area_top[pixel_counts$YEAR == 1870])
 insane_side_area_70_1  <- sum(pixel_counts$insane_area_side[pixel_counts$YEAR == 1870])
 
-
-
 # making scalars to convert area into population 
-
 # 1860 scalars
 blind_60_scalar_top_1    <- blind_total_60_1 / blind_top_area_60_1
 blind_60_scalar_side_1   <- blind_total_60_1 / blind_side_area_60_1
@@ -455,10 +356,7 @@ idiotic_70_scalar_side_1 <- idiotic_total_70_1 / idiotic_side_area_70_1
 insane_70_scalar_top_1   <- insane_total_70_1 / insane_top_area_70_1
 insane_70_scalar_side_1  <- insane_total_70_1 / insane_side_area_70_1
 
-
-
 # dividing area by scalars to get into actual population sized as estimated by the 1% microsample 
-
 pixel_counts <-pixel_counts %>%
   mutate(
     blind_top_scaled_full = round(ifelse(YEAR == 1860, blind_area_top * blind_60_scalar_top_1, blind_area_top * blind_70_scalar_top_1)),
@@ -474,17 +372,10 @@ pixel_counts <-pixel_counts %>%
     insane_side_scaled_full = round(ifelse(YEAR == 1860, insane_area_side * insane_60_scalar_side_1, insane_area_side * insane_70_scalar_side_1))
   )
 
-
-
-
-library(dplyr)
+# merging datasets again 
 merged_full_data <- inner_join(count_of_disability2, pixel_counts, by = c("State", "YEAR"))
 
-
-#merging data 
-
-library(dplyr)
-
+#cleaning and merging data
 Full_data_census$State <- trimws(Full_data_census$State)
 Full_data_census$State <- toupper(Full_data_census$State)
 merged_full_data$State <- trimws(merged_full_data$State)
@@ -493,13 +384,7 @@ full_data_merge <- full_join(Full_data_census, merged_full_data, by = c("State",
 
 
 
-#plotting pixel measurements against full data
-
-
-#Plotting data
-
-library(ggplot2)
-
+#plotting pixel measurements against full census data
 # Blind - Side
 ggplot(full_data_merge, aes(x = Blind, y = blind_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
@@ -511,8 +396,7 @@ ggplot(full_data_merge, aes(x = Blind, y = blind_side_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Blind Area Side (Pixel Data)",
     title = "Blind Comparison - Side Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Blind - Top
 ggplot(full_data_merge, aes(x = Blind, y = blind_top_scaled_full)) +
@@ -525,9 +409,7 @@ ggplot(full_data_merge, aes(x = Blind, y = blind_top_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Blind Area Top (Pixel Data)",
     title = "Blind Comparison - Top Measurement"
-  ) +
-  theme_minimal()
-
+  ) 
 # Deaf - Side
 ggplot(full_data_merge, aes(x = Deaf, y = deaf_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
@@ -538,8 +420,7 @@ ggplot(full_data_merge, aes(x = Deaf, y = deaf_side_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Deaf Area Side (Pixel Data)",
     title = "Deaf Comparison - Side Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Deaf - Top
 ggplot(full_data_merge, aes(x = Deaf, y = deaf_top_scaled_full)) +
@@ -551,8 +432,7 @@ ggplot(full_data_merge, aes(x = Deaf, y = deaf_top_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Deaf Area Top (Pixel Data)",
     title = "Deaf Comparison - Top Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Insane - Side
 ggplot(full_data_merge, aes(x = Insane, y = insane_side_scaled_full)) +
@@ -565,8 +445,7 @@ ggplot(full_data_merge, aes(x = Insane, y = insane_side_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Insane Area Side (Pixel Data)",
     title = "Insane Comparison - Side Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Insane - Top
 ggplot(full_data_merge, aes(x = Insane, y = insane_top_scaled_full)) +
@@ -579,8 +458,7 @@ ggplot(full_data_merge, aes(x = Insane, y = insane_top_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Insane Area Top (Pixel Data)",
     title = "Insane Comparison - Top Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Idiotic - Side
 ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_side_scaled_full)) +
@@ -592,8 +470,7 @@ ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_side_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Idiotic Area Side (Pixel Data)",
     title = "Idiotic Comparison - Side Measurement"
-  ) +
-  theme_minimal()
+  ) 
 
 # Idiotic - Top
 ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_top_scaled_full)) +
@@ -605,18 +482,9 @@ ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_top_scaled_full)) +
     x = "Full Census Data",
     y = "Scaled Idiotic Area Top (Pixel Data)",
     title = "Idiotic Comparison - Top Measurement"
-  ) +
-  theme_minimal()
-
-
-
-
-
-
+  )
 
 #converting to plotly to get hover-over features to see what states are the outliers 
-
-library(ggplot2)
 library(plotly)
 
 # Blind - Side
@@ -716,16 +584,9 @@ ggplotly(e, tooltip = "text")
 ggplotly(f, tooltip = "text")
 ggplotly(g, tooltip = "text")
 ggplotly(h, tooltip = "text")
-
-
-##Virginia is the main outlier in every graph. Its size was over represented in each and every graph 
-
-
-
+#Virginia is the main outlier in every graph. Its size was over represented in each and every graph 
 
 #Comparing vertical and horizontal measurements to look for deformed states
-
-library(ggplot2)
 ggplot(full_data_merge, aes(x = blind_top_scaled_full, y = blind_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
   geom_point() +
@@ -735,8 +596,7 @@ ggplot(full_data_merge, aes(x = blind_top_scaled_full, y = blind_side_scaled_ful
     y = "side measurements",
     x = "top measurements",
     title = "Blind"
-  ) +
-  theme_minimal()
+  ) 
 
 ggplot(full_data_merge, aes(x = insane_top_scaled_full, y = insane_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
@@ -747,8 +607,7 @@ ggplot(full_data_merge, aes(x = insane_top_scaled_full, y = insane_side_scaled_f
     y = "side measurements",
     x = "top measurements",
     title = "insane"
-  ) +
-  theme_minimal()
+  )
 
 ggplot(full_data_merge, aes(x = deaf_top_scaled_full, y = deaf_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
@@ -759,8 +618,7 @@ ggplot(full_data_merge, aes(x = deaf_top_scaled_full, y = deaf_side_scaled_full)
     y = "side measurements",
     x = "top measurements",
     title = "deaf"
-  ) +
-  theme_minimal()
+  ) 
 
 ggplot(full_data_merge, aes(x = idiotic_top_scaled_full, y = idiotic_side_scaled_full)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
@@ -771,8 +629,7 @@ ggplot(full_data_merge, aes(x = idiotic_top_scaled_full, y = idiotic_side_scaled
     y = "side measurements",
     x = "top measurements",
     title = "idiotic"
-  ) +
-  theme_minimal()
+  ) 
 
 
 # plotly graph for blind as it has a far off dot 
@@ -788,17 +645,10 @@ blind_dot <- ggplot(full_data_merge, aes(x = blind_top_scaled_full, y = blind_si
   theme_minimal()
 
 ggplotly(blind_dot, tooltip = "text")
-
 # Blind pennsilvanyia and new york are a little mis-shapen 
-
-
-
 
 # looking for shape differences by size 
 # adding differences and sums to dataset 
-
-library(dplyr)
-
 full_data_merge <- full_data_merge %>%
   mutate(
     vert_hor_difference_blind = blind_top_scaled_full - blind_side_scaled_full,
@@ -814,11 +664,7 @@ full_data_merge <- full_data_merge %>%
     vert_hor_avg_insane = (insane_top_scaled_full + insane_side_scaled_full) / 2
   )
 
-
 #plotting 
-
-library(ggplot2)
-
 ggplot(full_data_merge, aes(y = vert_hor_difference_blind, x = vert_hor_avg_blind)) +
   geom_smooth(method = "lm", se = TRUE, level = 0.95, color = "blue") +
   geom_point() +
