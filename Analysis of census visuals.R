@@ -79,6 +79,10 @@ missing_states <- data.frame(
 
 count_of_disability2 <- rbind(count_of_disability, missing_states)
 
+#important to understanding the code!!!!
+## pixel meaurements were labeled as tip and side. Top means I took vertical measurements of the circle from bottom to top. 
+## Side means I took horizontal measurements from side to side of the circle
+
 # turning pixel diameter measurements into areas 
 file_path <- "~/Desktop/UCARE project with Dr. VanderPlas/Gimp Pixel Measurements.csv"
 Gimp_Pixel_Measurements_1 <- read.csv(file_path)
