@@ -9,15 +9,15 @@ Once the analysis of the accuracy of the graphics is finished, I will do some re
  I will recreate these visuals as well as more traditional graphics to test how accuratly people can interepret different types of graphical forms. This will also likely involve designing the experiment to test to see if any illusions cause any bias's on the interpretation of the data. This allows an in depth analysis that bridges a gap between old graphics and new graphics while understanding the potential impacts on illusions. This gives great insight to the difficulty of making judgements on these important graphics. 
 
 
-# Dataset Descriptions
+## Dataset Descriptions
 
-## Full data census.csv - Shows full census data from all avaiable data sets 
+### Full data census.csv - Shows full census data from all avaiable data sets 
 - https://www.census.gov/library/publications/1872/dec/1870b.html
 - https://www.census.gov/library/publications/1864/dec/1860a.html
 
-## Census_data_filtered.csv - Shows all positives occurances of any of the 4 disabilities 
+### Census_data_filtered.csv - Shows all positives occurances of any of the 4 disabilities 
 - Steven Ruggles, Sarah Flood, Matthew Sobek, Daniel Backman, Grace Cooper, Julia A. Rivera Drew, Stephanie Richards, Renae Rodgers, Jonathan Schroeder, and Kari C.W. Williams. IPUMS USA: Version 16.0 [dataset]. Minneapolis, MN: IPUMS, 2025.
 https://doi.org/10.18128/D010.V16.0
 
-## Gimp Pixel Measurements.csv - Contains the vertical and horizontal measurements of all of the graphics that I took using GIMP
+### Gimp Pixel Measurements.csv - Contains the vertical and horizontal measurements of all of the graphics that I took using GIMP
 - https://www.loc.gov/resource/g3701gm.gct00008/?sp=3&st=gallery
