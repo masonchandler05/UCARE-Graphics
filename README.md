@@ -1,5 +1,5 @@
 # UCARE-Graphics
-##Analysis on Statistical Atlas doughnut charts from 9th census data
+## Analysis on Statistical Atlas doughnut charts from 9th census data
 
 
 This projects purpose is to look back at old census/statistical atlas graphs and test the accuracy in which they were created and recreate the data in several different forms to test for the accuracy in which people can interprete them quantatitively. This data was represented in "doughnut" forms with a circle inside a cirle to show the growth(or decline) represented by area to make judgements of 1860 and 1870 data. Since the data is over 150 years old, there can be many errors in the creation of graphics, so I am looking into the actual census data and comparing it to the graphics to understand the accuracy of census data and visuals. 
