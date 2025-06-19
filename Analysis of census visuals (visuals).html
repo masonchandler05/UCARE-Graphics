@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mason Chandler">
+
+<title>Analysis of census visuals.R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="Analysis of census visuals (visuals)_files/libs/clipboard/clipboard.min.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/quarto-html/quarto.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/quarto-html/popper.min.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/quarto-html/anchor.min.js"></script>
+<link href="Analysis of census visuals (visuals)_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="Analysis of census visuals (visuals)_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="Analysis of census visuals (visuals)_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="Analysis of census visuals (visuals)_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="Analysis of census visuals (visuals)_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="Analysis of census visuals (visuals)_files/libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet">
+<script src="Analysis of census visuals (visuals)_files/libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/typedarray-0.1/typedarray.min.js"></script>
+<script src="Analysis of census visuals (visuals)_files/libs/jquery-3.5.1/jquery.min.js"></script>
+<link href="Analysis of census visuals (visuals)_files/libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet">
+<script src="Analysis of census visuals (visuals)_files/libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
+<link href="Analysis of census visuals (visuals)_files/libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet">
+<script src="Analysis of census visuals (visuals)_files/libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+
+
+</head>
+
+<body class="fullcontent">
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Analysis of census visuals.R</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Mason Chandler </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="analysis-of-the-accuracy-of-visuals" class="level1">
+<h1>Analysis of the accuracy of Visuals</h1>
+<section id="plotting-the-micro-sample-data-against-the-pixel-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-the-micro-sample-data-against-the-pixel-measurements">Plotting the Micro-sample data against the pixel measurements</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-3-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="plotting-available-100-census-data-against-pixel-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-available-100-census-data-against-pixel-measurements">Plotting available 100% census data against Pixel Measurements</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-5.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-6.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-7.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-5-8.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="plotly-representations-of-the-graphics" class="level3">
+<h3 class="anchored" data-anchor-id="plotly-representations-of-the-graphics">Plotly representations of the graphics</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-81c76b8ffc8312360ff4" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-81c76b8ffc8312360ff4">{"x":{"data":[{"x":[611,333,170,252,68,88,740,1042,991,465,128,978,447,324,427,761,418,103,474,904,22,206,317,2213,835,1366,35,1767,121,451,870,404,189,895,409,318,144,63,151,42,36,485,476,530,192,10,674,230,233,298,498,254,23,263,448,0,142,208,1768,581,899,9,1187,85,291,554,149,165,789,220],"y":[641,320,187,265,75,93,747,1034,946,445,145,1021,454,292,420,736,412,105,320,873,34,221,349,2155,792,1368,36,1850,131,462,873,388,198,1047,388,369,144,64,185,39,36,459,476,521,175,18,667,238,208,290,485,250,19,263,401,7,154,225,1718,568,854,10,1214,92,318,539,149,159,797,303],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-110.65000000000001,2323.6500000000001],"y":[-110.65000000000001,2323.6500000000001],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Blind Comparison - Side Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-110.65000000000001,2323.6500000000001],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,500,1000.0000000000001,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-100.40000000000001,2262.4000000000001],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,499.99999999999989,1000.0000000000001,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Blind Area Side (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db2fffd7dd":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db45b506c9":{"intercept":{},"slope":{}}},"cur_data":"a4db2fffd7dd","visdat":{"a4db2fffd7dd":["function (y) ","x"],"a4db45b506c9":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-83bc50fcad6254e68b1a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-83bc50fcad6254e68b1a">{"x":{"data":[{"x":[611,333,170,252,68,88,740,1042,991,465,128,978,447,324,427,761,418,103,474,904,22,206,317,2213,835,1366,35,1767,121,451,870,404,189,895,409,318,144,63,151,42,36,485,476,530,192,10,674,230,233,298,498,254,23,263,448,0,142,208,1768,581,899,9,1187,85,291,554,149,165,789,220],"y":[638,314,192,259,77,96,733,1035,958,440,149,1022,448,293,423,745,431,104,328,884,35,221,351,2193,790,1389,35,1777,130,457,872,390,192,1035,390,349,148,63,185,35,37,463,481,526,179,15,654,232,208,291,481,257,20,264,404,6,148,220,1765,574,843,11,1163,87,319,554,158,153,819,305],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-110.65000000000001,2323.6500000000001],"y":[-110.65000000000001,2323.6500000000001],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Blind Comparison - Top Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-110.65000000000001,2323.6500000000001],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,500,1000.0000000000001,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-103.35000000000001,2302.3499999999999],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,500,999.99999999999989,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Blind Area Top (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db621a28a8":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db23635fe9":{"intercept":{},"slope":{}}},"cur_data":"a4db621a28a8","visdat":{"a4db621a28a8":["function (y) ","x"],"a4db23635fe9":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-721fc0c6a545cca9a97a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-721fc0c6a545cca9a97a">{"x":{"data":[{"x":[401,265,141,475,61,48,326,833,872,549,121,723,197,299,384,538,455,166,245,790,55,170,231,1783,619,1339,23,1433,64,212,570,232,148,534,459,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[386,253,148,451,62,47,356,790,812,520,121,673,235,306,379,529,451,168,235,790,62,158,212,1703,604,1294,32,1454,71,223,584,247,179,801,426,273,121,68,320,45,19,299,653,547,223,26,566,173,266,241,334,247,30,189,502,8,130,173,1469,410,892,11,1308,47,179,273,189,125,704,279],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-65,1871],"y":[-65,1871],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Deaf Comparison - Side Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-65,1871],"tickmode":"array","ticktext":["0","500","1000","1500"],"tickvals":[0,500,1000,1500],"categoryorder":"array","categoryarray":["0","500","1000","1500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-76.75,1787.75],"tickmode":"array","ticktext":["0","500","1000","1500"],"tickvals":[0,500,1000,1500],"categoryorder":"array","categoryarray":["0","500","1000","1500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Deaf Area Side (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db20c4bd92":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db5479cd0c":{"intercept":{},"slope":{}}},"cur_data":"a4db20c4bd92","visdat":{"a4db20c4bd92":["function (y) ","x"],"a4db5479cd0c":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-80b4ee080253185da7ce" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-80b4ee080253185da7ce">{"x":{"data":[{"x":[401,265,141,475,61,48,326,833,872,549,121,723,197,299,384,538,455,166,245,790,55,170,231,1783,619,1339,23,1433,64,212,570,232,148,534,459,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[381,255,150,437,65,50,359,785,818,533,126,678,237,301,381,515,454,164,237,774,65,170,207,1700,618,1275,33,1450,75,219,589,255,175,807,421,275,126,62,329,48,21,295,628,551,225,26,560,164,255,237,322,243,33,185,488,7,135,175,1495,405,876,11,1318,48,175,275,185,122,688,281],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-65,1871],"y":[-65,1871],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Deaf Comparison - Top Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-65,1871],"tickmode":"array","ticktext":["0","500","1000","1500"],"tickvals":[0,500,1000,1500],"categoryorder":"array","categoryarray":["0","500","1000","1500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-77.650000000000006,1784.6500000000001],"tickmode":"array","ticktext":["0","500","1000","1500"],"tickvals":[0,500,1000.0000000000001,1500],"categoryorder":"array","categoryarray":["0","500","1000","1500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Deaf Area Top (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db69d2e124":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db13bb38c3":{"intercept":{},"slope":{}}},"cur_data":"a4db69d2e124","visdat":{"a4db69d2e124":["function (y) ","x"],"a4db13bb38c3":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-220600cdbbe1d67274f9" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-220600cdbbe1d67274f9">{"x":{"data":[{"x":[555,161,1146,772,65,29,634,1625,1504,742,131,1245,451,792,733,2662,814,302,245,1263,28,548,918,6353,779,3414,122,3895,312,333,925,270,721,1125,846,257,87,456,281,60,25,491,683,1035,201,10,623,169,704,560,2015,251,25,272,770,0,503,589,4317,660,2293,23,2766,288,317,640,125,693,1121,283],"y":[558,163,1145,731,72,31,631,1584,1467,731,127,1189,435,825,719,2719,813,305,222,1309,38,548,913,6268,731,3351,122,3862,335,343,939,235,663,1500,838,276,99,394,321,60,19,484,704,992,185,5,594,179,682,563,2073,241,19,291,763,1,475,584,4274,670,2336,15,2840,298,298,648,131,648,1148,283],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-317.65000000000003,6670.6499999999996],"y":[-317.65000000000003,6670.6499999999996],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Insane Comparison - Side Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-317.65000000000003,6670.6499999999996],"tickmode":"array","ticktext":["0","2000","4000","6000"],"tickvals":[0,2000,3999.9999999999995,6000],"categoryorder":"array","categoryarray":["0","2000","4000","6000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-312.35000000000002,6581.3500000000004],"tickmode":"array","ticktext":["0","2000","4000","6000"],"tickvals":[0,2000,4000.0000000000005,6000],"categoryorder":"array","categoryarray":["0","2000","4000","6000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Insane Area Side (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db5c4c3254":{"x":{},"y":{},"text":{},"type":"scatter"},"a4dbe7c5823":{"intercept":{},"slope":{}}},"cur_data":"a4db5c4c3254","visdat":{"a4db5c4c3254":["function (y) ","x"],"a4dbe7c5823":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-7f91a987048218562cb3" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-7f91a987048218562cb3">{"x":{"data":[{"x":[555,161,1146,772,65,29,634,1625,1504,742,131,1245,451,792,733,2662,814,302,245,1263,28,548,918,6353,779,3414,122,3895,312,333,925,270,721,1125,846,257,87,456,281,60,25,491,683,1035,201,10,623,169,704,560,2015,251,25,272,770,0,503,589,4317,660,2293,23,2766,288,317,640,125,693,1121,283],"y":[550,161,1126,746,74,31,633,1566,1465,734,130,1184,426,818,723,2686,794,303,220,1274,39,530,920,6366,723,3372,130,3890,334,334,946,227,677,1499,830,276,93,387,322,62,19,469,712,992,184,6,589,167,677,558,2110,234,21,291,759,1,478,589,4363,655,2336,12,2825,291,291,633,124,633,1149,284],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-317.65000000000003,6670.6499999999996],"y":[-317.65000000000003,6670.6499999999996],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Insane Comparison - Top Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-317.65000000000003,6670.6499999999996],"tickmode":"array","ticktext":["0","2000","4000","6000"],"tickvals":[0,2000,3999.9999999999995,6000],"categoryorder":"array","categoryarray":["0","2000","4000","6000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-317.25,6684.25],"tickmode":"array","ticktext":["0","2000","4000","6000"],"tickvals":[0,2000,4000,6000],"categoryorder":"array","categoryarray":["0","2000","4000","6000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Insane Area Top (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db79ebeee2":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db709075f6":{"intercept":{},"slope":{}}},"cur_data":"a4db79ebeee2","visdat":{"a4db79ebeee2":["function (y) ","x"],"a4db709075f6":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-627e7a9d9f7b2043d98a" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-627e7a9d9f7b2043d98a">{"x":{"data":[{"x":[721,289,87,341,69,100,871,1244,1360,533,109,1141,286,628,362,778,613,134,485,779,25,325,436,2486,976,2338,55,2250,123,465,1091,451,325,1130,560,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[747,294,77,329,81,103,848,1247,1362,517,96,1150,294,662,359,780,592,103,447,802,27,294,414,2467,895,2292,52,2254,129,430,1044,430,322,1560,464,517,173,33,261,70,52,714,563,837,294,19,1006,230,725,274,652,301,25,261,508,2,344,337,2273,1006,1721,14,1721,84,344,825,206,248,1289,255],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-98.050000000000011,2609.0500000000002],"y":[-98.050000000000011,2609.0500000000002],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Idiotic Comparison - Side Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-98.050000000000011,2609.0500000000002],"tickmode":"array","ticktext":["0","500","1000","1500","2000","2500"],"tickvals":[-1.4210854715202004e-14,499.99999999999994,1000,1500,2000.0000000000002,2500],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000","2500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-121.25,2590.25],"tickmode":"array","ticktext":["0","500","1000","1500","2000","2500"],"tickvals":[0,500,1000,1500,2000,2500],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000","2500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Idiotic Area Side (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db13c98ec9":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db15bd3845":{"intercept":{},"slope":{}}},"cur_data":"a4db13c98ec9","visdat":{"a4db13c98ec9":["function (y) ","x"],"a4db15bd3845":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-cd06704cb340dd2f516d" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-cd06704cb340dd2f516d">{"x":{"data":[{"x":[721,289,87,341,69,100,871,1244,1360,533,109,1141,286,628,362,778,613,134,485,779,25,325,436,2486,976,2338,55,2250,123,465,1091,451,325,1130,560,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null,null],"y":[725,292,85,327,82,101,861,1252,1368,516,97,1140,292,652,357,781,601,101,445,792,25,299,404,2485,897,2269,52,2269,127,437,1060,420,306,1584,463,498,171,34,252,65,52,704,563,826,292,16,996,221,715,272,652,292,23,272,507,1,335,335,2250,1021,1715,12,1698,82,349,815,204,252,1280,252],"text":["State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN","State: ALABAMA","State: ARKANSAS","State: CALIFORNIA","State: CONNECTICUT","State: DELAWARE","State: FLORIDA","State: GEORGIA","State: ILLINOIS","State: INDIANA","State: IOWA","State: KANSAS","State: KENTUCKY","State: LOUISIANA","State: MAINE","State: MARYLAND","State: MASSACHUSETTS","State: MICHIGAN","State: MINNESOTA","State: MISSISSIPPI","State: MISSOURI","State: NEBRASKA","State: NEW HAMPSHIRE","State: NEW JERSEY","State: NEW YORK","State: NORTH CAROLINA","State: OHIO","State: OREGON","State: PENNSYLVANIA","State: RHODE ISLAND","State: SOUTH CAROLINA","State: TENNESSEE","State: TEXAS","State: VERMONT","State: VIRGINIA","State: WISCONSIN"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-98.050000000000011,2609.0500000000002],"y":[-98.050000000000011,2609.0500000000002],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Idiotic Comparison - Top Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-98.050000000000011,2609.0500000000002],"tickmode":"array","ticktext":["0","500","1000","1500","2000","2500"],"tickvals":[-1.4210854715202004e-14,499.99999999999994,1000,1500,2000.0000000000002,2500],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000","2500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-123.2,2609.1999999999998],"tickmode":"array","ticktext":["0","500","1000","1500","2000","2500"],"tickvals":[0,500.00000000000006,1000,1500,1999.9999999999998,2500],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000","2500"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Idiotic Area Top (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db646ff473":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db7219dd88":{"intercept":{},"slope":{}}},"cur_data":"a4db646ff473","visdat":{"a4db646ff473":["function (y) ","x"],"a4db7219dd88":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+</section>
+<section id="graphing-horizontal-pixel-measurements-against-vertical-pixel-measurements" class="level2">
+<h2 class="anchored" data-anchor-id="graphing-horizontal-pixel-measurements-against-vertical-pixel-measurements">Graphing Horizontal Pixel Measurements against Vertical Pixel Measurements</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-7-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-7-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="plotly-representation-of-data-where-it-was-innaccurate" class="level3">
+<h3 class="anchored" data-anchor-id="plotly-representation-of-data-where-it-was-innaccurate">Plotly Representation of data where it was innaccurate</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div class="plotly html-widget html-fill-item" id="htmlwidget-9658e3168203f97355bf" style="width:100%;height:464px;"></div>
+<script type="application/json" data-for="htmlwidget-9658e3168203f97355bf">{"x":{"data":[{"x":[638,314,192,259,77,96,733,1035,958,440,149,1022,448,293,423,745,431,104,328,884,35,221,351,2193,790,1389,35,1777,130,457,872,390,192,1035,390,349,148,63,185,35,37,463,481,526,179,15,654,232,208,291,481,257,20,264,404,6,148,220,1765,574,843,11,1163,87,319,554,158,153,819,305],"y":[641,320,187,265,75,93,747,1034,946,445,145,1021,454,292,420,736,412,105,320,873,34,221,349,2155,792,1368,36,1850,131,462,873,388,198,1047,388,369,144,64,185,39,36,459,476,521,175,18,667,238,208,290,485,250,19,263,401,7,154,225,1718,568,854,10,1214,92,318,539,149,159,797,303],"text":["State: ALABAMA <br>Year:  1870","State: ARKANSAS <br>Year:  1870","State: CALIFORNIA <br>Year:  1870","State: CONNECTICUT <br>Year:  1870","State: DELAWARE <br>Year:  1870","State: FLORIDA <br>Year:  1870","State: GEORGIA <br>Year:  1870","State: ILLINOIS <br>Year:  1870","State: INDIANA <br>Year:  1870","State: IOWA <br>Year:  1870","State: KANSAS <br>Year:  1870","State: KENTUCKY <br>Year:  1870","State: LOUISIANA <br>Year:  1870","State: MAINE <br>Year:  1870","State: MARYLAND <br>Year:  1870","State: MASSACHUSETTS <br>Year:  1870","State: MICHIGAN <br>Year:  1870","State: MINNESOTA <br>Year:  1870","State: MISSISSIPPI <br>Year:  1870","State: MISSOURI <br>Year:  1870","State: NEBRASKA <br>Year:  1870","State: NEW HAMPSHIRE <br>Year:  1870","State: NEW JERSEY <br>Year:  1870","State: NEW YORK <br>Year:  1870","State: NORTH CAROLINA <br>Year:  1870","State: OHIO <br>Year:  1870","State: OREGON <br>Year:  1870","State: PENNSYLVANIA <br>Year:  1870","State: RHODE ISLAND <br>Year:  1870","State: SOUTH CAROLINA <br>Year:  1870","State: TENNESSEE <br>Year:  1870","State: TEXAS <br>Year:  1870","State: VERMONT <br>Year:  1870","State: VIRGINIA <br>Year:  1870","State: WISCONSIN <br>Year:  1870","State: ALABAMA <br>Year:  1860","State: ARKANSAS <br>Year:  1860","State: CALIFORNIA <br>Year:  1860","State: CONNECTICUT <br>Year:  1860","State: DELAWARE <br>Year:  1860","State: FLORIDA <br>Year:  1860","State: GEORGIA <br>Year:  1860","State: ILLINOIS <br>Year:  1860","State: INDIANA <br>Year:  1860","State: IOWA <br>Year:  1860","State: KANSAS <br>Year:  1860","State: KENTUCKY <br>Year:  1860","State: LOUISIANA <br>Year:  1860","State: MAINE <br>Year:  1860","State: MARYLAND <br>Year:  1860","State: MASSACHUSETTS <br>Year:  1860","State: MICHIGAN <br>Year:  1860","State: MINNESOTA <br>Year:  1860","State: MISSISSIPPI <br>Year:  1860","State: MISSOURI <br>Year:  1860","State: NEBRASKA <br>Year:  1860","State: NEW HAMPSHIRE <br>Year:  1860","State: NEW JERSEY <br>Year:  1860","State: NEW YORK <br>Year:  1860","State: NORTH CAROLINA <br>Year:  1860","State: OHIO <br>Year:  1860","State: OREGON <br>Year:  1860","State: PENNSYLVANIA <br>Year:  1860","State: RHODE ISLAND <br>Year:  1860","State: SOUTH CAROLINA <br>Year:  1860","State: TENNESSEE <br>Year:  1860","State: TEXAS <br>Year:  1860","State: VERMONT <br>Year:  1860","State: VIRGINIA <br>Year:  1860","State: WISCONSIN <br>Year:  1860"],"type":"scatter","mode":"markers","marker":{"autocolorscale":false,"color":"rgba(0,0,0,1)","opacity":1,"size":5.6692913385826778,"symbol":"circle","line":{"width":1.8897637795275593,"color":"rgba(0,0,0,1)"}},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null},{"x":[-103.35000000000001,2302.3499999999999],"y":[-103.35000000000001,2302.3499999999999],"text":"","type":"scatter","mode":"lines","line":{"width":1.8897637795275593,"color":"rgba(255,0,0,1)","dash":"dash"},"hoveron":"points","showlegend":false,"xaxis":"x","yaxis":"y","hoverinfo":"text","frame":null}],"layout":{"margin":{"t":43.762557077625573,"r":7.3059360730593621,"b":40.182648401826498,"l":48.949771689497723},"font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724},"title":{"text":"Idiotic Comparison - Side Measurement","font":{"color":"rgba(0,0,0,1)","family":"","size":17.534246575342465},"x":0,"xref":"paper"},"xaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-103.35000000000001,2302.3499999999999],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,500,999.99999999999989,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"y","title":{"text":"Full Census Data","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"scaleanchor":"y","scaleratio":1,"hoverformat":".2f"},"yaxis":{"domain":[0,1],"automargin":true,"type":"linear","autorange":false,"range":[-100.40000000000001,2262.4000000000001],"tickmode":"array","ticktext":["0","500","1000","1500","2000"],"tickvals":[0,499.99999999999989,1000.0000000000001,1500,2000],"categoryorder":"array","categoryarray":["0","500","1000","1500","2000"],"nticks":null,"ticks":"","tickcolor":null,"ticklen":3.6529680365296811,"tickwidth":0,"showticklabels":true,"tickfont":{"color":"rgba(77,77,77,1)","family":"","size":11.68949771689498},"tickangle":-0,"showline":false,"linecolor":null,"linewidth":0,"showgrid":true,"gridcolor":"rgba(235,235,235,1)","gridwidth":0.66417600664176002,"zeroline":false,"anchor":"x","title":{"text":"Scaled Idiotic Area Side (Pixel Data)","font":{"color":"rgba(0,0,0,1)","family":"","size":14.611872146118724}},"scaleanchor":"x","scaleratio":1,"hoverformat":".2f"},"shapes":[{"type":"rect","fillcolor":null,"line":{"color":null,"width":0,"linetype":[]},"yref":"paper","xref":"paper","x0":0,"x1":1,"y0":0,"y1":1}],"showlegend":false,"legend":{"bgcolor":null,"bordercolor":null,"borderwidth":0,"font":{"color":"rgba(0,0,0,1)","family":"","size":11.68949771689498}},"hovermode":"closest","barmode":"relative"},"config":{"doubleClick":"reset","modeBarButtonsToAdd":["hoverclosest","hovercompare"],"showSendToCloud":false},"source":"A","attrs":{"a4db469120f6":{"x":{},"y":{},"text":{},"type":"scatter"},"a4db620b1aab":{"intercept":{},"slope":{}}},"cur_data":"a4db469120f6","visdat":{"a4db469120f6":["function (y) ","x"],"a4db620b1aab":["function (y) ","x"]},"highlight":{"on":"plotly_click","persistent":false,"dynamic":false,"selectize":false,"opacityDim":0.20000000000000001,"selected":{"opacity":1},"debounce":0},"shinyEvents":["plotly_hover","plotly_click","plotly_selected","plotly_relayout","plotly_brushed","plotly_brushing","plotly_clickannotation","plotly_doubleclick","plotly_deselect","plotly_afterplot","plotly_sunburstclick"],"base_url":"https://plot.ly"},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+</section>
+<section id="plotting-vertical---horizontal-vs-population" class="level2">
+<h2 class="anchored" data-anchor-id="plotting-vertical---horizontal-vs-population">Plotting (Vertical - Horizontal) vs Population</h2>
+<p>The purpose of this is test for misshaped circles comparatively to its size</p>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="Analysis-of-census-visuals--visuals-_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
