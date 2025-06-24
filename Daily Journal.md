@@ -23,3 +23,7 @@ Found the data for 2 of the disabilities and imported it
 6/17/25: 
 - upload all of my files and datasets to github and document them
 - make sure everything in github is extremely clear and easy to follow
+
+6/24/25
+- continue working on historical research by reading the 1860 census pages on the 4 types of disabilities
+  
