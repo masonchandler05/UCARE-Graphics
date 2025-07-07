@@ -719,3 +719,19 @@ ggplot(full_data_merge, aes(x = vert_hor_avg_insane, y = vert_hor_difference_ins
     y = "vertical - horizontal difference",
     x = "average population"
   ) 
+
+# getting data into a cleaner format so I can make the visuals with it 
+Visuals_data_cleaned <- full_data_merge %>% 
+  transmute(
+    State,
+    Year = YEAR,
+    `Mentally Ill` = ifelse(!is.na(Insane), Insane, vert_hor_avg_insane),
+    Blind = ifelse(!is.na(Blind), Blind, vert_hor_avg_blind),
+    `Developmentally Disabled` = ifelse(!is.na(Idiotic), Idiotic, vert_hor_avg_idiotic),
+    `Deaf-Mutes` = ifelse(!is.na(Deaf), Deaf, vert_hor_avg_deaf)
+  )
+
+write.csv(Visuals_data_cleaned, "Visuals_data_cleaned.csv", row.names = FALSE)
+
+
+  

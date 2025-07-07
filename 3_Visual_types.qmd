@@ -1,0 +1,174 @@
+---
+title: "3_Visual_types"
+format: html
+---
+
+This code creates all of the visuals for the states separated by state and type of visualization 
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+
+# Load your CSV file 
+visuals_data <- read_csv("Visuals_data_cleaned.csv",
+                         col_types = cols(
+                           State = col_character(),
+                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
+                           `Mentally Ill` = col_double(),
+                           Blind = col_double(),
+                           `Developmentally Disabled` = col_double(),
+                           `Deaf-Mutes` = col_double()
+                         ))
+
+# Pivot longer to get Category and Count columns
+visuals_long <- visuals_data %>%
+  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
+               names_to = "Category",
+               values_to = "Count")
+ 
+
+# Ensure folder exists
+output_dir <- "plots_by_state_and_visual_type"
+if (!dir.exists(output_dir)) {
+  dir.create(output_dir)
+}
+
+# Function to generate and save 3 plot types per state
+create_and_save_plots <- function(state_name) {
+  df <- visuals_long %>% filter(State == state_name)
+  
+  # Polar plot
+  p_polar <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+    geom_col(position = "identity", alpha = 0.5) +
+    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+    coord_polar(theta = "x") +
+    facet_wrap(~Category, ncol = 2) +
+    theme_void() +
+    ggtitle(paste("Polar Plot -", state_name))
+  
+  ggsave(filename = file.path(output_dir, paste0(state_name, "-polar.png")),
+         plot = p_polar, width = 7, height = 5, dpi = 300)
+  
+  # Overlaid bar plot
+  p_overlaid <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+    geom_col(position = "identity", alpha = 0.5, color = "black") +
+    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+    facet_wrap(~Category, ncol = 2) +
+    theme_bw() +
+    theme(axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title.x = element_blank()) +
+    ggtitle(paste("Overlaid Bar Plot -", state_name))
+  
+  ggsave(filename = file.path(output_dir, paste0(state_name, "-overlaid.png")),
+         plot = p_overlaid, width = 7, height = 5, dpi = 300)
+  
+  # Dodged bar plot
+  p_dodged <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+    geom_col(position = position_dodge2(), alpha = 0.5, color = "black") +
+    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+    facet_wrap(~Category, ncol = 2) +
+    theme_bw() +
+    theme(axis.ticks.x = element_blank(),
+          axis.text.x = element_blank(),
+          axis.title.x = element_blank()) +
+    ggtitle(paste("Dodged Bar Plot -", state_name))
+  
+  ggsave(filename = file.path(output_dir, paste0(state_name, "-dodged.png")),
+         plot = p_dodged, width = 7, height = 5, dpi = 300)
+}
+
+# Loop through all states and generate plots
+unique(visuals_long$State) %>% walk(create_and_save_plots)
+
+```
+
+
+This code separates by the 4 disability types and and 3 visual types
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+
+# Load data
+visuals_data_1 <- read_csv("Visuals_data_cleaned.csv",
+                         col_types = cols(
+                           State = col_character(),
+                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
+                           `Mentally Ill` = col_double(),
+                           Blind = col_double(),
+                           `Developmentally Disabled` = col_double(),
+                           `Deaf-Mutes` = col_double()
+                         ))
+
+# Convert to long format
+visuals_long <- visuals_data_1 %>%
+  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
+               names_to = "Category",
+               values_to = "Count") %>%
+  filter(State != "United States")
+
+create_plot <- function(data, disability, vis_type) {
+  df <- data %>% filter(Category == disability)
+  
+  if (vis_type == "polar") {
+    # Facet by state to get one polar plot per state
+    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+      geom_col(position = "identity", alpha = 0.5) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      coord_polar(theta = "x") +
+      facet_wrap(~ State, ncol = 6) +
+      theme_void() +
+      labs(title = paste("Polar Plot -", disability))
+    
+  } else {
+    # Base for bar plots: all states on x axis
+    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = paste(vis_type, "-", disability),
+           x = "State",
+           y = "Count")
+    
+    if (vis_type == "overlaid") {
+      p <- base_plot +
+        geom_col(position = "identity", alpha = 0.5, color = "black") +
+        theme(axis.ticks.x = element_blank(),
+              axis.title.x = element_blank())
+      
+    } else if (vis_type == "dodged") {
+      p <- base_plot +
+        geom_col(position = position_dodge(width = 0.7), alpha = 0.5, color = "black") +
+        theme(axis.title.x = element_blank())
+    } else {
+      stop("Unknown visual type")
+    }
+  }
+  
+  return(p)
+}
+
+# Create output folder
+if (!dir.exists("plots_by_disability_and_visual_type")) {
+  dir.create("plots_by_disability_and_visual_type")
+}
+
+disabilities <- c("Mentally Ill", "Blind", "Developmentally Disabled", "Deaf-Mutes")
+visual_types <- c("polar", "overlaid", "dodged")
+
+walk(disabilities, function(dis) {
+  walk(visual_types, function(vis) {
+    file_name <- paste0("plots_by_disability_and_visual_type/", str_replace_all(dis, " ", "_"), "_", vis, ".png")
+    plot_obj <- create_plot(visuals_long, dis, vis)
+    ggsave(file_name, plot = plot_obj, width = 14, height = 7, dpi = 300)
+  })
+})
+
+```
+

@@ -38,7 +38,7 @@ Found the data for 2 of the disabilities and imported it
 - spent a few hours talking with my dad about DD and mentally ill people to see what his view on the project is and get any useful insights from him(hes been working as a therapist in the prison for 3 decades)
 
 7/7/25: 
-- start really looking through the code that Susan provided so I can understand how it works so I am able to adapt it for the purpose of using it with my data sets 
-- this will also involve some more data cleaning/changing so that my datasets are better suited for the setup of the code 
-- potentially watch the data analysis workshop from Susan to see if there is some important skills I may be lacking 
-* these sections will likely take a long time but my goal is gain the understanding of the code so I can impliment it to create the 3 types of visualizations to design an experiment 
+- in the analysis of census visuals, I made a new df to work better using the sample plots framework
+- made all of the visuals in 2 different ways (by state and type of visual)(by disability and type of visual)
+- pushed visuals to github 
+- look into duties I need to do for UCARE program itself(workshops ect.)
