@@ -1,0 +1,242 @@
+---
+title: "Historical Notes"
+format: html
+editor: visual
+---
+
+# Archival Research on Disabled Groups in Census Visualizations
+
+The goal of this section is the examine the historical context surrounding the Blind, Deaf-Mutes, Insane, and Idiotic in this time period. This is to better understand the impact and purpose of the accuracy of the visuals and be able to point to impacts of errors in creating and interpreting these visuals. Along with this, some of the terminology is outdated and offensive, so its important to humanize these groups represented and respect them in the way they are talked about throughout the research. Until otherwise specified, all of the following information is retrieved directly from the 1860 census(file 1860.a 3). Also note, I often have more specific details on the word document but wanted to present a summary on here.
+
+## Blind
+
+-   Process of diagnosis is much easier for the blind than the others
+
+-   Found very little if any connection between parents being blind and children being blind
+
+-   had limited economic roles as some could work some occupations through giving them special training once identified
+
+-   around half of the the blind are over 50
+
+-   lots of cases of people becoming blind from illnesses
+
+## Deaf-Mutes
+
+-   process of diagnosis often relied on them trying to estimate the amount of people that it is probably to be institutionalized for their teen years
+
+-   Deaf-Mutes were either born like that or became deaf extremely young
+
+-   much more predominant in white people
+
+-   massive issue with under-reporting before 10 years old as parents wanted to hold out hope of their child being normal ( also many over 20 were dropped to just deaf after being institutionalized )
+
+-   2x more likely to be reported in the country than city ( could be from marrying relatives and homogeneous populations but the difference is attributed to the carelessness of marshals in the large cities)
+
+-   low rates in immigrants due to language barriers so they are skipped over
+
+-   attributed to hereditary or diseases after birth
+
+-   23/287 children of tracked deaf-mutes were deaf-mutes (in 9 out of the 12 families both parents were deaf-mutes)
+
+-   if properly educated, could be fairly economically independent and work manual jobs (not a long-term economic burden on society if educated)
+
+-   many in rual areas may not have proper access to these schools and institutions
+
+## Insane
+
+-   under-counting caused from families hiding cases as being insane often brought shame and attention
+
+    -   also some difficulties and judgment calls on whether someone is insane as it is based on observations and whether they seems to be normally functioning
+
+-   Believed to have hereditary influence but no real proof
+
+-   theorized that civilization brought out a lot of insanity due to the structure of the modern world with the societal pressure and intellectual work (as society industrialized, mental illness increased)
+
+-   In mild cases, they could be fairly economically viable and due manual or supervised labor
+
+-   many lived in asylums where they could work and manage their illness (work as therapy)
+
+-   insane could be chained up in poorhouses with each other or in jails as they were much more of a danger to society
+
+    -   This means led to an push for more humane conditions (seems to be much more important that they accurately track this)
+
+## Idiotic
+
+-   very mentally handicapped and unable to contribute in work or care for themselves (permanent dependence)
+
+    -   very large public cost (or family cost) (from economic perspective)
+
+-   believed to be linked to poverty and hereditary influences
+
+-   would place these children in special schools or have them have a caregiver
+
+-   most commonly the parents would care for them for their entire life
+
+## Past vs Present
+
+### - all info here was told to me by my dad(hes been a therapist in the mental health department of the prison for 30 years): needs to be fact checked / more detailed
+
+-   around the 1860s and the decades beyond there was a massive push towards pursuing better conditions for the insane mainly as since they were a danger to society, they often were imprisoned or put in poor houses as not enough resources were given to hospitalize these people
+
+-   from then until the 1960s, there became many state institutions were large amounts of the insane were all being rehabilitated in
+
+-   Kennedy and Johnson pushed towards shifting large institutions into small facilities with more community focused care which was very beneficial
+
+    -   also cut the funding to actually help these people when they were in the prisons
+
+    -   almost, if not all, psychologists and psychiatrists are now in admin roles instead of care roles as they are massively short staffed because of funding cuts
+
+-   in the 1990s, they stopped funding these small facilities so there were no large or small institutions (less than 100 beds vs thousands decades ago in Nebraska)
+
+-   led all of these mentally ill people to be put back in prison as its \~25% of the cost of proper care facilities
+
+    -   tight regulations around public-funded care facilities makes them very expensive
+
+        -   additionally they have started putting sex offenders in the separated mental health areas for their safety and put the mentally ill in the general population ( basically they get absolutely no special care except being forced to take certain medicine so they are less dangerous)
+
+-   **we basically reverted back to the 1860s conditions in how we treat the insane/mentally ill !!**
+
+-   we have seen a lot better care for the DD(developmentally disabled aka idiots) as many private organizations take more pity on them and churches are willing to fund programs for their care
+
+## Care Facilities in Nebraska (See Zotero for files)
+
+### Bethphage Village ( my dad worked here in the 1980s ) (miracle on the prairie by NPR)
+
+-   founded in 1913 in Axtell Nebraska by Lutheran pastor (associated with the church) William Dahl to help treat the DD
+
+    -   proof that even decades after this period of 1870, there was an immense need for care due to lack of funding
+
+-   founded with 54 \$1 donations privately
+
+## The Nebraska Asylum for the Insane
+
+-   opened either late 1870 or early 1871 while Nebraska was a new state and impoverished
+
+-   Other notable hospitals/treatment centers were:
+
+    -   Norfolk hospital opened in 1885
+
+    -   Hastings opened in 1889 and was for those with chronic illness/ incurable
+
+    -   Beatrice opened in 1886 for the feeble minded with 450 beds
+
+    -   outside of Lincoln and omaha opened in 1869 for the deaf and dumb
+
+    -   Nebraska City opened for the blind in 1876
+
+    -   Juvenile prison opened in 1879
+
+    -   Further details on most of these are available at <https://usgennet.org/usa/ne/topic/resources//OLLibrary/Comp_NE/cmp0080.htm?utm>
+
+-   Difficult to have an insane asylum with scattered population of Nebraska
+
+-   first case of insanity in Nebraska territory was in 1861 ( was sent to Iowa Hospital for the insane)
+
+-   when Nebraska opened, it took 22 insane people from Iowa as well as 11 prisoners
+
+-   facility cost \$137,000
+
+    -   Was extremely badly built
+
+        -   building was burnt down (1-3 patients died)
+
+        -   \$70,000 was given for new contruction
+
+        -   new construction has 39 beds
+
+-   visiting was allowed once a week for half days(didn't fully deprive them from normal human interaction)
+
+-   was said that conditions in the asylum were of high quality, but there numerous cases of neglect and abuse reported years later (22 witnesses)
+
+    -   by law, its a misdemeanor to abuse or neglect an insane person
+
+-   According to hospital records, the cost per patient from 1873 to 1886 decreased from \$10.36 per person per week to \$3.85
+
+    -   during this same time, the size grew from 49 patients to 358 ( measured on Nov 30)
+
+    -   a lot of the cost decrease could be from economies of scale of larger buildings
+
+-   Nebraska deprived the committed person of legal rights while hospitalized
+
+-   costs were absorbed by the county of legal residence of the patient, if they had no residence then the state paid it
+
+-   belived that half of the cases were hereditary, while the others were due to overwork or improper diets
+
+-   treatment was very active and gentle
+
+-   around 1900 there was shift towards large institutions that kept the insane on routine, rather than a more personalized care strategy
+
+-   medical treatments were given in mass with little personalization between patients
+
+    -   included narcotics, morphine, opium
+
+    -   also focused on nutrition
+
+-   patients were transferred to Hastings(once it opened) if there were deemed incurably insane
+
+-   around 2/3 of the patients were released within 9 months
+
+-   in 1886, 165/387 patients were foreign born
+
+-   lots of corruption took place in the hospitals
+
+    -   also had high turnover rates
+
+    -   superintendent did not get in any sort of legal trouble for the abuse
+
+        -   these are still frequent and major problems in the systems
+
+-   in 1886, only about 1/3 were being treated in the institutions
+
+-   "Even though, according to Edward Gibbon, history is little more than the register of the crime, follies, and misfortunes of mankind, there is much evidence of ability and courage in this state's early efforts to provide for the mentally ill. It is up to the present generation to make new history and further the cause of the mentally ill. Yet, study of the past teaches tolerance for human shortcomings, not uniquely of any one generation, but of all time"
+
+    -   This was written in 1982 and since then we have seen massive shortcomings and reversion back to this kind of treatment ( see Past vs Present section)
+
+## New York State's County Poor Houses (1864)
+
+-   "Men, women, and children were congregated together in the main house. The “insane” were kept chained and shackled to floors and walls in windowless basements, outhouses, and sheds. In 1864, an investigation was made concerning the treatment of the “insane” confined in the county poor houses of New York State"
+
+-   "In many instances the counties have had little or no disposition to send recent cases there, prompted by the idea that they can be supported at a less expense in a county poor house"
+
+    -   This is why they imprison insane people now
+
+-   "In some of these buildings the insane are kept in cages, and cells, dark and prison like, as if they were convicts, instead of the lifeweary, deprived of reason"
+
+    -   conditions were prison like and described horribly with prisoners having no access to showers and smeared in their own poop
+
+-   Many poorhouses held less than 20 inmates, making it extremely expensive to operate for poor care (economies of scale)
+
+-   "The statistics gathered show that out of 1,345 insane, 345 are capable of labor"
+
+-   calls for a centralized institution where patients could receive better conditions and have it be cheaper(economies of scale)
+
+-   This following is more so for me so don't forget it as I found it interesting and amusing
+
+    -   "It not unfrequently happens that the most important plans for the advancement of either science or philanthropy must be approached and developed through the channels of political economy. To what extent, therefore, is it economy to give the insane of every class the advantages of treatment in a well managed asylum – in an institution conducted on principles of science? And to what extent is it a want of economy to place those who are mentally deranged in circumstances that tend to make them confirmed lunatics? It is not asked to what extent are these propositions humane, but, in dollars and cents, what is economical. The following calculation is based on authentic statistics :-
+
+        For example: Of one hundred cases of recent insanity, placed under immediate care and treatment in a proper asylum, about eighty will recover, and the average period will be six months, at a cost of \$5 per week, \$130; add for transportation, \$20, making \$150 each, or \$15,000 expense to the State. But, argues the narrow-sighted official, “they can be supported at the county house for \$1.75 per week.” It is true, and of the one hundred cases, about seventy will thus become confirmed lunatics, and the average duration of life will be eighteen years, and the cost will be \$l,638 for each person, or \$114,660 for the seventy. At \$2 per week, the cost would be \$131,040. All this misery, and seventy incurables, with a tax of \$131,040, against eighty cured, with a tax of only \$15,000. Is the economy then in favor of the poor house system of care?
+
+        Again: The difference in the value of an acre of ground in the heart of the city of New York and on a western prairie, is owing to the greater density of able bodied and clear minded population on the former. The life of each individual has a financial value in the development of the wealth of a State. Horace Mann, and Dr. Alexander H. Stevens have fixed this value upon individual life at \$150 per year. At the present time this would be a very low estimate, but by this estimate, eighty lives of usefulness saved, each for a period of seventeen years, would add \$204,000 to the wealth of the State. This includes nothing for the natural increase of population, which would swell the sum to millions in a single generation. Is it not conclusive that the present system of poor house care for the insane is a financial madness, of which no man in his right senses should be chargeable.
+
+        The question might be presented with reference to humanity, or advancing another step in the light of Christianity, but in that light the false economist would wither as if scorched by the lightning’s fire.
+
+        I have thus accomplished the services imposed upon me by the Legislature of 1864. In presenting the result of my labors to your honorable body, I have to beg that you will accept it as a plea from those who, deprived of reason, locked in filthy cells, breathing impure air, neglected and destitute, cannot approach you; I present it in behalf of my profession, who are constant in urging the claims of humanity; I present it as a duty I owe the State of New York; nay, more; I present it as a duty I owe the Divine Master, who, when upon earth, healed the sick, visited the poor, and made the lunatic to appear clothed in his right mind.
+
+        Very respectfully your obedient servant,\
+        SYLVESTER D. WILLARD. Secretary of the Medical Society.”
+
+        -   This gives an economic reason by the value of a human life to give proper care to the insane
+
+## Using historical context to start a write up
+
+                 Through my examination of the doughnut visualizations made by Fred H. Wines, Secretary of the Illinois State Board of Charities, for the Statistical Atlas of the United States, using the 1860 and 1870 census data, I found it extremely important to understand the historical context of these individuals. These groups, as named by the census, included the blind, deaf and dumb, insane, and idiotic. My main focus is on terminology, methods of care, and how economic factors affect care.   
+
+                  The proper terminology which will be used throughout the rest of this paper is as follows: Blind, Deaf-Mutes, Mentally ill, and Developmentally Disabled. This is because the terminology used in the past is now outdated and offensive by modern standards, and continuing to use that language further dehumanizes an already dehumanized group.
+
+                  The introduction of the 1860 census gave a lot of useful information regarding the limitations of their data, care facilities, process and purpose of diagnosis, and discussion of the heredity of the conditions.
+
+                  The process of diagnosis for blind people was fairly straightforward, whereas the others were much more difficult and subjective. The other groups often forced the country marshals to guess whether these individuals might need some sort of specialized care or education at some point. Along with this, there was often mass under-reporting of conditions for the mentally ill and the deaf-mutes. For the case of the mentally ill, there was often immense shame that came with a family member having this condition, as well as often poor conditions. For deaf-mutes, these reasons fell into the 3 categories of children under 10, living in the city vs the country, and immigrants. Families often didn’t report children under 10 as they wanted to hold on hope that their child was normal in their younger years. They also found that children were about 2 times as likely to be reported in the country as those in the city were often overlooked due to careless marshals. Lastly, language barriers often led immigrants to be skipped over and ignored regarding diagnosis.
+
+                  A large emphasis on this data collection seems to be understanding the causes of these diseases. They found little to no connection between the blind and to parents, but more so getting old or from specific illnesses. Deaf-mutism was attributed to heredity to a much greater extent, especially with both parents being deaf mutes. Of a census study on 287 children of deaf mutes, 23 became deaf mutes, and in 9 of the 12 family cases, both parents were deaf mutes. They believed that mental illness was passed down, but found no real proof. They found more of a connection with mental illness and the pressure that society pushes on everyone, and intellectually difficult work. For the developmentally disabled, there was a link to heredity and poverty. There were also more white people in these groups than slaves and free people of color.
+
+                  The last main focus was on types of care and the ability of these people to work and be productive members of society. For the blind, the goal was to give them specialized training so that afterwards they could be fairly economically productive in specific roles. Deaf-mutes often went to specialized schools and institutions where, after being educated, they could become fairly economically independent through manual work jobs. However, it was often difficult for those in rural areas to receive this education do to a lack of access. For the developmentally disabled, they would either be in a special school, be given a caregiver, or the burden would be on the family to care for them. They would be viewed as a very large public cost without any pathway towards independence or productive work. The mentally ill often had it the worst. While some were institutionalized, where conditions were at least humane, many others were imprisoned or put in poor houses where they were chained up to live in filth since they were deemed a danger to society. This led to a push for more humane conditions, but since there was still a stigma around this group, most of the private charity funding went to groups like the developmentally disabled. However, in cases of mild mental illness, they could still be somewhat free and independent through manual or supervised labor. When they institutionalized, they would often have them do work as a sort of therapy while having some economic value.
