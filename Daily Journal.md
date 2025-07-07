@@ -42,3 +42,4 @@ Found the data for 2 of the disabilities and imported it
 - made all of the visuals in 2 different ways (by state and type of visual)(by disability and type of visual)
 - pushed visuals to github 
 - look into duties I need to do for UCARE program itself(workshops ect.)
+  * watched video on "Researching Graduate School" as one of my 2 requirements
