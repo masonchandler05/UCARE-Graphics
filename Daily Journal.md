@@ -19,3 +19,11 @@ Found the data for 2 of the disabilities and imported it
 6/16/25:
 - learned how to use github and push code
 - spent a lot of time debugging(I imported in datasets instead of actually loading them in and that causes a lot of issues that I had to fix)
+
+6/17/25: 
+- upload all of my files and datasets to github and document them
+- make sure everything in github is extremely clear and easy to follow
+
+6/24/25
+- continue working on historical research by reading the 1860 census pages on the 4 types of disabilities
+  
