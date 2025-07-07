@@ -490,6 +490,7 @@ library(plotly)
 # Blind - Side
 a <- ggplot(full_data_merge, aes(x = Blind, y = blind_side_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -501,6 +502,7 @@ a <- ggplot(full_data_merge, aes(x = Blind, y = blind_side_scaled_full, text = p
 # Blind - Top
 b <- ggplot(full_data_merge, aes(x = Blind, y = blind_top_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -512,6 +514,7 @@ b <- ggplot(full_data_merge, aes(x = Blind, y = blind_top_scaled_full, text = pa
 # Deaf - Side
 c <- ggplot(full_data_merge, aes(x = Deaf, y = deaf_side_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -523,6 +526,7 @@ c <- ggplot(full_data_merge, aes(x = Deaf, y = deaf_side_scaled_full, text = pas
 # Deaf - Top
 d <- ggplot(full_data_merge, aes(x = Deaf, y = deaf_top_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -534,6 +538,7 @@ d <- ggplot(full_data_merge, aes(x = Deaf, y = deaf_top_scaled_full, text = past
 # Insane - Side
 e <- ggplot(full_data_merge, aes(x = Insane, y = insane_side_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -545,6 +550,7 @@ e <- ggplot(full_data_merge, aes(x = Insane, y = insane_side_scaled_full, text =
 # Insane - Top
 f <- ggplot(full_data_merge, aes(x = Insane, y = insane_top_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -556,6 +562,7 @@ f <- ggplot(full_data_merge, aes(x = Insane, y = insane_top_scaled_full, text = 
 # Idiotic - Side
 g <- ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_side_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -567,6 +574,7 @@ g <- ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_side_scaled_full, text
 # Idiotic - Top
 h <- ggplot(full_data_merge, aes(x = Idiotic, y = idiotic_top_scaled_full, text = paste("State:", State))) +
   geom_point() +
+  coord_fixed(ratio = 1) + 
   geom_abline(slope = 1, intercept = 0, linetype = "dashed", color = "red") +
   labs(
     x = "Full Census Data",
@@ -707,6 +715,3 @@ ggplot(full_data_merge, aes(x = vert_hor_avg_insane, y = vert_hor_difference_ins
     y = "vertical - horizontal difference",
     x = "average population"
   ) 
-
-
-
