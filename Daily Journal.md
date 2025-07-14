@@ -41,4 +41,9 @@ Found the data for 2 of the disabilities and imported it
 - in the analysis of census visuals, I made a new df to work better using the sample plots framework
 - made all of the visuals in 2 different ways (by state and type of visual)(by disability and type of visual)
 - pushed visuals to github 
-- look into duties I need to do for UCARE program itself(workshops ect.)
+- look into duties I need to do for UCARE program itself(workshops etc.)
+
+7/14/25: 
+- thinking about how to the experimental design should be 
+- created visuals that grouped together data based on the SD so that similar state sizes are together 
+- this can allow us to grab a few states from a category or stratify states from several categories to understand how people interpret data when its very diffrent magnitudes 
