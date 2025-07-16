@@ -110,6 +110,10 @@ The goal of this section is the examine the historical context surrounding the B
 
 ## The Nebraska Asylum for the Insane
 
+-   Capitol Removal Act of 1868 permitted the sale of lots to raise money for the hospitals
+
+<!-- -->
+
 -   opened either late 1870 or early 1871 while Nebraska was a new state and impoverished
 
 -   Other notable hospitals/treatment centers were:
@@ -140,7 +144,7 @@ The goal of this section is the examine the historical context surrounding the B
 
         -   building was burnt down (1-3 patients died)
 
-        -   \$70,000 was given for new contruction
+        -   \$70,000 was given for new construction
 
         -   new construction has 39 beds
 
@@ -227,6 +231,28 @@ The goal of this section is the examine the historical context surrounding the B
 
         -   This gives an economic reason by the value of a human life to give proper care to the insane
 
+## Superintendent's report of Nebraska State Hospital for the Insane, 1880 - 1882
+
+-   costs dropped from a 5 year average of 8.88 to 3.34 per week per patient
+
+    -   good farm productivity and livestock decreased these costs
+
+    -   saw costs rise with bad farm yields
+
+-   around \$110,000 was owed by counties that hadn't paid their \$3/week per patient fee
+
+    -   made funding more difficult
+
+-   Reluctance to increase salaries (still very common)
+
+-   tried to be self sufficient with food expenses through garden and even sell the extra to help with funding
+
+-   lots of infrastructure costs
+
+-   Medicine costs were low at around \$1,000 per year to cover hundreds of patients
+
+    -   relied on basic medicine(morphine like drugs \* see notes for Nebraska asylum for the insane) that was cheap
+
 ## Using historical context to start a write up
 
                  Through my examination of the doughnut visualizations made by Fred H. Wines, Secretary of the Illinois State Board of Charities, for the Statistical Atlas of the United States, using the 1860 and 1870 census data, I found it extremely important to understand the historical context of these individuals. These groups, as named by the census, included the blind, deaf and dumb, insane, and idiotic. My main focus is on terminology, methods of care, and how economic factors affect care.   
@@ -240,3 +266,25 @@ The goal of this section is the examine the historical context surrounding the B
                   A large emphasis on this data collection seems to be understanding the causes of these diseases. They found little to no connection between the blind and to parents, but more so getting old or from specific illnesses. Deaf-mutism was attributed to heredity to a much greater extent, especially with both parents being deaf mutes. Of a census study on 287 children of deaf mutes, 23 became deaf mutes, and in 9 of the 12 family cases, both parents were deaf mutes. They believed that mental illness was passed down, but found no real proof. They found more of a connection with mental illness and the pressure that society pushes on everyone, and intellectually difficult work. For the developmentally disabled, there was a link to heredity and poverty. There were also more white people in these groups than slaves and free people of color.
 
                   The last main focus was on types of care and the ability of these people to work and be productive members of society. For the blind, the goal was to give them specialized training so that afterwards they could be fairly economically productive in specific roles. Deaf-mutes often went to specialized schools and institutions where, after being educated, they could become fairly economically independent through manual work jobs. However, it was often difficult for those in rural areas to receive this education do to a lack of access. For the developmentally disabled, they would either be in a special school, be given a caregiver, or the burden would be on the family to care for them. They would be viewed as a very large public cost without any pathway towards independence or productive work. The mentally ill often had it the worst. While some were institutionalized, where conditions were at least humane, many others were imprisoned or put in poor houses where they were chained up to live in filth since they were deemed a danger to society. This led to a push for more humane conditions, but since there was still a stigma around this group, most of the private charity funding went to groups like the developmentally disabled. However, in cases of mild mental illness, they could still be somewhat free and independent through manual or supervised labor. When they institutionalized, they would often have them do work as a sort of therapy while having some economic value.
+
+## Other research idea
+
+-   understand how lithography worked to understand the challenges of creating the visualizations
+
+## Lithography 
+
+-   the visuals relied on using lithographic printing
+
+<!-- -->
+
+-   relies on water and oil repelling each other
+
+-   is a complex process where you draw the image onto a stone and then basically print off of the stone
+
+    -   this could potentially lead to fuzzier lines then we are used to today
+
+    -   the top and bottom of the circles almost always had thick, fuzzy lines that resulted from this process
+
+        -   made taking pixel measurements less accurate and brought in a level of error and judgement on where the lines were on my part
+
+            -   basically the visuals were in low resolution
