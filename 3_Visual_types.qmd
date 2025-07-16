@@ -3,6 +3,8 @@ title: "3_Visual_types"
 format: html
 ---
 
+Think about how to transform the images because of larger differences in size between states 
+
 This code creates all of the visuals for the states separated by state and type of visualization 
 ```{r}
 library(ggplot2)
@@ -11,7 +13,7 @@ library(readr)
 library(tidyr)
 library(purrr)
 
-# Load your CSV file 
+# Load in csv fule and make sure everything is ordered correctly and the correct data type 
 visuals_data <- read_csv("Visuals_data_cleaned.csv",
                          col_types = cols(
                            State = col_character(),
@@ -22,14 +24,14 @@ visuals_data <- read_csv("Visuals_data_cleaned.csv",
                            `Deaf-Mutes` = col_double()
                          ))
 
-# Pivot longer to get Category and Count columns
+# Pivot longer to get category and count columns to more easily display the data 
 visuals_long <- visuals_data %>%
   pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
                names_to = "Category",
                values_to = "Count")
  
 
-# Ensure folder exists
+# creates a folder to store the images in 
 output_dir <- "plots_by_state_and_visual_type"
 if (!dir.exists(output_dir)) {
   dir.create(output_dir)
@@ -43,6 +45,8 @@ create_and_save_plots <- function(state_name) {
   p_polar <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
     geom_col(position = "identity", alpha = 0.5) +
     scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+    # changes the scale to log values 
+    scale_y_log10() +
     coord_polar(theta = "x") +
     facet_wrap(~Category, ncol = 2) +
     theme_void() +
@@ -55,6 +59,8 @@ create_and_save_plots <- function(state_name) {
   p_overlaid <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
     geom_col(position = "identity", alpha = 0.5, color = "black") +
     scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      # changes the scale to log values 
+    scale_y_log10() +
     facet_wrap(~Category, ncol = 2) +
     theme_bw() +
     theme(axis.ticks.x = element_blank(),
@@ -69,6 +75,8 @@ create_and_save_plots <- function(state_name) {
   p_dodged <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
     geom_col(position = position_dodge2(), alpha = 0.5, color = "black") +
     scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      # changes the scale to log values 
+    scale_y_log10() +
     facet_wrap(~Category, ncol = 2) +
     theme_bw() +
     theme(axis.ticks.x = element_blank(),
@@ -110,8 +118,7 @@ visuals_data_1 <- read_csv("Visuals_data_cleaned.csv",
 visuals_long <- visuals_data_1 %>%
   pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
                names_to = "Category",
-               values_to = "Count") %>%
-  filter(State != "United States")
+               values_to = "Count") 
 
 create_plot <- function(data, disability, vis_type) {
   df <- data %>% filter(Category == disability)
@@ -121,6 +128,8 @@ create_plot <- function(data, disability, vis_type) {
     p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
       geom_col(position = "identity", alpha = 0.5) +
       scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+        # changes the scale to log values 
+    #scale_y_log10() +
       coord_polar(theta = "x") +
       facet_wrap(~ State, ncol = 6) +
       theme_void() +
@@ -130,6 +139,9 @@ create_plot <- function(data, disability, vis_type) {
     # Base for bar plots: all states on x axis
     base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
       scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+     
+        # changes the scale to sqrt values 
+    #scale_y_sqrt() +
       theme_bw() +
       theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
       labs(title = paste(vis_type, "-", disability),
@@ -139,12 +151,18 @@ create_plot <- function(data, disability, vis_type) {
     if (vis_type == "overlaid") {
       p <- base_plot +
         geom_col(position = "identity", alpha = 0.5, color = "black") +
+      
+          # changes the scale to sqrt values 
+    #scale_y_log10() +
         theme(axis.ticks.x = element_blank(),
               axis.title.x = element_blank())
       
     } else if (vis_type == "dodged") {
       p <- base_plot +
         geom_col(position = position_dodge(width = 0.7), alpha = 0.5, color = "black") +
+     
+          # changes the scale to sqrt values 
+  #  scale_y_sqrt() +
         theme(axis.title.x = element_blank())
     } else {
       stop("Unknown visual type")
@@ -172,3 +190,159 @@ walk(disabilities, function(dis) {
 
 ```
 
+
+
+
+This creates visuals based on groupings made by sd of the data 
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+
+# Load data
+visuals_data_1 <- read_csv("Visuals_data_cleaned.csv",
+                          col_types = cols(
+                            State = col_character(),
+                            Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
+                            `Mentally Ill` = col_double(),
+                            Blind = col_double(),
+                            `Developmentally Disabled` = col_double(),
+                            `Deaf-Mutes` = col_double()
+                          ))
+
+# Convert to long format
+visuals_long <- visuals_data_1 %>%
+  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
+               names_to = "Category",
+               values_to = "Count") 
+
+# Calculate z-score and assign Group by Category + Year
+grouped_data <- visuals_long %>%
+  group_by(Category, Year) %>%
+  mutate(
+    z_score = (Count - mean(Count, na.rm = TRUE)) / sd(Count, na.rm = TRUE),
+    Group = case_when(
+      z_score < -1.5 ~ "Very Low",
+      z_score >= -1.5 & z_score < -0.5 ~ "Low",
+      z_score >= -0.5 & z_score < 0.5 ~ "Average",
+      z_score >= 0.5 & z_score < 1.5 ~ "High",
+      z_score >= 1.5 ~ "Very High",
+     # TRUE ~ NA_character_
+    )
+  ) %>%
+  ungroup()
+
+# Create wide format to get transition group per state & category
+group_transitions <- grouped_data %>%
+  select(State, Category, Year, Group) %>%
+  pivot_wider(names_from = Year, values_from = Group, names_prefix = "Group_") %>%
+  mutate(Transition = paste0(Group_1860, "-", Group_1870))
+
+# Join transition info back to the long data for plotting
+visuals_with_transitions <- visuals_long %>%
+  left_join(
+    group_transitions %>% select(State, Category, Transition),
+    by = c("State", "Category")
+  )
+
+
+create_plot <- function(data, disability, transition_group, vis_type) {
+  df <- data %>%
+    filter(Category == disability, Transition == transition_group)
+  
+  if(nrow(df) == 0){
+    message(glue::glue("No data for {disability} with transition {transition_group}"))
+    return(NULL)
+  }
+  
+  if (vis_type == "polar") {
+    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+      geom_col(position = "identity", alpha = 0.5) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      coord_polar(theta = "x") +
+      facet_wrap(~ State, ncol = 6) +
+      theme_void() +
+      labs(title = paste("Polar Plot -", disability, "\nTransition:", transition_group))
+    
+  } else {
+    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = paste(vis_type, "-", disability, "\nTransition:", transition_group),
+           x = "State",
+           y = "Count")
+    
+    if (vis_type == "overlaid") {
+      p <- base_plot +
+        geom_col(position = "identity", alpha = 0.5, color = "black") +
+        theme(axis.ticks.x = element_blank(),
+              axis.title.x = element_blank())
+      
+    } else if (vis_type == "dodged") {
+      p <- base_plot +
+        geom_col(position = position_dodge(width = 0.7), alpha = 0.5, color = "black") +
+        theme(axis.title.x = element_blank())
+    } else {
+      stop("Unknown visual type")
+    }
+  }
+  
+  return(p)
+}
+
+# Create output folder
+if (!dir.exists("grouped_vis")) {
+  dir.create("grouped_vis")
+}
+
+disabilities <- unique(visuals_with_transitions$Category)
+transitions <- unique(visuals_with_transitions$Transition)
+visual_types <- c("polar", "overlaid", "dodged")
+
+library(glue)
+
+# Loop over each disability, each transition group, and each visual type
+walk(disabilities, function(dis) {
+  # Filter transitions for this disability (some transitions may not appear for each disability)
+  trans_for_dis <- visuals_with_transitions %>%
+    filter(Category == dis) %>%
+    pull(Transition) %>%
+    unique()
+  
+  walk(trans_for_dis, function(trans_grp) {
+    walk(visual_types, function(vis) {
+      file_name <- glue("grouped_vis/{str_replace_all(dis, ' ', '_')}_{str_replace_all(trans_grp, '-', '_')}_{vis}.png")
+      plot_obj <- create_plot(visuals_with_transitions, dis, trans_grp, vis)
+      
+      if(!is.null(plot_obj)){
+        ggsave(file_name, plot = plot_obj, width = 14, height = 7, dpi = 300)
+      }
+    })
+  })
+})
+
+# Allows you to call these and actually assign visuals based upon this 
+# Summarize each state's transitions across all categories
+state_transition_summary <- group_transitions %>%
+  mutate(Transition = paste0(Group_1860, "-", Group_1870)) %>%
+  select(State, Category, Transition) %>%
+  pivot_wider(names_from = Category, values_from = Transition) %>%
+  arrange(State)
+
+# Preview the result
+head(state_transition_summary)
+
+```
+
+Other ideas: 
+- make a filter for all the states that have negative growth 
+- make a filter for all the states that fall within the JND(a few percent growth)
+
+
+Goal: 
+- find a few state comparisons from states that are similar sizes and see what ranges of true differences there are 
