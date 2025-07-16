@@ -41,14 +41,19 @@ Found the data for 2 of the disabilities and imported it
 - in the analysis of census visuals, I made a new df to work better using the sample plots framework
 - made all of the visuals in 2 different ways (by state and type of visual)(by disability and type of visual)
 - pushed visuals to github 
-<<<<<<< HEAD
 - look into duties I need to do for UCARE program itself(workshops etc.)
+  * watched video on "Researching Graduate School" as one of my 2 requirements
 
 7/14/25: 
 - thinking about how to the experimental design should be 
 - created visuals that grouped together data based on the SD so that similar state sizes are together (called grouped_vis)
-- this can allow us to grab a few states from a category or stratify states from several categories to understand how people interpret data when its very diffrent magnitudes 
-=======
-- look into duties I need to do for UCARE program itself(workshops ect.)
-  * watched video on "Researching Graduate School" as one of my 2 requirements
->>>>>>> cbaaa3d8a9a4ffe7c58da7e90f3606698a3f984d
+- this can allow us to grab a few states from a category or stratify states from several categories to understand how people interpret data when its very different magnitudes 
+
+7/15/25 - 7/16-25 
+- read through some of the superintendent reports of the Insane asylum 
+- plan on doing some research on what lithography is to understand the challenges of creating the visuals 
+- created a df of the grouped vis types to potentially merge with the main df so we can pull in the visuals that way? 
+- going to start learning how shiny works to be able to use an example model to easily build off of 
+- weekly meeting 
+
+
