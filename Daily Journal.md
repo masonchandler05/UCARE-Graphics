@@ -56,4 +56,10 @@ Found the data for 2 of the disabilities and imported it
 - going to start learning how shiny works to be able to use an example model to easily build off of 
 - weekly meeting 
 
+7/17/25 - 7/30/25
+- created a usable shiny app 
+- choosing states that have a wide variety of ratios and fit into the different illusions 
+* To Do next: 
+- make sure that we get the timing for all of the judgements: It seems to already be done with timestamps 
+- choose a few more state pairings (limit to 7-8 total state pairs, ie 21-24 total judgements) 
 
