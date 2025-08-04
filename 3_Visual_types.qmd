@@ -346,3 +346,193 @@ Other ideas:
 
 Goal: 
 - find a few state comparisons from states that are similar sizes and see what ranges of true differences there are 
+
+
+
+
+
+ACTUAL CODE BEING USED 
+
+# pairing visuals 
+```{r}
+library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
+
+# Load data
+visuals_data <- read_csv("Visuals_data_cleaned.csv",
+                         col_types = cols(
+                           State = col_character(),
+                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
+                           `Mentally Ill` = col_double(),
+                           Blind = col_double(),
+                           `Developmentally Disabled` = col_double(),
+                           `Deaf-Mutes` = col_double()
+                         ))
+
+# Convert to long format
+visuals_long <- visuals_data %>%
+  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
+               names_to = "Category",
+               values_to = "Count")
+
+# Define state pairs - original mental illness pairs plus new developmentally disabled pairs
+state_pairs <- list(
+  # Mental illness pairs
+  c("MISSISSIPPI", "LOUISIANA"),
+  c("NORTH CAROLINA", "TENNESSEE"),
+  c("ALABAMA", "GEORGIA"),
+  c("FLORIDA", "DELAWARE"),
+  c("MISSOURI", "OHIO"),
+  # Developmentally disabled pairs
+  c("MAINE", "KENTUCKY")
+)
+
+# Verify all states exist in data
+all_states <- unique(visuals_long$State)
+walk(state_pairs, function(pair) {
+  if (!all(pair %in% all_states)) {
+    missing <- setdiff(pair, all_states)
+    stop(paste("States not found in data:", paste(missing, collapse = ", ")))
+  }
+})
+
+# EXACT recreation of your original plotting function style
+create_pair_plot <- function(data, disability, vis_type, states) {
+  df <- data %>% 
+    filter(Category == disability, State %in% states) %>%
+    mutate(State = factor(State, levels = states))  # Preserve order
+  
+  if (nrow(df) == 0) {
+    stop(paste("No data found for:", paste(states, collapse = " vs ")))
+  }
+  
+  if (vis_type == "polar") {
+    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+      geom_col(position = "identity", alpha = 0.5) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      coord_polar(theta = "x") +
+      facet_wrap(~ State, ncol = 2) +
+      theme_void() +
+      labs(title = paste("Polar Plot -", disability))
+    
+  } else {
+    # EXACT original bar plot styling
+    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      theme_bw() +  # Original used theme_bw()
+      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+      labs(title = paste(vis_type, "-", disability),
+           x = "State",
+           y = "Count")
+    
+    if (vis_type == "overlaid") {
+      p <- base_plot +
+        geom_col(position = "identity", alpha = 0.5, color = "black") +
+        theme(axis.ticks.x = element_blank(),
+              axis.title.x = element_blank())
+      
+    } else if (vis_type == "dodged") {
+      p <- base_plot +
+        # width changes how overlaid they are. 1 is not overlaid and the closer to 0 the more overlaid
+        geom_col(position = position_dodge(width = .8), width = 0.7, alpha = 0.5, color = "black") +
+        theme(axis.title.x = element_blank())
+    } else {
+      stop("Unknown visual type")
+    }
+  }
+  
+  return(p)
+}
+
+# Create output folder
+if (!dir.exists("pair_plots_original_style")) {
+  dir.create("pair_plots_original_style")
+}
+
+# Define visualization types
+visual_types <- c("polar", "overlaid", "dodged")
+
+# Generate all plots for each pair
+walk(state_pairs[1:5], function(pair) {  # Original mental illness pairs
+  walk(visual_types, function(vis) {
+    tryCatch({
+      file_name <- paste0("pair_plots_original_style/Mentally_Ill_", 
+                         paste(pair, collapse = "_"), "_", 
+                         vis, ".png")
+      plot_obj <- create_pair_plot(visuals_long, "Mentally Ill", vis, pair)
+      ggsave(file_name, plot = plot_obj, width = 6, height = 4, dpi = 300)
+    }, error = function(e) {
+      message(paste("Error creating plot for", paste(pair, collapse = " vs "), ":", e$message))
+    })
+  })
+})
+
+# Generate developmentally disabled plots for Maine and Kentucky
+walk(state_pairs[6], function(pair) {  # Maine vs Kentucky
+  walk(visual_types, function(vis) {
+    tryCatch({
+      file_name <- paste0("pair_plots_original_style/Developmentally_Disabled_", 
+                         paste(pair, collapse = "_"), "_", 
+                         vis, ".png")
+      plot_obj <- create_pair_plot(visuals_long, "Developmentally Disabled", vis, pair)
+      ggsave(file_name, plot = plot_obj, width = 6, height = 4, dpi = 300)
+    }, error = function(e) {
+      message(paste("Error creating plot for", paste(pair, collapse = " vs "), ":", e$message))
+    })
+  })
+})
+
+message("Plot generation complete. Check 'pair_plots_original_style' folder.")
+```
+
+
+# creating the example plot 
+```{r}
+library(ggplot2)
+
+# Create the data
+plot_data <- data.frame(
+  Year = factor(c("1860", "1870")),
+  Count = c(130, 200),
+  State = "State 1"
+)
+
+# Create the dodged bar plot with your exact color scheme
+dodged_plot <- ggplot(plot_data, aes(x = State, y = Count, fill = Year)) +
+  geom_col(
+    position = position_dodge(width = 0.8), 
+    width = 0.7,
+    color = "black",        # Black outlines
+    alpha = 0.5            # Slight transparency
+  ) +
+  scale_fill_manual(
+    values = c(
+      "1860" = "grey90",   # Light gray for 1860
+      "1870" = "black"     # Black for 1870
+    )
+  ) +
+  theme_bw() +
+  theme(
+    axis.text.x = element_text(angle = 0, hjust = 0.5),
+    plot.title = element_text(hjust = 0.5),
+    legend.position = "top"
+  ) +
+  labs(
+    title = "Example Bar Chart",
+    x = "",
+    y = "Count",
+    fill = "Year"
+  ) +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+
+# Print the plot
+print(dodged_plot)
+
+# Save the plot (optional)
+ggsave("pair_plots_original_style/dodged_example.png", plot = dodged_plot, width = 6, height = 3, dpi = 300)
+```
+

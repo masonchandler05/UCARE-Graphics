@@ -1,0 +1,317 @@
+---
+title: "shinyAppTesting"
+format: html
+---
+
+
+Shiny app 
+# currently works great 
+
+
+
+```{r}
+library(shiny)
+library(shinyjs)
+library(DBI)
+library(RSQLite)
+
+# Define state pairs with exact naming that matches your image files
+state_pairs <- list(
+  list(name = "NORTH CAROLINA_TENNESSEE", display_name = "North Carolina vs Tennessee", vis_type = "polar"),
+  list(name = "MISSISSIPPI_LOUISIANA", display_name = "Mississippi vs Louisiana", vis_type = "overlaid"),
+  list(name = "FLORIDA_DELAWARE", display_name = "Florida vs Delaware", vis_type = "dodged"), 
+  list(name = "ALABAMA_GEORGIA", display_name = "Alabama vs Georgia", vis_type = "polar"),
+  list(name = "MISSOURI_OHIO", display_name = "Missouri vs Ohio", vis_type = "overlaid")
+)
+
+ui <- fluidPage(
+  useShinyjs(),
+  div(
+    id = "login_page",
+    style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
+    wellPanel(
+      h2("Enter Your Name", class = "text-center"),
+      textInput("user_name", "Your Name:", placeholder = "First Last"),
+      actionButton("login_btn", "Start Assessment", class = "btn-primary btn-block")
+    )
+  ),
+  hidden(
+    div(
+      id = "explanation_page",
+      style = "width: 800px; max-width: 100%; margin: 0 auto; padding-top: 20px;",
+      wellPanel(
+        h2("Experiment Instructions", class = "text-center"),
+        h3("Understanding Ratio Judgments"),
+        p("In this experiment, you'll be comparing visualizations showing mental illness rates between pairs of states."),
+        p("Your task is to estimate the ratio between the two states' values by adjusting the slider."),
+        h3("Example"),
+       imageOutput("example_chart", height = "400px"),
+        p("For this example visualization, we want you to estimate the ratio of the number in 1860 to 1870"),
+        sliderInput("example_ratio", "Example Ratio:", 
+                   min = 0, max = 1, value = 0.5, step = 0.01),
+        actionButton("submit_example", "Submit Example", class = "btn-primary"),
+        
+        hidden(
+          div(
+            id = "feedback_section",
+            h3("Feedback"),
+            textOutput("true_ratio_feedback"),
+            actionButton("proceed_btn", "Proceed to Experiment", class = "btn-success")
+          )
+        )
+      )
+    )
+  ),
+  hidden(
+    div(
+      id = "main_app",
+      titlePanel("Image Ratio Assessment Tool"),
+      sidebarLayout(
+        sidebarPanel(
+          h3(textOutput("welcome_message")),
+          uiOutput("ratio_slider_ui"),
+          actionButton("save_btn", "Save Assessment", class = "btn-primary"),
+          br(), br(),
+          actionButton("logout_btn", "Sign Out", class = "btn-warning"),
+          br(), br(),
+          h4("Completion Status"),
+          textOutput("progress_text"),
+          h4("Current Visualization:"),
+          textOutput("current_vis_type")
+        ),
+        mainPanel(
+          imageOutput("display_image", height = "500px")
+        )
+      )
+    )
+  )
+)
+
+server <- function(input, output, session) {
+  # Database connection
+  con <- dbConnect(RSQLite::SQLite(), "assessments.db")
+  
+  output$example_chart <- renderImage({
+  # Full path to your image
+  list(
+    src = "pair_plots_original_style/dodged_example.png",
+    contentType = "image/png",
+    width = "100%",
+    alt = "Example dodged bar chart"
+  )
+}, deleteFile = FALSE)
+  
+  # Create fresh tables
+  dbExecute(con, "
+    CREATE TABLE IF NOT EXISTS users (
+      user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_name TEXT UNIQUE,
+      created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    )
+  ")
+  
+  dbExecute(con, "
+    CREATE TABLE IF NOT EXISTS assessments (
+      assessment_id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
+      pair_name TEXT NOT NULL,
+      pair_display TEXT NOT NULL,
+      vis_type TEXT NOT NULL,
+      ratio REAL NOT NULL,
+      judgment_num INTEGER NOT NULL,
+      timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+      FOREIGN KEY(user_id) REFERENCES users(user_id)
+    )
+  ")
+  
+  # Reactive values
+  user <- reactiveValues(id = NULL, name = NULL, authenticated = FALSE)
+  current_pair_index <- reactiveVal(1)
+  judgment_num <- reactiveVal(1)
+  
+  # Current pair info
+  current_pair <- reactive({
+    state_pairs[[current_pair_index()]]
+  })
+  
+  
+  # Dynamic slider
+  output$ratio_slider_ui <- renderUI({
+    req(user$authenticated)
+    sliderInput("ratio_slider", 
+               label = paste("Ratio for", current_pair()$display_name),
+               min = 0, max = 1, value = 0.5, step = 0.01)
+  })
+  
+  # Current visualization type
+  output$current_vis_type <- renderText({
+    paste("Type:", current_pair()$vis_type)
+  })
+  
+  # Welcome message
+  output$welcome_message <- renderText({
+    req(user$authenticated)
+    paste("Welcome,", user$name)
+  })
+  
+  # Progress text
+  output$progress_text <- renderText({
+    req(user$authenticated)
+    paste("Pair", current_pair_index(), "of", length(state_pairs),
+          "- Judgment", judgment_num(), "of 3")
+  })
+  
+  # True ratio feedback for example
+  output$true_ratio_feedback <- renderText({
+    "The true ratio for this example was 0.65. This is because the 1860 data had a count of 130 and the 1870 data had a count of 200. By taking 130/200, we get .65 making a true ratio of .65"
+  })
+  
+  # Image display with thorough error checking (hidden from user)
+  output$display_image <- renderImage({
+    req(user$authenticated)
+    
+    pair <- current_pair()$name
+    vis_type <- current_pair()$vis_type
+    
+    # Construct possible filename patterns
+    base_name <- paste0("Mentally_Ill_", pair, "_", vis_type)
+    possible_files <- c(
+      paste0(base_name, ".png"),                   # Exact match
+      paste0(gsub("_", " ", base_name), ".png"),   # With spaces
+      paste0(tolower(base_name), ".png"),          # Lowercase
+      paste0(toupper(base_name), ".png")           # Uppercase
+    )
+    
+    # Check each possible file
+    img_path <- NULL
+    for (f in possible_files) {
+      test_path <- file.path("pair_plots_original_style", f)
+      if (file.exists(test_path)) {
+        img_path <- test_path
+        break
+      }
+    }
+    
+    if (!is.null(img_path)) {
+      # Return found image
+      list(
+        src = img_path,
+        contentType = "image/png",
+        width = "100%",
+        alt = paste(pair, "visualization")
+      )
+    } else {
+      # Fallback image with error message
+      list(
+        src = "https://via.placeholder.com/600x400/ff0000/ffffff?text=Image+Not+Found",
+        contentType = "image/png",
+        width = "100%",
+        alt = paste("Missing:", base_name, ".png")
+      )
+    }
+  }, deleteFile = FALSE)
+  
+  # Login handler
+  observeEvent(input$login_btn, {
+    req(input$user_name)
+    
+    tryCatch({
+      user$name <- trimws(input$user_name)
+      if (user$name == "") stop("Please enter your name")
+      
+      # Find or create user
+      user_exists <- dbGetQuery(con, 
+                              "SELECT user_id FROM users WHERE user_name = ?",
+                              params = list(user$name))
+      
+      if (nrow(user_exists) == 0) {
+        dbExecute(con, "INSERT INTO users (user_name) VALUES (?)", 
+                 params = list(user$name))
+        user$id <- dbGetQuery(con, "SELECT last_insert_rowid()")[[1]]
+      } else {
+        user$id <- user_exists$user_id[1]
+      }
+      
+      shinyjs::hide("login_page")
+      shinyjs::show("explanation_page")
+      
+    }, error = function(e) {
+      showNotification(paste("Error:", e$message), type = "error")
+    })
+  })
+  
+  # Submit example handler
+  observeEvent(input$submit_example, {
+    shinyjs::show("feedback_section")
+  })
+  
+  # Proceed to experiment handler
+  observeEvent(input$proceed_btn, {
+    user$authenticated <- TRUE
+    shinyjs::hide("explanation_page")
+    shinyjs::show("main_app")
+    judgment_num(1)
+  })
+  
+  # Save handler
+  observeEvent(input$save_btn, {
+    req(user$authenticated)
+    
+    tryCatch({
+      # Save current judgment
+      dbExecute(con,
+               "INSERT INTO assessments 
+                (user_id, pair_name, pair_display, vis_type, ratio, judgment_num) 
+                VALUES (?, ?, ?, ?, ?, ?)",
+               params = list(
+                 user$id,
+                 current_pair()$name,
+                 current_pair()$display_name,
+                 current_pair()$vis_type,
+                 input$ratio_slider,
+                 judgment_num()
+               ))
+      
+      # Update judgment counter
+      if (judgment_num() < 3) {
+        judgment_num(judgment_num() + 1)
+      } else {
+        # Move to next pair after 3 judgments
+        if (current_pair_index() < length(state_pairs)) {
+          current_pair_index(current_pair_index() + 1)
+          judgment_num(1)
+        } else {
+          showNotification("All assessments completed!", type = "message")
+          shinyjs::disable("save_btn")
+        }
+      }
+      
+    }, error = function(e) {
+      showNotification(paste("Save failed:", e$message), type = "error")
+    })
+  })
+  
+  # Logout handler
+  observeEvent(input$logout_btn, {
+    user$id <- NULL
+    user$name <- NULL
+    user$authenticated <- FALSE
+    shinyjs::reset("login_page")
+    shinyjs::show("login_page")
+    shinyjs::hide("main_app")
+    shinyjs::hide("explanation_page")
+    current_pair_index(1)
+    judgment_num(1)
+  })
+  
+  # Cleanup
+  onStop(function() {
+    dbDisconnect(con)
+  })
+}
+
+shinyApp(ui, server)
+```
+
+
+
