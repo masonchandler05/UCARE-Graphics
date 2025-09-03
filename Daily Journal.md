@@ -63,3 +63,12 @@ Found the data for 2 of the disabilities and imported it
 - make sure that we get the timing for all of the judgements: It seems to already be done with timestamps 
 - choose a few more state pairings (limit to 7-8 total state pairs, ie 21-24 total judgements) 
 
+8/4/25: 
+- added more visuals to shiny app so it has 9 total (3 of each)
+* to do
+- make it so it has directions for each of the judgements 
+
+9/3/24: 
+- finished shiny app with 9 visuals, 27 total judgements 
+- has all proper functionality 
+- ready for testing? 

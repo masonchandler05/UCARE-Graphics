@@ -6,8 +6,7 @@ format: html
 
 Shiny app 
 # currently works great 
-
-
+# has instructions 
 
 ```{r}
 library(shiny)
@@ -17,15 +16,75 @@ library(RSQLite)
 
 # Define state pairs with exact naming that matches your image files
 state_pairs <- list(
-  list(name = "NORTH CAROLINA_TENNESSEE", display_name = "North Carolina vs Tennessee", vis_type = "polar"),
-  list(name = "MISSISSIPPI_LOUISIANA", display_name = "Mississippi vs Louisiana", vis_type = "overlaid"),
-  list(name = "FLORIDA_DELAWARE", display_name = "Florida vs Delaware", vis_type = "dodged"), 
-  list(name = "ALABAMA_GEORGIA", display_name = "Alabama vs Georgia", vis_type = "polar"),
-  list(name = "MISSOURI_OHIO", display_name = "Missouri vs Ohio", vis_type = "overlaid")
+  # Mental illness pairs
+  list(name = "MISSISSIPPI_LOUISIANA", display_name = "Mississippi vs Louisiana", 
+       category = "Mentally Ill", vis_type = "overlaid"),
+  list(name = "NORTH CAROLINA_TENNESSEE", display_name = "North Carolina vs Tennessee", 
+       category = "Mentally Ill", vis_type = "polar"),
+  list(name = "ALABAMA_GEORGIA", display_name = "Alabama vs Georgia", 
+       category = "Mentally Ill", vis_type = "dodged"),
+  list(name = "FLORIDA_DELAWARE", display_name = "Florida vs Delaware", 
+       category = "Mentally Ill", vis_type = "overlaid"),
+  list(name = "MISSOURI_OHIO", display_name = "Missouri vs Ohio", 
+       category = "Mentally Ill", vis_type = "polar"),
+  
+  # Developmentally disabled pairs
+  list(name = "MAINE_KENTUCKY", display_name = "Maine vs Kentucky", 
+       category = "Developmentally Disabled", vis_type = "dodged"),
+  list(name = "ARKANSAS_MINNESOTA", display_name = "Arkansas vs Minnesota", 
+       category = "Developmentally Disabled", vis_type = "overlaid"),
+  list(name = "WISCONSIN_MARYLAND", display_name = "Wisconsin vs Maryland", 
+       category = "Developmentally Disabled", vis_type = "polar"),
+  list(name = "CONNECTICUT_IOWA", display_name = "Connecticut vs Iowa", 
+       category = "Developmentally Disabled", vis_type = "dodged")
+)
+
+# Create a list of instructions for each judgment (27 total)
+judgment_instructions <- list(
+  "1" = "Instruction a: Find the ratio of mentally ill people in Mississippi from 1870 to 1860",
+  "2" = "Instruction b: Find the ratio of mentally ill people in Louisiana from 1860 to 1870",
+  "3" = "Instruction c: Find the ratio of mentally ill people in Mississippi in 1860 to Louisiana in 1870",
+  "4" = "Instruction d: Find the ratio of mentally ill people in North Carolina in 1860 to 1870",
+  "5" = "Instruction e: Find the ratio of mentally ill people in Tennessee in 1860 to 1870",
+  "6" = "Instruction f: Find the ratio of mentally ill people in North Carolina in 1860 to Tennessee in 1860",
+  "7" = "Instruction g: Find the ratio of mentally ill people in Alabama in 1860 to 1870",
+  "8" = "Instruction h: Find the ratio of mentally ill people in Georgia in 1860 to 1870",
+  "9" = "Instruction i: Find the ratio of mentally ill people in Alabama in 1870 to Georgia in 1870",
+  "10" = "Instruction j: Find the ratio of mentally ill people in Florida in 1860 to 1870",
+  "11" = "Instruction k: Find the ratio of mentally ill people in Delaware in 1860 to 1870",
+  "12" = "Instruction l: Find the ratio of mentally ill people in Florida in 1870 to Delaware in 1870",
+  "13" = "Instruction m: Find the ratio of mentally ill people in Missouri in 1860 to 1870",
+  "14" = "Instruction n: Find the ratio of mentally ill people in Ohio in 1860 to 1870",
+  "15" = "Instruction o: Find the ratio of mentally ill people in Missouri in 1870 to Ohio in 1870",
+  "16" = "Instruction p: Find the ratio of developmentally disabled people in Maine in 1870 to 1860",
+  "17" = "Instruction q: Find the ratio of developmentally disabled people in Kentucky in 1860 to 1870",
+  "18" = "Instruction r: Find the ratio of developmentally disabled people in Maine in 1870 to Kentucky in 1870",
+  "19" = "Instruction s: Find the ratio of developmentally disabled people in Arkansas in 1860 to 1870",
+  "20" = "Instruction t: Find the ratio of developmentally disabled people in Minnesota in 1860 to 1870",
+  "21" = "Instruction u: Find the ratio of developmentally disabled people in Arkansas in 1870 to Minnesota in 1870",
+  "22" = "Instruction v: Find the ratio of developmentally disabled people in Wisconsin in 1860 to 1870",
+  "23" = "Instruction w: Find the ratio of developmentally disabled people in Maryland in 1860 to 1870",
+  "24" = "Instruction x: Find the ratio of developmentally disabled people in Wisconsin in 1860 to Maryland in 1860",
+  "25" = "Instruction y: Find the ratio of developmentally disabled people in Connecticut in 1860 to 1870",
+  "26" = "Instruction z: Find the ratio of developmentally disabled people in Iowa in 1860 to 1870",
+  "27" = "Final instruction: Find the ratio of developmentally disabled people in Connecticut in 1870 to Iowa in 1870"
 )
 
 ui <- fluidPage(
   useShinyjs(),
+  tags$head(
+    tags$style(HTML("
+      .instruction-box {
+        background-color: #f8f9fa;
+        border-left: 5px solid #007bff;
+        padding: 15px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        font-size: 16px;
+        font-weight: bold;
+      }
+    "))
+  ),
   div(
     id = "login_page",
     style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
@@ -45,7 +104,7 @@ ui <- fluidPage(
         p("In this experiment, you'll be comparing visualizations showing mental illness rates between pairs of states."),
         p("Your task is to estimate the ratio between the two states' values by adjusting the slider."),
         h3("Example"),
-       imageOutput("example_chart", height = "400px"),
+        imageOutput("example_chart", height = "400px"),
         p("For this example visualization, we want you to estimate the ratio of the number in 1860 to 1870"),
         sliderInput("example_ratio", "Example Ratio:", 
                    min = 0, max = 1, value = 0.5, step = 0.01),
@@ -69,6 +128,11 @@ ui <- fluidPage(
       sidebarLayout(
         sidebarPanel(
           h3(textOutput("welcome_message")),
+          # Instruction box
+          div(
+            class = "instruction-box",
+            textOutput("current_instruction")
+          ),
           uiOutput("ratio_slider_ui"),
           actionButton("save_btn", "Save Assessment", class = "btn-primary"),
           br(), br(),
@@ -89,17 +153,16 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   # Database connection
-  con <- dbConnect(RSQLite::SQLite(), "assessments.db")
+  con <- dbConnect(RSQLite::SQLite(), "Practice_assessments_group.db")
   
   output$example_chart <- renderImage({
-  # Full path to your image
-  list(
-    src = "pair_plots_original_style/dodged_example.png",
-    contentType = "image/png",
-    width = "100%",
-    alt = "Example dodged bar chart"
-  )
-}, deleteFile = FALSE)
+    list(
+      src = file.path("pair_plots_original_style", "dodged_example.png"),
+      contentType = "image/png",
+      width = "100%",
+      alt = "Example dodged bar chart"
+    )
+  }, deleteFile = FALSE)
   
   # Create fresh tables
   dbExecute(con, "
@@ -134,6 +197,12 @@ server <- function(input, output, session) {
     state_pairs[[current_pair_index()]]
   })
   
+  # Current instruction text
+  output$current_instruction <- renderText({
+    req(user$authenticated)
+    judgment_id <- (current_pair_index() - 1) * 3 + judgment_num()
+    judgment_instructions[[as.character(judgment_id)]]
+  })
   
   # Dynamic slider
   output$ratio_slider_ui <- renderUI({
@@ -166,49 +235,37 @@ server <- function(input, output, session) {
     "The true ratio for this example was 0.65. This is because the 1860 data had a count of 130 and the 1870 data had a count of 200. By taking 130/200, we get .65 making a true ratio of .65"
   })
   
-  # Image display with thorough error checking (hidden from user)
+  # Image display with thorough error checking
   output$display_image <- renderImage({
     req(user$authenticated)
     
     pair <- current_pair()$name
     vis_type <- current_pair()$vis_type
+    category <- current_pair()$category
     
-    # Construct possible filename patterns
-    base_name <- paste0("Mentally_Ill_", pair, "_", vis_type)
-    possible_files <- c(
-      paste0(base_name, ".png"),                   # Exact match
-      paste0(gsub("_", " ", base_name), ".png"),   # With spaces
-      paste0(tolower(base_name), ".png"),          # Lowercase
-      paste0(toupper(base_name), ".png")           # Uppercase
-    )
+    # Construct the filename based on your naming pattern
+    filename <- paste0(category, "_", pair, "_", vis_type, ".png")
+    img_path <- file.path("pair_plots_original_style", filename)
     
-    # Check each possible file
-    img_path <- NULL
-    for (f in possible_files) {
-      test_path <- file.path("pair_plots_original_style", f)
-      if (file.exists(test_path)) {
-        img_path <- test_path
-        break
+    # Check if file exists
+    if (!file.exists(img_path)) {
+      # Try alternative naming patterns if needed
+      alt_filename <- paste0(gsub(" ", "_", category), "_", pair, "_", vis_type, ".png")
+      img_path <- file.path("pair_plots_original_style", alt_filename)
+      
+      if (!file.exists(img_path)) {
+        # Fallback to placeholder if still not found
+        img_path <- file.path("pair_plots_original_style", "placeholder.png")
       }
     }
     
-    if (!is.null(img_path)) {
-      # Return found image
-      list(
-        src = img_path,
-        contentType = "image/png",
-        width = "100%",
-        alt = paste(pair, "visualization")
-      )
-    } else {
-      # Fallback image with error message
-      list(
-        src = "https://via.placeholder.com/600x400/ff0000/ffffff?text=Image+Not+Found",
-        contentType = "image/png",
-        width = "100%",
-        alt = paste("Missing:", base_name, ".png")
-      )
-    }
+    # Return the image
+    list(
+      src = img_path,
+      contentType = "image/png",
+      width = "100%",
+      alt = paste(pair, "visualization")
+    )
   }, deleteFile = FALSE)
   
   # Login handler
@@ -312,6 +369,3 @@ server <- function(input, output, session) {
 
 shinyApp(ui, server)
 ```
-
-
-
