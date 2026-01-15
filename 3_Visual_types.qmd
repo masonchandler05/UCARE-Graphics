@@ -3,357 +3,7 @@ title: "3_Visual_types"
 format: html
 ---
 
-Think about how to transform the images because of larger differences in size between states 
 
-This code creates all of the visuals for the states separated by state and type of visualization 
-```{r}
-library(ggplot2)
-library(dplyr)
-library(readr)
-library(tidyr)
-library(purrr)
-
-# Load in csv fule and make sure everything is ordered correctly and the correct data type 
-visuals_data <- read_csv("Visuals_data_cleaned.csv",
-                         col_types = cols(
-                           State = col_character(),
-                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
-                           `Mentally Ill` = col_double(),
-                           Blind = col_double(),
-                           `Developmentally Disabled` = col_double(),
-                           `Deaf-Mutes` = col_double()
-                         ))
-
-# Pivot longer to get category and count columns to more easily display the data 
-visuals_long <- visuals_data %>%
-  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
-               names_to = "Category",
-               values_to = "Count")
- 
-
-# creates a folder to store the images in 
-output_dir <- "plots_by_state_and_visual_type"
-if (!dir.exists(output_dir)) {
-  dir.create(output_dir)
-}
-
-# Function to generate and save 3 plot types per state
-create_and_save_plots <- function(state_name) {
-  df <- visuals_long %>% filter(State == state_name)
-  
-  # Polar plot
-  p_polar <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
-    geom_col(position = "identity", alpha = 0.5) +
-    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-    # changes the scale to log values 
-    scale_y_log10() +
-    coord_polar(theta = "x") +
-    facet_wrap(~Category, ncol = 2) +
-    theme_void() +
-    ggtitle(paste("Polar Plot -", state_name))
-  
-  ggsave(filename = file.path(output_dir, paste0(state_name, "-polar.png")),
-         plot = p_polar, width = 7, height = 5, dpi = 300)
-  
-  # Overlaid bar plot
-  p_overlaid <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
-    geom_col(position = "identity", alpha = 0.5, color = "black") +
-    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-      # changes the scale to log values 
-    scale_y_log10() +
-    facet_wrap(~Category, ncol = 2) +
-    theme_bw() +
-    theme(axis.ticks.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.title.x = element_blank()) +
-    ggtitle(paste("Overlaid Bar Plot -", state_name))
-  
-  ggsave(filename = file.path(output_dir, paste0(state_name, "-overlaid.png")),
-         plot = p_overlaid, width = 7, height = 5, dpi = 300)
-  
-  # Dodged bar plot
-  p_dodged <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
-    geom_col(position = position_dodge2(), alpha = 0.5, color = "black") +
-    scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-      # changes the scale to log values 
-    scale_y_log10() +
-    facet_wrap(~Category, ncol = 2) +
-    theme_bw() +
-    theme(axis.ticks.x = element_blank(),
-          axis.text.x = element_blank(),
-          axis.title.x = element_blank()) +
-    ggtitle(paste("Dodged Bar Plot -", state_name))
-  
-  ggsave(filename = file.path(output_dir, paste0(state_name, "-dodged.png")),
-         plot = p_dodged, width = 7, height = 5, dpi = 300)
-}
-
-# Loop through all states and generate plots
-unique(visuals_long$State) %>% walk(create_and_save_plots)
-
-```
-
-
-This code separates by the 4 disability types and and 3 visual types
-```{r}
-library(ggplot2)
-library(dplyr)
-library(readr)
-library(tidyr)
-library(purrr)
-library(stringr)
-
-# Load data
-visuals_data_1 <- read_csv("Visuals_data_cleaned.csv",
-                         col_types = cols(
-                           State = col_character(),
-                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
-                           `Mentally Ill` = col_double(),
-                           Blind = col_double(),
-                           `Developmentally Disabled` = col_double(),
-                           `Deaf-Mutes` = col_double()
-                         ))
-
-# Convert to long format
-visuals_long <- visuals_data_1 %>%
-  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
-               names_to = "Category",
-               values_to = "Count") 
-
-create_plot <- function(data, disability, vis_type) {
-  df <- data %>% filter(Category == disability)
-  
-  if (vis_type == "polar") {
-    # Facet by state to get one polar plot per state
-    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
-      geom_col(position = "identity", alpha = 0.5) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-        # changes the scale to log values 
-    #scale_y_log10() +
-      coord_polar(theta = "x") +
-      facet_wrap(~ State, ncol = 6) +
-      theme_void() +
-      labs(title = paste("Polar Plot -", disability))
-    
-  } else {
-    # Base for bar plots: all states on x axis
-    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-     
-        # changes the scale to sqrt values 
-    #scale_y_sqrt() +
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-      labs(title = paste(vis_type, "-", disability),
-           x = "State",
-           y = "Count")
-    
-    if (vis_type == "overlaid") {
-      p <- base_plot +
-        geom_col(position = "identity", alpha = 0.5, color = "black") +
-      
-          # changes the scale to sqrt values 
-    #scale_y_log10() +
-        theme(axis.ticks.x = element_blank(),
-              axis.title.x = element_blank())
-      
-    } else if (vis_type == "dodged") {
-      p <- base_plot +
-        geom_col(position = position_dodge(width = 0.7), alpha = 0.5, color = "black") +
-     
-          # changes the scale to sqrt values 
-  #  scale_y_sqrt() +
-        theme(axis.title.x = element_blank())
-    } else {
-      stop("Unknown visual type")
-    }
-  }
-  
-  return(p)
-}
-
-# Create output folder
-if (!dir.exists("plots_by_disability_and_visual_type")) {
-  dir.create("plots_by_disability_and_visual_type")
-}
-
-disabilities <- c("Mentally Ill", "Blind", "Developmentally Disabled", "Deaf-Mutes")
-visual_types <- c("polar", "overlaid", "dodged")
-
-walk(disabilities, function(dis) {
-  walk(visual_types, function(vis) {
-    file_name <- paste0("plots_by_disability_and_visual_type/", str_replace_all(dis, " ", "_"), "_", vis, ".png")
-    plot_obj <- create_plot(visuals_long, dis, vis)
-    ggsave(file_name, plot = plot_obj, width = 14, height = 7, dpi = 300)
-  })
-})
-
-```
-
-
-
-
-This creates visuals based on groupings made by sd of the data 
-
-```{r}
-library(ggplot2)
-library(dplyr)
-library(readr)
-library(tidyr)
-library(purrr)
-library(stringr)
-
-# Load data
-visuals_data_1 <- read_csv("Visuals_data_cleaned.csv",
-                          col_types = cols(
-                            State = col_character(),
-                            Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
-                            `Mentally Ill` = col_double(),
-                            Blind = col_double(),
-                            `Developmentally Disabled` = col_double(),
-                            `Deaf-Mutes` = col_double()
-                          ))
-
-# Convert to long format
-visuals_long <- visuals_data_1 %>%
-  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
-               names_to = "Category",
-               values_to = "Count") 
-
-# Calculate z-score and assign Group by Category + Year
-grouped_data <- visuals_long %>%
-  group_by(Category, Year) %>%
-  mutate(
-    z_score = (Count - mean(Count, na.rm = TRUE)) / sd(Count, na.rm = TRUE),
-    Group = case_when(
-      z_score < -1.5 ~ "Very Low",
-      z_score >= -1.5 & z_score < -0.5 ~ "Low",
-      z_score >= -0.5 & z_score < 0.5 ~ "Average",
-      z_score >= 0.5 & z_score < 1.5 ~ "High",
-      z_score >= 1.5 ~ "Very High",
-     # TRUE ~ NA_character_
-    )
-  ) %>%
-  ungroup()
-
-# Create wide format to get transition group per state & category
-group_transitions <- grouped_data %>%
-  select(State, Category, Year, Group) %>%
-  pivot_wider(names_from = Year, values_from = Group, names_prefix = "Group_") %>%
-  mutate(Transition = paste0(Group_1860, "-", Group_1870))
-
-# Join transition info back to the long data for plotting
-visuals_with_transitions <- visuals_long %>%
-  left_join(
-    group_transitions %>% select(State, Category, Transition),
-    by = c("State", "Category")
-  )
-
-
-create_plot <- function(data, disability, transition_group, vis_type) {
-  df <- data %>%
-    filter(Category == disability, Transition == transition_group)
-  
-  if(nrow(df) == 0){
-    message(glue::glue("No data for {disability} with transition {transition_group}"))
-    return(NULL)
-  }
-  
-  if (vis_type == "polar") {
-    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
-      geom_col(position = "identity", alpha = 0.5) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-      coord_polar(theta = "x") +
-      facet_wrap(~ State, ncol = 6) +
-      theme_void() +
-      labs(title = paste("Polar Plot -", disability, "\nTransition:", transition_group))
-    
-  } else {
-    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-      theme_bw() +
-      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-      labs(title = paste(vis_type, "-", disability, "\nTransition:", transition_group),
-           x = "State",
-           y = "Count")
-    
-    if (vis_type == "overlaid") {
-      p <- base_plot +
-        geom_col(position = "identity", alpha = 0.5, color = "black") +
-        theme(axis.ticks.x = element_blank(),
-              axis.title.x = element_blank())
-      
-    } else if (vis_type == "dodged") {
-      p <- base_plot +
-        geom_col(position = position_dodge(width = 0.7), alpha = 0.5, color = "black") +
-        theme(axis.title.x = element_blank())
-    } else {
-      stop("Unknown visual type")
-    }
-  }
-  
-  return(p)
-}
-
-# Create output folder
-if (!dir.exists("grouped_vis")) {
-  dir.create("grouped_vis")
-}
-
-disabilities <- unique(visuals_with_transitions$Category)
-transitions <- unique(visuals_with_transitions$Transition)
-visual_types <- c("polar", "overlaid", "dodged")
-
-library(glue)
-
-# Loop over each disability, each transition group, and each visual type
-walk(disabilities, function(dis) {
-  # Filter transitions for this disability (some transitions may not appear for each disability)
-  trans_for_dis <- visuals_with_transitions %>%
-    filter(Category == dis) %>%
-    pull(Transition) %>%
-    unique()
-  
-  walk(trans_for_dis, function(trans_grp) {
-    walk(visual_types, function(vis) {
-      file_name <- glue("grouped_vis/{str_replace_all(dis, ' ', '_')}_{str_replace_all(trans_grp, '-', '_')}_{vis}.png")
-      plot_obj <- create_plot(visuals_with_transitions, dis, trans_grp, vis)
-      
-      if(!is.null(plot_obj)){
-        ggsave(file_name, plot = plot_obj, width = 14, height = 7, dpi = 300)
-      }
-    })
-  })
-})
-
-# Allows you to call these and actually assign visuals based upon this 
-# Summarize each state's transitions across all categories
-state_transition_summary <- group_transitions %>%
-  mutate(Transition = paste0(Group_1860, "-", Group_1870)) %>%
-  select(State, Category, Transition) %>%
-  pivot_wider(names_from = Category, values_from = Transition) %>%
-  arrange(State)
-
-# Preview the result
-head(state_transition_summary)
-
-```
-
-Other ideas: 
-- make a filter for all the states that have negative growth 
-- make a filter for all the states that fall within the JND(a few percent growth)
-
-
-Goal: 
-- find a few state comparisons from states that are similar sizes and see what ranges of true differences there are 
-
-
-
-
-
-ACTUAL CODE BEING USED 
-
-# pairing visuals 
 ```{r}
 library(ggplot2)
 library(dplyr)
@@ -379,160 +29,501 @@ visuals_long <- visuals_data %>%
                names_to = "Category",
                values_to = "Count")
 
-# Define state pairs - original mental illness pairs plus new developmentally disabled pairs
-state_pairs <- list(
-  # Mental illness pairs
-  c("MISSISSIPPI", "LOUISIANA"),
-  c("NORTH CAROLINA", "TENNESSEE"),
-  c("ALABAMA", "GEORGIA"),
-  c("FLORIDA", "DELAWARE"),
-  c("MISSOURI", "OHIO"),
-  # Developmentally disabled pairs
-  c("MAINE", "KENTUCKY")
+# Define the 10 specific states and their ratio calculations
+target_ratios <- list(
+  "MINNESOTA" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "LOUISIANA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "WISCONSIN" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "IOWA" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "SOUTH CAROLINA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "TENNESSEE" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "GEORGIA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "KENTUCKY" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "MAINE" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "MISSOURI" = list(category = "Mentally Ill", ratio_type = "1860_to_1870")
 )
 
-# Verify all states exist in data
-all_states <- unique(visuals_long$State)
-walk(state_pairs, function(pair) {
-  if (!all(pair %in% all_states)) {
-    missing <- setdiff(pair, all_states)
-    stop(paste("States not found in data:", paste(missing, collapse = ", ")))
-  }
-})
+# Calculate individual state ratios (smaller/bigger for each state)
+calculate_ratios <- function(data, target_states) {
+  ratios_df <- data.frame(
+    State = character(),
+    Category = character(),
+    Ratio_1860_to_1870 = numeric(),
+    Count_1860 = numeric(),
+    Count_1870 = numeric(),
+    stringsAsFactors = FALSE
+  )
 
-# EXACT recreation of your original plotting function style
-create_pair_plot <- function(data, disability, vis_type, states) {
-  df <- data %>% 
-    filter(Category == disability, State %in% states) %>%
-    mutate(State = factor(State, levels = states))  # Preserve order
-  
-  if (nrow(df) == 0) {
-    stop(paste("No data found for:", paste(states, collapse = " vs ")))
+  for (state in names(target_states)) {
+    category <- target_states[[state]]$category
+
+    state_data <- data %>%
+      filter(State == state, Category == category) %>%
+      select(State, Year, Category, Count) %>%
+      pivot_wider(names_from = Year, values_from = Count)
+
+    if (nrow(state_data) > 0) {
+      count_1860 <- state_data$`1860`
+      count_1870 <- state_data$`1870`
+      
+      # Calculate ratio as smaller/bigger to ensure it's always < 1
+      if (count_1860 <= count_1870) {
+        ratio <- count_1860 / count_1870
+      } else {
+        ratio <- count_1870 / count_1860
+      }
+
+      ratios_df <- rbind(ratios_df, data.frame(
+        State = state,
+        Category = category,
+        Ratio_1860_to_1870 = ratio,
+        Count_1860 = count_1860,
+        Count_1870 = count_1870,
+        stringsAsFactors = FALSE
+      ))
+    }
   }
+
+  return(ratios_df)
+}
+
+# Calculate ratios for our target states
+state_ratios <- calculate_ratios(visuals_long, target_ratios)
+print("Calculated Ratios (all should be <= 1):")
+print(state_ratios)
+
+# FIXED: Define the 5 specific pairs as requested using c() instead of list()
+specific_pairs <- list(
+  c("TENNESSEE", "MAINE"),
+  c("SOUTH CAROLINA", "GEORGIA"),
+  c("WISCONSIN", "IOWA"),
+  c("KENTUCKY", "MISSOURI"),
+  c("MINNESOTA", "LOUISIANA")
+)
+
+cat("\nTotal number of specific pairs:", length(specific_pairs), "\n")
+
+# Enhanced plotting function with anonymous labeling
+create_anonymous_pair_plot <- function(data, vis_type, states, pair_number, ratios_data) {
+  # Get the categories for each state
+  state1_category <- target_ratios[[states[1]]]$category
+  state2_category <- target_ratios[[states[2]]]$category
+
+  # Filter data for both states and their respective categories
+  df1 <- data %>% 
+    filter(Category == state1_category, State == states[1])
+
+  df2 <- data %>% 
+    filter(Category == state2_category, State == states[2])
+
+  # Create anonymous labels: State A and State B (no category info)
+  df1$Anonymous_State <- "State A"
+  df2$Anonymous_State <- "State B"
   
+  # Combine the data
+  df <- rbind(df1, df2) %>%
+    mutate(Anonymous_State = factor(Anonymous_State, levels = c("State A", "State B")))
+
+  if (nrow(df) == 0) {
+    stop(paste("No data found for pair:", paste(states, collapse = " vs ")))
+  }
+
   if (vis_type == "polar") {
     p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
       geom_col(position = "identity", alpha = 0.5) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      scale_fill_manual(values = c("1860" = "orange", "1870" = "blue")) +
       coord_polar(theta = "x") +
-      facet_wrap(~ State, ncol = 2) +
+      facet_wrap(~ Anonymous_State, ncol = 2) +
       theme_void() +
-      labs(title = paste("Polar Plot -", disability))
-    
+      theme(strip.text = element_text(size = 16, face = "bold"))
+
   } else {
-    # EXACT original bar plot styling
-    base_plot <- ggplot(df, aes(x = State, y = Count, fill = Year)) +
-      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
-      theme_bw() +  # Original used theme_bw()
-      theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
-      labs(title = paste(vis_type, "-", disability),
-           x = "State",
-           y = "Count")
-    
+    base_plot <- ggplot(df, aes(x = Anonymous_State, y = Count, fill = Year)) +
+      scale_fill_manual(values = c("1860" = "orange", "1870" = "blue")) +
+      theme_bw() +
+      theme(axis.text.x = element_text(size = 16, face = "bold")) +
+      labs(x = "", y = "Count")
+
     if (vis_type == "overlaid") {
       p <- base_plot +
-        geom_col(position = "identity", alpha = 0.5, color = "black") +
-        theme(axis.ticks.x = element_blank(),
-              axis.title.x = element_blank())
-      
+        # to change how overlapped they are change the position_dodge(width = x), as x approaches 0, it gets more overlaid 
+         geom_col(position = position_dodge(width = .04), width = 0.7, alpha = 0.5, color = "black")
+
     } else if (vis_type == "dodged") {
       p <- base_plot +
-        # width changes how overlaid they are. 1 is not overlaid and the closer to 0 the more overlaid
-        geom_col(position = position_dodge(width = .8), width = 0.7, alpha = 0.5, color = "black") +
-        theme(axis.title.x = element_blank())
+        geom_col(position = position_dodge(width = .8), width = 0.7, alpha = 0.5, color = "black")
     } else {
       stop("Unknown visual type")
     }
   }
-  
+
   return(p)
 }
 
 # Create output folder
-if (!dir.exists("pair_plots_original_style")) {
-  dir.create("pair_plots_original_style")
+if (!dir.exists("specific_pairs_anonymous")) {
+  dir.create("specific_pairs_anonymous")
 }
 
 # Define visualization types
 visual_types <- c("polar", "overlaid", "dodged")
 
-# Generate all plots for each pair
-walk(state_pairs[1:5], function(pair) {  # Original mental illness pairs
-  walk(visual_types, function(vis) {
-    tryCatch({
-      file_name <- paste0("pair_plots_original_style/Mentally_Ill_", 
-                         paste(pair, collapse = "_"), "_", 
-                         vis, ".png")
-      plot_obj <- create_pair_plot(visuals_long, "Mentally Ill", vis, pair)
-      ggsave(file_name, plot = plot_obj, width = 6, height = 4, dpi = 300)
-    }, error = function(e) {
-      message(paste("Error creating plot for", paste(pair, collapse = " vs "), ":", e$message))
-    })
-  })
-})
+# Generate plots for the 5 specific pairs only
+cat("\nGenerating plots for", length(specific_pairs), "specific pairs...\n")
 
-# Generate developmentally disabled plots for Maine and Kentucky
-walk(state_pairs[6], function(pair) {  # Maine vs Kentucky
-  walk(visual_types, function(vis) {
-    tryCatch({
-      file_name <- paste0("pair_plots_original_style/Developmentally_Disabled_", 
-                         paste(pair, collapse = "_"), "_", 
-                         vis, ".png")
-      plot_obj <- create_pair_plot(visuals_long, "Developmentally Disabled", vis, pair)
-      ggsave(file_name, plot = plot_obj, width = 6, height = 4, dpi = 300)
-    }, error = function(e) {
-      message(paste("Error creating plot for", paste(pair, collapse = " vs "), ":", e$message))
-    })
-  })
-})
+for (i in seq_along(specific_pairs)) {
+  pair <- specific_pairs[[i]]
+  cat("Processing pair", i, ":", paste(pair, collapse = " vs "), "\n")
 
-message("Plot generation complete. Check 'pair_plots_original_style' folder.")
+  for (vis in visual_types) {
+    tryCatch({
+      # Create safe filename with pair number only (no state names)
+      file_name <- paste0("specific_pairs_anonymous/Pair_", i, "_", vis, ".png")
+
+      plot_obj <- create_anonymous_pair_plot(visuals_long, vis, pair, i, state_ratios)
+      ggsave(file_name, plot = plot_obj, width = 10, height = 6, dpi = 300)
+
+    }, error = function(e) {
+      cat("Error creating", vis, "plot for pair", i, ":", e$message, "\n")
+    })
+  }
+}
+
+# Create a mapping file (for your reference only - don't share with viewers)
+pair_mapping <- data.frame(
+  Pair_Number = 1:length(specific_pairs),
+  State_A = sapply(specific_pairs, `[`, 1),
+  State_B = sapply(specific_pairs, `[`, 2),
+  State_A_Category = sapply(specific_pairs, function(x) target_ratios[[x[1]]]$category),
+  State_B_Category = sapply(specific_pairs, function(x) target_ratios[[x[2]]]$category)
+)
+
+write.csv(pair_mapping, "specific_pairs_anonymous/pair_mapping_CONFIDENTIAL.csv", row.names = FALSE)
+
+# Create summary with anonymous data (safe to share)
+anonymous_summary <- data.frame(
+  Pair_Number = 1:length(specific_pairs),
+  State_A_Category = sapply(specific_pairs, function(x) target_ratios[[x[1]]]$category),
+  State_B_Category = sapply(specific_pairs, function(x) target_ratios[[x[2]]]$category)
+)
+
+write.csv(anonymous_summary, "specific_pairs_anonymous/anonymous_summary.csv", row.names = FALSE)
+
+cat("\nPlot generation complete!\n")
+cat("- Check 'specific_pairs_anonymous' folder for", length(specific_pairs) * length(visual_types), "plots\n")
+cat("- Confidential mapping (for your eyes only): pair_mapping_CONFIDENTIAL.csv\n")
+cat("- Anonymous summary (safe to share): anonymous_summary.csv\n")
+
+print("\nPair mapping (CONFIDENTIAL - for your reference only):")
+print(pair_mapping)
+
+print("\nAnonymous summary (safe to share with viewers):")
+print(anonymous_summary)
+
+
 ```
 
 
-# creating the example plot 
+
 ```{r}
 library(ggplot2)
+library(dplyr)
+library(readr)
+library(tidyr)
+library(purrr)
+library(stringr)
 
-# Create the data
-plot_data <- data.frame(
-  Year = factor(c("1860", "1870")),
-  Count = c(130, 200),
-  State = "State 1"
+# Load data
+visuals_data <- read_csv("Visuals_data_cleaned.csv",
+                         col_types = cols(
+                           State = col_character(),
+                           Year = col_factor(levels = c("1860", "1870"), ordered = TRUE),
+                           `Mentally Ill` = col_double(),
+                           Blind = col_double(),
+                           `Developmentally Disabled` = col_double(),
+                           `Deaf-Mutes` = col_double()
+                         ))
+
+# Convert to long format
+visuals_long <- visuals_data %>%
+  pivot_longer(cols = c(`Mentally Ill`, Blind, `Developmentally Disabled`, `Deaf-Mutes`),
+               names_to = "Category",
+               values_to = "Count")
+
+# Define the 10 specific states and their ratio calculations
+target_ratios <- list(
+  "MINNESOTA" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "LOUISIANA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "WISCONSIN" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "IOWA" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "SOUTH CAROLINA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "TENNESSEE" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "GEORGIA" = list(category = "Mentally Ill", ratio_type = "1860_to_1870"),
+  "KENTUCKY" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "MAINE" = list(category = "Developmentally Disabled", ratio_type = "1860_to_1870"),
+  "MISSOURI" = list(category = "Mentally Ill", ratio_type = "1860_to_1870")
 )
 
-# Create the dodged bar plot with your exact color scheme
-dodged_plot <- ggplot(plot_data, aes(x = State, y = Count, fill = Year)) +
-  geom_col(
-    position = position_dodge(width = 0.8), 
-    width = 0.7,
-    color = "black",        # Black outlines
-    alpha = 0.5            # Slight transparency
-  ) +
-  scale_fill_manual(
-    values = c(
-      "1860" = "grey90",   # Light gray for 1860
-      "1870" = "black"     # Black for 1870
-    )
-  ) +
-  theme_bw() +
-  theme(
-    axis.text.x = element_text(angle = 0, hjust = 0.5),
-    plot.title = element_text(hjust = 0.5),
-    legend.position = "top"
-  ) +
-  labs(
-    title = "Example Bar Chart",
-    x = "",
-    y = "Count",
-    fill = "Year"
-  ) +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
+# Calculate individual state ratios (smaller/bigger for each state)
+calculate_ratios <- function(data, target_states) {
+  ratios_df <- data.frame(
+    State = character(),
+    Category = character(),
+    Ratio_1860_to_1870 = numeric(),
+    Count_1860 = numeric(),
+    Count_1870 = numeric(),
+    stringsAsFactors = FALSE
+  )
 
-# Print the plot
-print(dodged_plot)
+  for (state in names(target_states)) {
+    category <- target_states[[state]]$category
 
-# Save the plot (optional)
-ggsave("pair_plots_original_style/dodged_example.png", plot = dodged_plot, width = 6, height = 3, dpi = 300)
+    state_data <- data %>%
+      filter(State == state, Category == category) %>%
+      select(State, Year, Category, Count) %>%
+      pivot_wider(names_from = Year, values_from = Count)
+
+    if (nrow(state_data) > 0) {
+      count_1860 <- state_data$`1860`
+      count_1870 <- state_data$`1870`
+      
+      # Calculate ratio as smaller/bigger to ensure it's always < 1
+      if (count_1860 <= count_1870) {
+        ratio <- count_1860 / count_1870
+      } else {
+        ratio <- count_1870 / count_1860
+      }
+
+      ratios_df <- rbind(ratios_df, data.frame(
+        State = state,
+        Category = category,
+        Ratio_1860_to_1870 = ratio,
+        Count_1860 = count_1860,
+        Count_1870 = count_1870,
+        stringsAsFactors = FALSE
+      ))
+    }
+  }
+
+  return(ratios_df)
+}
+
+# Calculate ratios for our target states
+state_ratios <- calculate_ratios(visuals_long, target_ratios)
+print("Calculated Ratios (all should be <= 1):")
+print(state_ratios)
+
+# Generate ALL possible pairs from the 8 states
+target_state_names <- names(target_ratios)
+all_possible_pairs <- combn(target_state_names, 2, simplify = FALSE)
+
+cat("\nTotal number of possible pairs:", length(all_possible_pairs), "\n")
+
+# Enhanced plotting function that can handle mixed categories
+create_enhanced_pair_plot <- function(data, vis_type, states, ratios_data) {
+  # Get the categories for each state
+  state1_category <- target_ratios[[states[1]]]$category
+  state2_category <- target_ratios[[states[2]]]$category
+
+  # Filter data for both states and their respective categories
+  df1 <- data %>% 
+    filter(Category == state1_category, State == states[1])
+
+  df2 <- data %>% 
+    filter(Category == state2_category, State == states[2])
+
+  # Combine the data
+  df <- rbind(df1, df2) %>%
+    mutate(State = factor(State, levels = states))  # Preserve order
+
+  if (nrow(df) == 0) {
+    stop(paste("No data found for:", paste(states, collapse = " vs ")))
+  }
+
+  # Create title WITHOUT ratio information (as requested)
+  title_text <- paste0(vis_type, " - ", states[1], " (", state1_category, 
+                       ") vs ", states[2], " (", state2_category, ")")
+
+  if (vis_type == "polar") {
+    p <- ggplot(df, aes(x = 1, y = Count, fill = Year)) +
+      geom_col(position = "identity", alpha = 0.5) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      coord_polar(theta = "x") +
+      facet_wrap(~ paste(State, Category, sep = "\n"), ncol = 2) +
+      theme_void() +
+      labs(title = title_text)
+
+  } else {
+    # Create combined state-category labels for x-axis
+    df$State_Category <- paste(df$State, df$Category, sep = "\n")
+
+    base_plot <- ggplot(df, aes(x = State_Category, y = Count, fill = Year)) +
+      scale_fill_manual(values = c("1860" = "grey90", "1870" = "black")) +
+      theme_bw() +
+      theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8)) +
+      labs(title = title_text,
+           x = "State / Category",
+           y = "Count")
+
+    if (vis_type == "overlaid") {
+      p <- base_plot +
+        geom_col(position = "identity", alpha = 0.5, color = "black")
+
+    } else if (vis_type == "dodged") {
+      p <- base_plot +
+        geom_col(position = position_dodge(width = .8), width = 0.7, alpha = 0.5, color = "black")
+    } else {
+      stop("Unknown visual type")
+    }
+  }
+
+  return(p)
+}
+
+# Create output folder
+if (!dir.exists("all_pairs_ratios")) {
+  dir.create("all_pairs_ratios")
+}
+
+# Define visualization types
+visual_types <- c("polar", "overlaid", "dodged")
+
+# Generate all plots for every possible pair
+cat("\nGenerating plots for all", length(all_possible_pairs), "possible pairs...\n")
+
+for (i in seq_along(all_possible_pairs)) {
+  pair <- all_possible_pairs[[i]]
+  cat("Processing pair", i, ":", paste(pair, collapse = " vs "), "\n")
+
+  for (vis in visual_types) {
+    tryCatch({
+      # Create safe filename
+      file_name <- paste0("all_pairs_ratios/Pair_", i, "_", 
+                         paste(pair, collapse = "_"), "_", 
+                         vis, ".png")
+
+      plot_obj <- create_enhanced_pair_plot(visuals_long, vis, pair, state_ratios)
+      ggsave(file_name, plot = plot_obj, width = 10, height = 6, dpi = 300)
+
+    }, error = function(e) {
+      cat("Error creating", vis, "plot for", paste(pair, collapse = " vs "), ":", e$message, "\n")
+    })
+  }
+}
+
+# Create a summary table of all ratios
+write.csv(state_ratios, "all_pairs_ratios/state_ratios_summary.csv", row.names = FALSE)
+
+# FULLY CORRECTED: Create pairs_summary with all calculations based on raw 1870 counts
+pairs_summary <- data.frame(
+  Pair_Number = 1:length(all_possible_pairs),
+  State1 = sapply(all_possible_pairs, `[`, 1),
+  State2 = sapply(all_possible_pairs, `[`, 2),
+  State1_Category = sapply(all_possible_pairs, function(x) target_ratios[[x[1]]]$category),
+  State2_Category = sapply(all_possible_pairs, function(x) target_ratios[[x[2]]]$category),
+  State1_Ratio = sapply(all_possible_pairs, function(x) {
+    state_ratios[state_ratios$State == x[1], "Ratio_1860_to_1870"]
+  }),
+  State2_Ratio = sapply(all_possible_pairs, function(x) {
+    state_ratios[state_ratios$State == x[2], "Ratio_1860_to_1870"]
+  })
+)
+
+# Add the 1870 count values for each state in each pair
+pairs_summary$State1_Count_1870 <- sapply(all_possible_pairs, function(x) {
+  state_ratios[state_ratios$State == x[1], "Count_1870"]
+})
+
+pairs_summary$State2_Count_1870 <- sapply(all_possible_pairs, function(x) {
+  state_ratios[state_ratios$State == x[2], "Count_1870"]
+})
+
+# Calculate smaller to bigger ratio using 1870 raw count values
+pairs_summary$Smaller_to_Bigger_Ratio <- apply(pairs_summary, 1, function(row) {
+  count1_1870 <- as.numeric(row["State1_Count_1870"])
+  count2_1870 <- as.numeric(row["State2_Count_1870"])
+  
+  # Take smaller 1870 count divided by bigger 1870 count
+  smaller_count <- min(count1_1870, count2_1870)
+  bigger_count <- max(count1_1870, count2_1870)
+  
+  # Avoid division by zero
+  if (bigger_count == 0) {
+    return(0)
+  }
+  
+  result <- smaller_count / bigger_count
+  return(result)
+})
+
+# CORRECTED: Determine which state has smaller/bigger 1870 count (not ratio)
+pairs_summary$Smaller_Ratio_State <- apply(pairs_summary, 1, function(row) {
+  count1_1870 <- as.numeric(row["State1_Count_1870"])
+  count2_1870 <- as.numeric(row["State2_Count_1870"])
+  if (count1_1870 <= count2_1870) {
+    return(row["State1"])
+  } else {
+    return(row["State2"])
+  }
+})
+
+pairs_summary$Bigger_Ratio_State <- apply(pairs_summary, 1, function(row) {
+  count1_1870 <- as.numeric(row["State1_Count_1870"])
+  count2_1870 <- as.numeric(row["State2_Count_1870"])
+  if (count1_1870 >= count2_1870) {
+    return(row["State1"])
+  } else {
+    return(row["State2"])
+  }
+})
+
+# Verification
+cat("\nVerifying pairs_summary calculations:\n")
+cat("State1_Ratio range:", min(pairs_summary$State1_Ratio), "to", max(pairs_summary$State1_Ratio), "\n")
+cat("State2_Ratio range:", min(pairs_summary$State2_Ratio), "to", max(pairs_summary$State2_Ratio), "\n")
+cat("State1_Count_1870 range:", min(pairs_summary$State1_Count_1870), "to", max(pairs_summary$State1_Count_1870), "\n")
+cat("State2_Count_1870 range:", min(pairs_summary$State2_Count_1870), "to", max(pairs_summary$State2_Count_1870), "\n")
+cat("Smaller_to_Bigger_Ratio range:", min(pairs_summary$Smaller_to_Bigger_Ratio), "to", max(pairs_summary$Smaller_to_Bigger_Ratio), "\n")
+
+# Check that everything is consistent
+cat("\nConsistency check - verifying smaller/bigger assignments match ratio calculations:\n")
+for (i in 1:min(5, nrow(pairs_summary))) {  # Check first 5 rows as examples
+  row <- pairs_summary[i, ]
+  count1 <- row$State1_Count_1870
+  count2 <- row$State2_Count_1870
+  smaller_state <- row$Smaller_Ratio_State
+  bigger_state <- row$Bigger_Ratio_State
+  calculated_ratio <- row$Smaller_to_Bigger_Ratio
+  expected_ratio <- min(count1, count2) / max(count1, count2)
+  
+  cat("Pair", i, ":", row$State1, "(", count1, ") vs", row$State2, "(", count2, ")\n")
+  cat("  Smaller state:", smaller_state, ", Bigger state:", bigger_state, "\n")
+  cat("  Calculated ratio:", round(calculated_ratio, 4), ", Expected:", round(expected_ratio, 4), "\n")
+  if (abs(calculated_ratio - expected_ratio) > 0.0001) {
+    cat("  WARNING: Mismatch!\n")
+  } else {
+    cat("  OK: Match!\n")
+  }
+}
+
+if (max(pairs_summary$Smaller_to_Bigger_Ratio) <= 1) {
+  cat("SUCCESS: All Smaller_to_Bigger_Ratio values are <= 1\n")
+} else {
+  cat("WARNING: Some Smaller_to_Bigger_Ratio values are > 1\n")
+}
+
+write.csv(pairs_summary, "all_pairs_ratios/pairs_summary.csv", row.names = FALSE)
+
+cat("\nPlot generation complete!\n")
+cat("- Check 'all_pairs_ratios' folder for all", length(all_possible_pairs) * length(visual_types), "plots\n")
+cat("- Ratios summary: state_ratios_summary.csv\n")
+cat("- Pairs summary: pairs_summary.csv (All ratios based on 1870 raw counts)\n")
+
+# Print the pairs summary
+print("\nAll possible pairs with corrected calculations (all based on 1870 raw counts):")
+print(pairs_summary[, c("Pair_Number", "State1", "State2", "State1_Count_1870", "State2_Count_1870", "Smaller_to_Bigger_Ratio", "Smaller_Ratio_State", "Bigger_Ratio_State")])
+
+pairs_summary <- as.data.frame(pairs_summary)
+
 ```
 
