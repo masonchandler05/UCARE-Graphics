@@ -4,6 +4,7 @@ library(DBI)
 library(RSQLite)
 library(dplyr)
 library(edibble)
+library(digest)
 
 # Load pairs_summary data
 load_pairs_summary <- function() {
@@ -39,13 +40,13 @@ create_experimental_design <- function() {
   exp_design <- design("Visualization Ratio Assessment") %>%
     # Define units: participant and image presentations
     set_units(participant = 1,
-             image_presentation = 9) %>%
+              image_presentation = 9) %>%
     # Define treatment structure
     set_trts(pair = 5,                    # 5 possible pairs
-            vis_type = 3) %>%              # 3 visualization types
+             vis_type = 3) %>%              # 3 visualization types
     # Allot treatments: randomly select 3 pairs, cross with all vis types
     allot_trts(pair ~ image_presentation,
-              vis_type ~ image_presentation)
+               vis_type ~ image_presentation)
   
   return(exp_design)
 }
@@ -232,6 +233,13 @@ generate_judgments_for_images <- function(selected_images, pairs_summary) {
 ui <- fluidPage(
   useShinyjs(),
   tags$head(
+    tags$script(async = NA, src = "https://www.googletagmanager.com/gtag/js?id=G-0TDS6M2K4E"),
+    tags$script(HTML("
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-0TDS6M2K4E');
+    ")),
     tags$style(HTML("
       .instruction-box {
         background-color: #f8f9fa;
@@ -241,6 +249,8 @@ ui <- fluidPage(
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
       .example-instruction-box {
         background-color: #e8f5e8;
@@ -250,6 +260,54 @@ ui <- fluidPage(
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+      .completion-box {
+        background-color: #d4edda;
+        border: 2px solid #28a745;
+        padding: 30px;
+        margin: 50px auto;
+        border-radius: 10px;
+        text-align: center;
+        max-width: 600px;
+      }
+      .order-switch-warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #856404;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        font-weight: normal;
+      }
+      .order-standard {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        font-weight: normal;
+      }
+      .proportion-note {
+        background-color: #e2e3e5;
+        border-left: 5px solid #6c757d;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+      .slider-label {
+        margin-top: 15px;
+        font-weight: normal;
+        font-size: 14px;
+        color: #495057;
+      }
+      @media (max-width: 768px) {
+        h2 { font-size: 24px; }
+        h3 { font-size: 20px; }
+        p, li, .instruction-box, .example-instruction-box { font-size: 14px; }
       }
     "))
   ),
@@ -257,8 +315,8 @@ ui <- fluidPage(
     id = "login_page",
     style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
     wellPanel(
-      h2("Enter Your Name", class = "text-center"),
-      textInput("user_name", "Your Name:", placeholder = "First Last"),
+      h2("Start Assessment", class = "text-center"),
+      br(),
       actionButton("login_btn", "Start Assessment", class = "btn-primary btn-block")
     )
   ),
@@ -268,33 +326,57 @@ ui <- fluidPage(
       style = "width: 800px; max-width: 100%; margin: 0 auto; padding-top: 20px;",
       wellPanel(
         h2("Experiment Instructions", class = "text-center"),
+        
+        # Moved proportion note to main intro screen
+        div(
+          class = "proportion-note",
+          icon("info-circle"),
+          strong("Important: "),
+          "All ratios are proportions between 0 and 1. All judgments will use this scale."
+        ),
+        br(),
+        
         h3("Understanding Ratio Judgments"),
         p("In this experiment, you'll analyze", strong("9 visualizations"), 
           "showing anonymous disability data between pairs of states from 1860-1870."),
         p("For each visualization, you'll make", strong("3 different judgment tasks"), 
           "for a total of", strong("27 assessments.")),
-        h4("Session Structure:"),
+        
+        h4("Important Notes:"),
         tags$ul(
-          tags$li("9 visualizations showing different types of charts"),
-          tags$li("3 judgments per visualization = 27 total judgments")
+          tags$li(strong("Order Matters:"), "Some judgments use 1860→1870 ratios, while others use 1870→1860 ratios. A colored notice will appear when the order switches."),
+          tags$li(strong("All proportions are between 0 and 1"), "so use the slider accordingly."),
+          tags$li("You will see", strong("9 visualizations"), "with", strong("3 tasks each"), "for a total of 27 judgments.")
         ),
+        
         h3("Practice Example"),
         p("For the chart below, please follow this instruction:"),
         div(
           class = "example-instruction-box",
-          "Find the ratio of people in State A from 1860 to 1870"
+          "Find the ratio of people in State A from 1860 to 1870. Use Slider to estimate."
         ),
         imageOutput("example_chart", height = "400px"),
-        p("Use the slider below to estimate the ratio requested:"),
-        sliderInput("example_ratio", "Example Ratio:", 
-                   min = 0, max = 1, value = 0.5, step = 0.01),
+        
+        
+        div(
+          class = "example-instruction-box",
+          style = "margin-bottom: 5px; padding: 10px;",
+          
+        ),
+        sliderInput("example_ratio", NULL, 
+                    min = 0, max = 1, value = 0.5, step = 0.01),
+        p(style = "font-size: 12px; color: #6c757d; margin-top: -5px; margin-bottom: 15px;", 
+          "Values must be between 0 and 1"),
+        
         actionButton("submit_example", "Submit Example", class = "btn-primary"),
+        br(), br(),
         
         hidden(
           div(
             id = "feedback_section",
             h3("Feedback"),
             textOutput("true_ratio_feedback"),
+            br(),
             actionButton("proceed_btn", "Proceed to Experiment", class = "btn-success")
           )
         )
@@ -312,10 +394,9 @@ ui <- fluidPage(
             class = "instruction-box",
             textOutput("current_instruction")
           ),
+          uiOutput("order_switch_indicator"),
           uiOutput("ratio_slider_ui"),
           actionButton("save_btn", "Save Assessment", class = "btn-primary"),
-          br(), br(),
-          actionButton("logout_btn", "Sign Out", class = "btn-warning"),
           br(), br(),
           h4("Progress"),
           textOutput("progress_text"),
@@ -326,11 +407,27 @@ ui <- fluidPage(
         )
       )
     )
+  ),
+  hidden(
+    div(
+      id = "completion_page",
+      style = "width: 600px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
+      div(
+        class = "completion-box",
+        h2("Assessment Complete!", style = "color: #28a745;"),
+        h3("Thank you for your participation"),
+        p("You have successfully completed all 27 judgment tasks."),
+        br(),
+        p(strong("You may now close this browser window.")),
+        br()
+      )
+    )
   )
 )
 
 server <- function(input, output, session) {
-  con <- dbConnect(RSQLite::SQLite(), "graphics_group_testing.db")
+  # Changed database name
+  con <- dbConnect(RSQLite::SQLite(), "visualization_study_final.db")
   
   pairs_summary <- load_pairs_summary()
   cat("Loaded pairs_summary with", nrow(pairs_summary), "pairs\n")
@@ -351,11 +448,11 @@ server <- function(input, output, session) {
     )
   }, deleteFile = FALSE)
   
-  # Create database tables
+  # Create database tables with error handling for existing tables
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      user_name TEXT UNIQUE,
+      hashed_user_id TEXT UNIQUE,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   ")
@@ -369,6 +466,14 @@ server <- function(input, output, session) {
       FOREIGN KEY(user_id) REFERENCES users(user_id)
     )
   ")
+  
+  # Add completed column if it doesn't exist
+  tryCatch({
+    dbExecute(con, "ALTER TABLE sessions ADD COLUMN completed BOOLEAN DEFAULT FALSE")
+    cat("Added 'completed' column to sessions table\n")
+  }, error = function(e) {
+    cat("'completed' column already exists or couldn't be added:", e$message, "\n")
+  })
   
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS selected_images (
@@ -405,7 +510,7 @@ server <- function(input, output, session) {
   ")
   
   # Reactive values
-  user <- reactiveValues(id = NULL, name = NULL, authenticated = FALSE, session_id = NULL)
+  user <- reactiveValues(id = NULL, hashed_id = NULL, authenticated = FALSE, session_id = NULL)
   selected_images <- reactiveVal(NULL)
   all_judgments <- reactiveVal(NULL)
   current_judgment_index <- reactiveVal(1)
@@ -425,16 +530,45 @@ server <- function(input, output, session) {
     current_judgment()$instruction_text
   })
   
+  output$order_switch_indicator <- renderUI({
+    req(current_judgment())
+    
+    # Detect if instruction involves 1870→1860 vs 1860→1870
+    instruction <- current_judgment()$instruction_text
+    
+    if (grepl("1870 to 1860", instruction)) {
+      div(
+        class = "order-switch-warning",
+        icon("exchange-alt"),
+        strong("Order Notice: "),
+        "This judgment uses 1870 → 1860 ratio (different direction than standard!)"
+      )
+    } else if (grepl("1860 to 1870", instruction)) {
+      div(
+        class = "order-standard",
+        icon("arrow-right"),
+        strong("Standard order: "),
+        "1860 → 1870 ratio"
+      )
+    } else {
+      NULL
+    }
+  })
+  
   output$ratio_slider_ui <- renderUI({
     req(user$authenticated, current_judgment())
-    sliderInput("ratio_slider", 
-               label = "Ratio Assessment",
-               min = 0, max = 1, value = 0.5, step = 0.01)
+    tagList(
+      div(class = "slider-label", "Use the slider below to estimate the ratio requested:"),
+      sliderInput("ratio_slider", NULL,
+                  min = 0, max = 1, value = 0.5, step = 0.01),
+      p(style = "font-size: 12px; color: #6c757d; margin-top: -10px; margin-bottom: 15px;", 
+        "Values must be between 0 and 1")
+    )
   })
   
   output$welcome_message <- renderText({
     req(user$authenticated)
-    paste("Welcome,", user$name)
+    paste("Welcome!")
   })
   
   output$progress_text <- renderText({
@@ -449,7 +583,19 @@ server <- function(input, output, session) {
   })
   
   output$true_ratio_feedback <- renderText({
-    "Thank you for submitting an example judgement. You'll now see 27 different judgment tasks."
+    req(input$example_ratio)
+    # Calculate true value for the example
+    true_example_value <- calculate_true_value(
+      "Find the ratio of people in State A from 1860 to 1870",
+      list(pair_number = 1, judgment_within_image = 1),
+      pairs_summary
+    )
+    difference <- abs(input$example_ratio - true_example_value)
+    
+    # Just show the three numbers without accuracy statement
+    paste0("Your estimate: ", round(input$example_ratio, 2), 
+           " | True value: ", round(true_example_value, 2),
+           " | Difference: ", round(difference, 2))
   })
   
   output$display_image <- renderImage({
@@ -470,26 +616,47 @@ server <- function(input, output, session) {
     )
   }, deleteFile = FALSE)
   
-  # Login handler
+  # Login handler - SIMPLIFIED: just generate unique ID
   observeEvent(input$login_btn, {
-    req(input$user_name)
+    # Generate unique hashed ID based on timestamp and random number
+    unique_id <- digest::digest(paste(Sys.time(), runif(1)), algo = "md5")
+    user$hashed_id <- unique_id
     
-    user_name <- trimws(input$user_name)
+    # Check if this user has already completed the assessment
+    user_completed <- FALSE
+    tryCatch({
+      completed_user <- dbGetQuery(con, "
+        SELECT u.user_id 
+        FROM users u 
+        JOIN sessions s ON u.user_id = s.user_id 
+        WHERE u.hashed_user_id = ? AND s.completed = 1
+        LIMIT 1
+      ", params = list(unique_id))
+      
+      if (nrow(completed_user) > 0) {
+        user_completed <- TRUE
+      }
+    }, error = function(e) {
+      cat("Error checking completion status:", e$message, "\n")
+      user_completed <- FALSE
+    })
     
-    if (user_name == "") {
-      showNotification("Please enter your name", type = "error")
+    if (user_completed) {
+      showNotification("You have already completed this assessment. Thank you for your participation!", 
+                       type = "message", duration = 10)
+      shinyjs::hide("login_page")
+      shinyjs::show("completion_page")
       return()
     }
     
-    user$name <- user_name
-    
+    # Store the hashed ID
     existing_user <- dbGetQuery(con, 
-                              "SELECT user_id FROM users WHERE user_name = ?",
-                              params = list(user_name))
+                                "SELECT user_id FROM users WHERE hashed_user_id = ?",
+                                params = list(unique_id))
     
     if (nrow(existing_user) == 0) {
-      dbExecute(con, "INSERT INTO users (user_name) VALUES (?)", 
-               params = list(user_name))
+      dbExecute(con, "INSERT INTO users (hashed_user_id) VALUES (?)", 
+                params = list(unique_id))
       user_id <- dbGetQuery(con, "SELECT last_insert_rowid() as id")$id
     } else {
       user_id <- existing_user$user_id[1]
@@ -505,11 +672,12 @@ server <- function(input, output, session) {
     selected_pairs_text <- paste(selected_pair_numbers, collapse = ",")
     
     dbExecute(con, "INSERT INTO sessions (user_id, selected_pair_numbers) VALUES (?, ?)", 
-             params = list(user_id, selected_pairs_text))
+              params = list(user_id, selected_pairs_text))
     session_id <- dbGetQuery(con, "SELECT last_insert_rowid() as id")$id
     user$session_id <- session_id
     
-    cat("Session", session_id, "- Selected pairs:", selected_pairs_text, "\n")
+    cat("Session", session_id, "- User ID:", user_id, "- Hashed ID:", unique_id, "\n")
+    cat("Selected pairs:", selected_pairs_text, "\n")
     
     # Generate judgments
     session_judgments <- generate_judgments_for_images(session_images, pairs_summary)
@@ -521,15 +689,15 @@ server <- function(input, output, session) {
     for (i in seq_along(session_images)) {
       img <- session_images[[i]]
       dbExecute(con,
-               "INSERT INTO selected_images 
+                "INSERT INTO selected_images 
                 (session_id, image_id, pair_number, state_a_category, 
                  state_b_category, vis_type, filename, display_name, image_order) 
                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-               params = list(
-                 session_id, img$image_id, img$pair_number,
-                 img$state_a_category, img$state_b_category, img$vis_type, 
-                 img$filename, img$display_name, i
-               ))
+                params = list(
+                  session_id, img$image_id, img$pair_number,
+                  img$state_a_category, img$state_b_category, img$vis_type, 
+                  img$filename, img$display_name, i
+                ))
     }
     
     shinyjs::hide("login_page")
@@ -554,9 +722,9 @@ server <- function(input, output, session) {
     judgment <- current_judgment()
     
     selection_result <- dbGetQuery(con,
-                                 "SELECT selection_id FROM selected_images 
+                                   "SELECT selection_id FROM selected_images 
                                   WHERE session_id = ? AND image_order = ?",
-                                 params = list(user$session_id, judgment$image_index))
+                                   params = list(user$session_id, judgment$image_index))
     
     if (nrow(selection_result) == 0) {
       showNotification("Error: Could not find image selection", type = "error")
@@ -569,44 +737,43 @@ server <- function(input, output, session) {
         "| User:", input$ratio_slider, "\n")
     
     dbExecute(con,
-             "INSERT INTO judgments 
+              "INSERT INTO judgments 
               (session_id, selection_id, judgment_order, image_order, 
                judgment_within_image, instruction_text, user_ratio, true_value, 
                pair_number) 
               VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-             params = list(
-               user$session_id,
-               selection_id,
-               current_judgment_index(),
-               judgment$image_index,
-               judgment$judgment_within_image,
-               judgment$instruction_text,
-               input$ratio_slider,
-               judgment$true_value,
-               judgment$pair_number
-             ))
+              params = list(
+                user$session_id,
+                selection_id,
+                current_judgment_index(),
+                judgment$image_index,
+                judgment$judgment_within_image,
+                judgment$instruction_text,
+                input$ratio_slider,
+                judgment$true_value,
+                judgment$pair_number
+              ))
     
     if (current_judgment_index() < length(all_judgments())) {
       current_judgment_index(current_judgment_index() + 1)
       updateSliderInput(session, "ratio_slider", value = 0.5)
     } else {
+      # Mark session as completed in database
+      tryCatch({
+        dbExecute(con, "UPDATE sessions SET completed = 1 WHERE session_id = ?",
+                  params = list(user$session_id))
+        cat("Marked session", user$session_id, "as completed\n")
+      }, error = function(e) {
+        cat("Error marking session as completed:", e$message, "\n")
+      })
+      
       showNotification("All 27 assessments completed! Thank you.", type = "message")
       shinyjs::disable("save_btn")
+      
+      # Show completion page
+      shinyjs::hide("main_app")
+      shinyjs::show("completion_page")
     }
-  })
-  
-  observeEvent(input$logout_btn, {
-    user$id <- NULL
-    user$name <- NULL
-    user$authenticated <- FALSE
-    user$session_id <- NULL
-    selected_images(NULL)
-    all_judgments(NULL)
-    shinyjs::reset("login_page")
-    shinyjs::show("login_page")
-    shinyjs::hide("main_app")
-    shinyjs::hide("explanation_page")
-    current_judgment_index(1)
   })
   
   onStop(function() {
