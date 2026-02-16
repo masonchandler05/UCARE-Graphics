@@ -396,7 +396,7 @@ ui <- fluidPage(
           ),
           uiOutput("order_switch_indicator"),
           uiOutput("ratio_slider_ui"),
-          actionButton("save_btn", "Save Assessment", class = "btn-primary"),
+          actionButton("save_btn", "Submit", class = "btn-primary"),
           br(), br(),
           h4("Progress"),
           textOutput("progress_text"),
