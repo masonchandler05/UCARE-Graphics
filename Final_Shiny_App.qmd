@@ -256,6 +256,8 @@ ui <- fluidPage(
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
       .example-instruction-box {
         background-color: #e8f5e8;
@@ -265,6 +267,8 @@ ui <- fluidPage(
         border-radius: 5px;
         font-size: 16px;
         font-weight: bold;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
       }
       .completion-box {
         background-color: #d4edda;
@@ -274,6 +278,43 @@ ui <- fluidPage(
         border-radius: 10px;
         text-align: center;
         max-width: 600px;
+      }
+      .order-switch-warning {
+        background-color: #fff3cd;
+        border: 1px solid #ffeeba;
+        color: #856404;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        font-weight: normal;
+      }
+      .order-standard {
+        background-color: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 5px;
+        font-weight: normal;
+      }
+      .proportion-note {
+        background-color: #e2e3e5;
+        border-left: 5px solid #6c757d;
+        padding: 10px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+      .slider-label {
+        margin-top: 15px;
+        font-weight: normal;
+        font-size: 14px;
+        color: #495057;
+      }
+      @media (max-width: 768px) {
+        h2 { font-size: 24px; }
+        h3 { font-size: 20px; }
+        p, li, .instruction-box, .example-instruction-box { font-size: 14px; }
       }
     "))
   ),
@@ -292,33 +333,57 @@ ui <- fluidPage(
       style = "width: 800px; max-width: 100%; margin: 0 auto; padding-top: 20px;",
       wellPanel(
         h2("Experiment Instructions", class = "text-center"),
+        
+        # Moved proportion note to main intro screen
+        div(
+          class = "proportion-note",
+          icon("info-circle"),
+          strong("Important: "),
+          "All ratios are proportions between 0 and 1. All judgments will use this scale."
+        ),
+        br(),
+        
         h3("Understanding Ratio Judgments"),
         p("In this experiment, you'll analyze", strong("9 visualizations"), 
           "showing anonymous disability data between pairs of states from 1860-1870."),
         p("For each visualization, you'll make", strong("3 different judgment tasks"), 
           "for a total of", strong("27 assessments.")),
-        h4("Session Structure:"),
+        
+        h4("Important Notes:"),
         tags$ul(
-          tags$li("9 visualizations showing different types of charts"),
-          tags$li("3 judgments per visualization = 27 total judgments")
+          tags$li(strong("Order Matters:"), "Some judgments use 1860→1870 ratios, while others use 1870→1860 ratios. A colored notice will appear when the order switches."),
+          tags$li(strong("All proportions are between 0 and 1"), "so use the slider accordingly."),
+          tags$li("You will see", strong("9 visualizations"), "with", strong("3 tasks each"), "for a total of 27 judgments.")
         ),
+        
         h3("Practice Example"),
         p("For the chart below, please follow this instruction:"),
         div(
           class = "example-instruction-box",
-          "Find the ratio of people in State A from 1860 to 1870"
+          "Find the ratio of people in State A from 1860 to 1870. Use Slider to estimate."
         ),
         imageOutput("example_chart", height = "400px"),
-        p("Use the slider below to estimate the ratio requested:"),
-        sliderInput("example_ratio", "Example Ratio:", 
+        
+      
+  div(
+           class = "example-instruction-box",
+          style = "margin-bottom: 5px; padding: 10px;",
+         
+        ),
+        sliderInput("example_ratio", NULL, 
                    min = 0, max = 1, value = 0.5, step = 0.01),
+        p(style = "font-size: 12px; color: #6c757d; margin-top: -5px; margin-bottom: 15px;", 
+          "Values must be between 0 and 1"),
+        
         actionButton("submit_example", "Submit Example", class = "btn-primary"),
+        br(), br(),
         
         hidden(
           div(
             id = "feedback_section",
             h3("Feedback"),
             textOutput("true_ratio_feedback"),
+            br(),
             actionButton("proceed_btn", "Proceed to Experiment", class = "btn-success")
           )
         )
@@ -336,10 +401,9 @@ ui <- fluidPage(
             class = "instruction-box",
             textOutput("current_instruction")
           ),
+          uiOutput("order_switch_indicator"),
           uiOutput("ratio_slider_ui"),
           actionButton("save_btn", "Save Assessment", class = "btn-primary"),
-          br(), br(),
-          actionButton("logout_btn", "Sign Out", class = "btn-warning"),
           br(), br(),
           h4("Progress"),
           textOutput("progress_text"),
@@ -473,11 +537,40 @@ server <- function(input, output, session) {
     current_judgment()$instruction_text
   })
   
+  output$order_switch_indicator <- renderUI({
+    req(current_judgment())
+    
+    # Detect if instruction involves 1870→1860 vs 1860→1870
+    instruction <- current_judgment()$instruction_text
+    
+    if (grepl("1870 to 1860", instruction)) {
+      div(
+        class = "order-switch-warning",
+        icon("exchange-alt"),
+        strong("Order Notice: "),
+        "This judgment uses 1870 → 1860 ratio (different direction than standard!)"
+      )
+    } else if (grepl("1860 to 1870", instruction)) {
+      div(
+        class = "order-standard",
+        icon("arrow-right"),
+        strong("Standard order: "),
+        "1860 → 1870 ratio"
+      )
+    } else {
+      NULL
+    }
+  })
+  
   output$ratio_slider_ui <- renderUI({
     req(user$authenticated, current_judgment())
-    sliderInput("ratio_slider", 
-               label = "Ratio Assessment",
-               min = 0, max = 1, value = 0.5, step = 0.01)
+    tagList(
+      div(class = "slider-label", "Use the slider below to estimate the ratio requested:"),
+      sliderInput("ratio_slider", NULL,
+                 min = 0, max = 1, value = 0.5, step = 0.01),
+      p(style = "font-size: 12px; color: #6c757d; margin-top: -10px; margin-bottom: 15px;", 
+        "Values must be between 0 and 1")
+    )
   })
   
   output$welcome_message <- renderText({
@@ -497,7 +590,19 @@ server <- function(input, output, session) {
   })
   
   output$true_ratio_feedback <- renderText({
-    "Thank you for submitting an example judgement. You'll now see 27 different judgment tasks."
+    req(input$example_ratio)
+    # Calculate true value for the example
+    true_example_value <- calculate_true_value(
+      "Find the ratio of people in State A from 1860 to 1870",
+      list(pair_number = 1, judgment_within_image = 1),
+      pairs_summary
+    )
+    difference <- abs(input$example_ratio - true_example_value)
+    
+    # Just show the three numbers without accuracy statement
+    paste0("Your estimate: ", round(input$example_ratio, 2), 
+           " | True value: ", round(true_example_value, 2),
+           " | Difference: ", round(difference, 2))
   })
   
   output$display_image <- renderImage({
@@ -676,20 +781,6 @@ server <- function(input, output, session) {
       shinyjs::hide("main_app")
       shinyjs::show("completion_page")
     }
-  })
-  
-  observeEvent(input$logout_btn, {
-    user$id <- NULL
-    user$hashed_id <- NULL
-    user$authenticated <- FALSE
-    user$session_id <- NULL
-    selected_images(NULL)
-    all_judgments(NULL)
-    shinyjs::show("login_page")
-    shinyjs::hide("main_app")
-    shinyjs::hide("explanation_page")
-    shinyjs::hide("completion_page")
-    current_judgment_index(1)
   })
   
   onStop(function() {
