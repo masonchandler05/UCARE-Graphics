@@ -233,13 +233,6 @@ generate_judgments_for_images <- function(selected_images, pairs_summary) {
 ui <- fluidPage(
   useShinyjs(),
   tags$head(
-    tags$script(async = NA, src = "https://www.googletagmanager.com/gtag/js?id=G-0TDS6M2K4E"),
-    tags$script(HTML("
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-0TDS6M2K4E');
-    ")),
     tags$style(HTML("
       .instruction-box {
         background-color: #f8f9fa;
