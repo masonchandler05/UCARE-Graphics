@@ -324,9 +324,31 @@ ui <- fluidPage(
     id = "login_page",
     style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
     wellPanel(
-      h2("Start Assessment", class = "text-center"),
+      h2("Prolific ID", class = "text-center"),
+      helpText("Enter your prolific ID in the box below. If you did not come to this study from Prolific, please instead enter a short description of how you got to this page, such as 'email', 'reddit', 'presentation'."),
+      textInput("prolificID", label = "Prolific ID"),
       br(),
-      actionButton("login_btn", "Start Assessment", class = "btn-primary btn-block")
+      actionButton("login_btn", "Submit and Start Study", class = "btn-primary btn-block")
+    )
+  ),
+  hidden(
+    div(
+      id = "consent_page",
+      style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
+      fluidRow(
+        shiny::column(
+          width = 12,
+          includeHTML("informed_consent_fragment.html")
+        ),
+        shiny::column(
+          width = 2, offset = 3,
+          actionButton("consent", "I Consent", class = "btn-success", icon = icon("square-check", lib = "font-awesome"))
+        ),
+        shiny::column(
+          width = 2, offset = 6,
+          actionButton("noConsent", label = "I do NOT Consent", class = "btn-info", icon = icon("circle-xmark", lib = "font-awesome"))
+        )
+      ) # end informed consent fluid row
     )
   ),
   hidden(
@@ -524,7 +546,7 @@ server <- function(input, output, session) {
   ")
 
   # Reactive values
-  user <- reactiveValues(id = NULL, hashed_id = NULL, authenticated = FALSE, session_id = NULL)
+  user <- reactiveValues(id = NULL, hashed_id = NULL, consent = FALSE, authenticated = FALSE, session_id = NULL)
   selected_images <- reactiveVal(NULL)
   all_judgments <- reactiveVal(NULL)
   current_judgment_index <- reactiveVal(1)
@@ -640,8 +662,10 @@ server <- function(input, output, session) {
 
   # Login handler - SIMPLIFIED: just generate unique ID
   observeEvent(input$login_btn, {
+    user$id <- input$prolificID
+
     # Generate unique hashed ID based on timestamp and random number
-    unique_id <- digest::digest(paste(Sys.time(), runif(1)), algo = "md5")
+    unique_id <- digest::digest(input$prolificID, paste(Sys.time(), runif(1)), algo = "md5")
     user$hashed_id <- unique_id
 
     # Check if this user has already completed the assessment
@@ -682,15 +706,13 @@ server <- function(input, output, session) {
     )
 
     if (nrow(existing_user) == 0) {
-      dbExecute(con, "INSERT INTO users (hashed_user_id) VALUES (?)",
-        params = list(unique_id)
+      dbExecute(con, "INSERT INTO users (id,hashed_user_id) VALUES (?)",
+        params = list(user_id, unique_id)
       )
       user_id <- dbGetQuery(con, "SELECT last_insert_rowid() as id")$id
     } else {
       user_id <- existing_user$user_id[1]
     }
-
-    user$id <- user_id
 
     # Generate experimental sequence with constraints
     session_images <- select_random_images_with_constraints(all_possible_images)
@@ -731,7 +753,23 @@ server <- function(input, output, session) {
     }
 
     shinyjs::hide("login_page")
+    shinyjs::show("consent_page")
+  })
+
+  observeEvent(input$consent, {
+    user$consent <- TRUE # Probably should write this to database too?
+
+    shinyjs::hide("consent_page")
     shinyjs::show("explanation_page")
+  })
+
+  observeEvent(input$noConsent, {
+    user$consent <- FALSE # Probably should write this to database too?
+    if (input$noConsent > 0) {
+      shinyjs::runjs(paste0('window.location.href = "https://app.prolific.com/submissions/complete?cc=C342T7TO";'))
+
+      dbDisconnect(con)
+    }
   })
 
   observeEvent(input$submit_example, {
