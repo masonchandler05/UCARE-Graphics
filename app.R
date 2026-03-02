@@ -873,7 +873,7 @@ server <- function(input, output, session) {
     } else {
       # Mark session as completed
       dbExecute(con, "UPDATE sessions SET completed = 1 WHERE session_id = ?",
-                params = list(user$session_id)
+                params = list(user$session_id) 
       )
       
       showNotification("All 27 assessments completed! Thank you.", type = "message")
