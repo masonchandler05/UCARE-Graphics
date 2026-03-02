@@ -1,0 +1,56 @@
+---
+title: "Informed Consent"
+output: html_document
+---
+
+#### Introduction
+This study is intended to assess how people perceive statistical graphs and charts, and how charts are used to make decisions. 
+
+If you are 18 years of age or older (19+ in Nebraska and Alabama, 21+ in Mississippi), and have normal or corrected-to-normal vision  you may participate in this research.
+
+#### What is the reason for doing this research study?
+Statistical charts and graphs are everywhere – in news articles, advertisements, and on TV. We are interested in whether people read information from charts accurately, and whether certain types of charts are more useful when making data-informed decisions. Unfortunately, we know relatively little about how people read and perceive charts. This study is designed to address this gap in research by systematically investigating the use of charts in different tasks and contexts. 
+
+In order to participate you must be 18 years of age or older (19+ in Nebraska and Alabama, 21+ in Mississippi) and have normal or corrected-to-normal vision.
+
+#### What will be done during this research study?
+Participation in this study should require less than 30 minutes of your time. You will be asked to look at statistical charts and then answer questions based on the visualization.
+
+We expect that each of these tasks will take less than 1 minute to complete. We will start out with a practice question so that you can become accustomed to the interface. After the practice task, there will be a series of questions. 
+
+Participation will take place in a location of your choosing, on your computer. We ask that you use a computer or tablet with a screen resolution of at least 1024x768 (most moderately sized tablets meet this standard). 
+
+#### What are the possible risks of being in this research study?
+There are no known risks to you from being in this research study.
+
+#### What are the possible benefits to you?
+You are not expected to get any benefit from being in this study."
+
+#### Will you be compensated for being in this research study?"
+
+You will be paid $5.00 to complete this research study. 
+
+
+#### How will information about you be protected?
+
+Reasonable steps will be taken to protect the privacy and the confidentiality of your study data; however, in some circumstances we cannot guarantee absolute privacy and/or confidentiality. 
+
+This study will never link personally identifying information with your responses. The only link which will exist between you and this study is on Prolific, which tracks this information to ensure that you are paid.
+
+The research records will be securely stored electronically through University approved methods and will only be seen by the research team and/or those authorized to view, access, or use the records during the study.
+
+Those who will have access to your research records are the study personnel, the Institutional Review Board (IRB), and any other person, agency, or sponsor as required by law or contract or institutional responsibility. The information from this study may be published in scientific journals or presented at scientific meetings. The individual data records, plus summaries and group-level analyses, will be published, but your identity will be kept strictly confidential.
+
+#### What are your rights as a research participant?
+You may ask any questions concerning this research and have those questions answered before agreeing to participate in or during the study.
+
+For study related questions, please contact Dr. Susan Vanderplas (susan.vanderplas@unl.edu)
+
+For questions concerning your rights or complaints about the research contact the Institutional Review Board (IRB):
+
+- Phone: 1 (402) 472-6965
+- Email: irb@unl.edu
+
+#### What will happen if you decide not to be in this research study, or decide to stop participating once you start?
+
+You can decide not to be in this research study, or you can stop being in this research study (withdraw) at any time before, during, or after the research begins for any reason. Deciding not to be in this research study or deciding to withdraw will not affect your relationship with the investigator or with the University of Nebraska-Lincoln.
