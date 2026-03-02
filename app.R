@@ -334,7 +334,7 @@ ui <- fluidPage(
   hidden(
     div(
       id = "consent_page",
-      style = "width: 300px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
+      style = "width: 800px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
       fluidRow(
         shiny::column(
           width = 12,
@@ -388,10 +388,6 @@ ui <- fluidPage(
           "Find the ratio of people in State A from 1860 to 1870. Use Slider to estimate."
         ),
         imageOutput("example_chart", height = "400px"),
-        div(
-          class = "example-instruction-box",
-          style = "margin-bottom: 5px; padding: 10px;",
-        ),
         sliderInput("example_ratio", NULL,
                     min = 0, max = 1, value = 0.5, step = 0.01
         ),
@@ -448,7 +444,7 @@ ui <- fluidPage(
         h3("Thank you for your participation"),
         p("You have successfully completed all 27 judgment tasks."),
         br(),
-        uiOutput("prolific_completion_url"),  # ADDED: Dynamic URL output
+        uiOutput("prolific_completion_url"),
         p(strong("You may now close this browser window.")),
         br()
       )
@@ -457,18 +453,14 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
-  # Changed database name
-  con <- dbConnect(RSQLite::SQLite(), "visualization_study_final.db")
+  # Connect to database
+  con <- dbConnect(RSQLite::SQLite(), "visualization_study_final2.db")
   
   pairs_summary <- load_pairs_summary()
   cat("Loaded pairs_summary with", nrow(pairs_summary), "pairs\n")
   
   all_possible_images <- create_all_possible_images()
   cat("Created", length(all_possible_images), "possible images\n")
-  
-  # Create experimental design structure with edibble
-  exp_design <- create_experimental_design()
-  cat("Created experimental design structure\n")
   
   output$example_chart <- renderImage(
     {
@@ -482,36 +474,50 @@ server <- function(input, output, session) {
     deleteFile = FALSE
   )
   
-  # Create database tables with error handling for existing tables
+  # Safely create/update database tables
+  # First, ensure users table exists with basic structure
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS users (
       user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-      hashed_user_id TEXT UNIQUE,
       created_at DATETIME DEFAULT CURRENT_TIMESTAMP
     )
   ")
   
+  # Add columns if they don't exist (safely)
+  tryCatch({
+    dbExecute(con, "ALTER TABLE users ADD COLUMN prolific_id TEXT")
+    cat("Added prolific_id column to users table\n")
+  }, error = function(e) {
+    cat("prolific_id column may already exist:", e$message, "\n")
+  })
+  
+  tryCatch({
+    dbExecute(con, "ALTER TABLE users ADD COLUMN hashed_user_id TEXT")
+    cat("Added hashed_user_id column to users table\n")
+  }, error = function(e) {
+    cat("hashed_user_id column may already exist:", e$message, "\n")
+  })
+  
+  tryCatch({
+    dbExecute(con, "ALTER TABLE users ADD COLUMN is_prolific BOOLEAN DEFAULT 0")
+    cat("Added is_prolific column to users table\n")
+  }, error = function(e) {
+    cat("is_prolific column may already exist:", e$message, "\n")
+  })
+  
+  # Create sessions table
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS sessions (
       session_id INTEGER PRIMARY KEY AUTOINCREMENT,
       user_id INTEGER,
       session_start DATETIME DEFAULT CURRENT_TIMESTAMP,
       selected_pair_numbers TEXT,
+      completed BOOLEAN DEFAULT FALSE,
       FOREIGN KEY(user_id) REFERENCES users(user_id)
     )
   ")
   
-  # Add completed column if it doesn't exist
-  tryCatch(
-    {
-      dbExecute(con, "ALTER TABLE sessions ADD COLUMN completed BOOLEAN DEFAULT FALSE")
-      cat("Added 'completed' column to sessions table\n")
-    },
-    error = function(e) {
-      cat("'completed' column already exists or couldn't be added:", e$message, "\n")
-    }
-  )
-  
+  # Create selected_images table
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS selected_images (
       selection_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -528,6 +534,7 @@ server <- function(input, output, session) {
     )
   ")
   
+  # Create judgments table
   dbExecute(con, "
     CREATE TABLE IF NOT EXISTS judgments (
       judgment_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -547,7 +554,15 @@ server <- function(input, output, session) {
   ")
   
   # Reactive values
-  user <- reactiveValues(id = NULL, hashed_id = NULL, consent = FALSE, authenticated = FALSE, session_id = NULL, is_prolific = FALSE)  # ADDED: is_prolific flag
+  user <- reactiveValues(
+    prolific_id = NULL, 
+    hashed_id = NULL,
+    is_prolific = FALSE, 
+    consent = FALSE, 
+    authenticated = FALSE, 
+    session_id = NULL,
+    user_id = NULL
+  )
   selected_images <- reactiveVal(NULL)
   all_judgments <- reactiveVal(NULL)
   current_judgment_index <- reactiveVal(1)
@@ -570,7 +585,6 @@ server <- function(input, output, session) {
   output$order_switch_indicator <- renderUI({
     req(current_judgment())
     
-    # Detect if instruction involves 1870→1860 vs 1860→1870
     instruction <- current_judgment()$instruction_text
     
     if (grepl("1870 to 1860", instruction)) {
@@ -624,7 +638,6 @@ server <- function(input, output, session) {
   
   output$true_ratio_feedback <- renderText({
     req(input$example_ratio)
-    # Calculate true value for the example
     true_example_value <- calculate_true_value(
       "Find the ratio of people in State A from 1860 to 1870",
       list(pair_number = 1, judgment_within_image = 1),
@@ -632,7 +645,6 @@ server <- function(input, output, session) {
     )
     difference <- abs(input$example_ratio - true_example_value)
     
-    # Just show the three numbers without accuracy statement
     paste0(
       "Your estimate: ", round(input$example_ratio, 2),
       " | True value: ", round(true_example_value, 2),
@@ -661,7 +673,6 @@ server <- function(input, output, session) {
     deleteFile = FALSE
   )
   
-  # ADDED: Render Prolific completion URL if user came from Prolific
   output$prolific_completion_url <- renderUI({
     if (user$is_prolific) {
       tags$p(
@@ -675,31 +686,42 @@ server <- function(input, output, session) {
     }
   })
   
-  # Login handler - FIXED
+  # Login handler
   observeEvent(input$login_btn, {
-    user$id <- input$prolificID
+    req(input$prolificID)
     
-    # ADDED: Check if this is a Prolific ID (simple heuristic - 24 character alphanumeric)
+    user$prolific_id <- input$prolificID
+    
+    # Check if this is a Prolific ID (24-character alphanumeric)
     user$is_prolific <- grepl("^[A-Za-z0-9]{24}$", input$prolificID)
     
-    # Generate unique hashed ID - FIXED: combine inputs first
-    unique_id <- digest::digest(paste(input$prolificID, Sys.time(), runif(1)), algo = "md5")
-    user$hashed_id <- unique_id
+    # Generate a random hashed ID for anonymous tracking
+    user$hashed_id <- digest::digest(paste(input$prolificID, Sys.time(), runif(1)), algo = "md5")
     
     # Check if this user has already completed the assessment
     user_completed <- FALSE
     tryCatch(
       {
-        completed_user <- dbGetQuery(con, "
-        SELECT u.user_id
-        FROM users u
-        JOIN sessions s ON u.user_id = s.user_id
-        WHERE u.hashed_user_id = ? AND s.completed = 1
-        LIMIT 1
-      ", params = list(unique_id))
+        # First check if user exists
+        existing_user <- dbGetQuery(con,
+                                    "SELECT user_id FROM users WHERE prolific_id = ?",
+                                    params = list(input$prolificID)
+        )
         
-        if (nrow(completed_user) > 0) {
-          user_completed <- TRUE
+        if (nrow(existing_user) > 0) {
+          user_id <- existing_user$user_id[1]
+          
+          # Check if they have a completed session
+          completed_session <- dbGetQuery(con, "
+            SELECT session_id FROM sessions 
+            WHERE user_id = ? AND completed = 1
+            LIMIT 1
+          ", params = list(user_id))
+          
+          if (nrow(completed_session) > 0) {
+            user_completed <- TRUE
+            user$user_id <- user_id
+          }
         }
       },
       error = function(e) {
@@ -717,20 +739,26 @@ server <- function(input, output, session) {
       return()
     }
     
-    # Store the hashed ID - FIXED: Corrected INSERT statement
+    # Store or update user information
     existing_user <- dbGetQuery(con,
-                                "SELECT user_id FROM users WHERE hashed_user_id = ?",
-                                params = list(unique_id)
+                                "SELECT user_id FROM users WHERE prolific_id = ?",
+                                params = list(input$prolificID)
     )
     
     if (nrow(existing_user) == 0) {
-      dbExecute(con, "INSERT INTO users (hashed_user_id) VALUES (?)",
-                params = list(unique_id)
+      # Insert new user - set hashed_user_id to NULL/blank
+      dbExecute(con, 
+                "INSERT INTO users (prolific_id, hashed_user_id, is_prolific) VALUES (?, NULL, ?)",
+                params = list(input$prolificID, as.integer(user$is_prolific))
       )
       user_id <- dbGetQuery(con, "SELECT last_insert_rowid() as id")$id
     } else {
       user_id <- existing_user$user_id[1]
+      # Don't update hashed ID - leave it as NULL/blank
+      # Remove or comment out the UPDATE statement
     }
+    
+    user$user_id <- user_id
     
     # Generate experimental sequence with constraints
     session_images <- select_random_images_with_constraints(all_possible_images)
@@ -739,14 +767,16 @@ server <- function(input, output, session) {
     selected_pair_numbers <- unique(sapply(session_images, function(x) x$pair_number))
     selected_pairs_text <- paste(selected_pair_numbers, collapse = ",")
     
+    # Create new session
     dbExecute(con, "INSERT INTO sessions (user_id, selected_pair_numbers) VALUES (?, ?)",
               params = list(user_id, selected_pairs_text)
     )
     session_id <- dbGetQuery(con, "SELECT last_insert_rowid() as id")$id
     user$session_id <- session_id
     
-    cat("Session", session_id, "- User ID:", user_id, "- Hashed ID:", unique_id, "\n")
-    cat("Is Prolific:", user$is_prolific, "\n")  # ADDED: log whether user is from Prolific
+    cat("Session", session_id, "- User ID:", user_id, "- Prolific ID:", input$prolificID, "\n")
+    cat("Hashed ID:", user$hashed_id, "(for anonymous tracking)\n")
+    cat("Is Prolific:", user$is_prolific, "\n")
     cat("Selected pairs:", selected_pairs_text, "\n")
     
     # Generate judgments
@@ -776,18 +806,15 @@ server <- function(input, output, session) {
   })
   
   observeEvent(input$consent, {
-    user$consent <- TRUE # Probably should write this to database too?
-    
+    user$consent <- TRUE
     shinyjs::hide("consent_page")
     shinyjs::show("explanation_page")
   })
   
   observeEvent(input$noConsent, {
-    user$consent <- FALSE # Probably should write this to database too?
+    user$consent <- FALSE
     if (input$noConsent > 0) {
-      shinyjs::runjs(paste0('window.location.href = "https://app.prolific.com/submissions/complete?cc=C342T7TO";'))
-      
-      dbDisconnect(con)
+      shinyjs::runjs('window.location.href = "https://app.prolific.com/submissions/complete?cc=C342T7TO";')
     }
   })
   
@@ -821,11 +848,6 @@ server <- function(input, output, session) {
     
     selection_id <- selection_result$selection_id[1]
     
-    cat(
-      "Saving: Judgment", judgment$judgment_id, "| True:", judgment$true_value,
-      "| User:", input$ratio_slider, "\n"
-    )
-    
     dbExecute(con,
               "INSERT INTO judgments
               (session_id, selection_id, judgment_order, image_order,
@@ -849,23 +871,14 @@ server <- function(input, output, session) {
       current_judgment_index(current_judgment_index() + 1)
       updateSliderInput(session, "ratio_slider", value = 0.5)
     } else {
-      # Mark session as completed in database
-      tryCatch(
-        {
-          dbExecute(con, "UPDATE sessions SET completed = 1 WHERE session_id = ?",
-                    params = list(user$session_id)
-          )
-          cat("Marked session", user$session_id, "as completed\n")
-        },
-        error = function(e) {
-          cat("Error marking session as completed:", e$message, "\n")
-        }
+      # Mark session as completed
+      dbExecute(con, "UPDATE sessions SET completed = 1 WHERE session_id = ?",
+                params = list(user$session_id)
       )
       
       showNotification("All 27 assessments completed! Thank you.", type = "message")
       shinyjs::disable("save_btn")
       
-      # Show completion page
       shinyjs::hide("main_app")
       shinyjs::show("completion_page")
     }
