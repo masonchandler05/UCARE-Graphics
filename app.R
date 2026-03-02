@@ -454,7 +454,7 @@ ui <- fluidPage(
 
 server <- function(input, output, session) {
   # Connect to database
-  con <- dbConnect(RSQLite::SQLite(), "visualization_study_final2.db")
+  con <- dbConnect(RSQLite::SQLite(), "visualization_study_final.db")
   
   pairs_summary <- load_pairs_summary()
   cat("Loaded pairs_summary with", nrow(pairs_summary), "pairs\n")
