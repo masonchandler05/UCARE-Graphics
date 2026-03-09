@@ -331,24 +331,44 @@ ui <- fluidPage(
       actionButton("login_btn", "Submit and Start Study", class = "btn-primary btn-block")
     )
   ),
+  # Replace the consent_page div in the UI with this:
+  
   hidden(
     div(
       id = "consent_page",
-      style = "width: 800px; max-width: 100%; margin: 0 auto; padding-top: 50px;",
+      style = "width: 100%; max-width: 1200px; margin: 0 auto; padding: 50px 20px;",
       fluidRow(
         shiny::column(
           width = 12,
-          includeHTML("informed_consent_fragment.html")
-        ),
-        shiny::column(
-          width = 2, offset = 3,
-          actionButton("consent", "I Consent", class = "btn-success", icon = icon("square-check", lib = "font-awesome"))
-        ),
-        shiny::column(
-          width = 2, offset = 6,
-          actionButton("noConsent", label = "I do NOT Consent", class = "btn-info", icon = icon("circle-xmark", lib = "font-awesome"))
+          div(style = "width: 100%; overflow-x: auto;",
+              includeHTML("informed_consent_fragment.html")
+          )
         )
-      ) # end informed consent fluid row
+      ),
+      fluidRow(
+        style = "margin-top: 30px;",
+        shiny::column(
+          width = 6, 
+          div(style = "text-align: right; padding-right: 10px;",
+              actionButton("consent", "I Consent", 
+                           class = "btn-success btn-lg", 
+                           icon = icon("square-check", lib = "font-awesome"),
+                           style = "min-width: 150px;"
+              )
+          )
+        ),
+        shiny::column(
+          width = 6,
+          div(style = "text-align: left; padding-left: 10px;",
+              actionButton("noConsent", 
+                           label = "I do NOT Consent", 
+                           class = "btn-info btn-lg", 
+                           icon = icon("circle-xmark", lib = "font-awesome"),
+                           style = "min-width: 150px;"
+              )
+          )
+        )
+      )
     )
   ),
   hidden(
