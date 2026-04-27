@@ -1,0 +1,90 @@
+---
+title: "1870 Census Visuals"
+format:
+  jasa-pdf:
+    keep-tex: true  
+    journal:
+      blinded: false
+  jasa-html: default
+date: last-modified
+author:
+  - name: Author 1
+    acknowledgements: | 
+      The authors gratefully acknowledge _please remember to list all relevant funding sources in the non-anonymized (unblinded) version_.
+    affiliations:
+      - name: University of XXX
+        department: Department of YYY
+  - name: Author 2
+    affiliations:
+      - name: University of WWW
+        department: Department of ZZZ
+abstract: |
+  The Statistical Atlas of the 1870's made visuals using data from the 9th Census. We examined the concentric circle visualizations that compared 1860 and 1870 state disabled population growth or decline against standard and overlaid bar charts. The visuals were recreated from data preserved by the Census. Through our analysis of effectiveness, we found systematic bias to underestimate growth in concentric circle charts compared to bar charts. 
+keywords:
+  - concentric circle charts 
+  - bar charts
+  - Statistical Atlas 
+  - Census Bureau 
+bibliography: bibliography.bib  
+editor: 
+  markdown: 
+    wrap: sentence
+---
+
+## Introduction 
+
+The 1870 Statistical Atlas created visualizations on a wide variety of data spanning 107 pages.
+Many of these visualizations would be considered out of the ordinary by today's standards and give us the opportunity to test the perceptual accuracy of these against more commonly used traditional graphics.
+The purpose of this experiment is to expose potential flaws with other graphic types and be able to recommend alternatives.
+
+We will be evaluating concentric circle visualizations created by Fred H. Wines, Secretary of the Illinois State Board of Charities, that show populations of various disabled groups in the 19th century.
+The 4 disabled groups represented are the Blind, Deaf-Mutes, Developmentally Disabled, and Mentally Ill.
+The populations were presented as circles were the area of the circle is the population of each group of people in each state.
+They showed the state by state population for 1860 and 1870 as 1 visual were the smaller circle was inside the larger circle to show the growth or decline over the decade.
+These visuals were then placed along a row, showing state to state population comparisons.
+
+### Historical Context of disabled groups
+
+These visuals were created using data gathered and stored from the 9th US Census.
+The Census wanted this information to understand disability trends, try and find causes, and get qualitative examples of how these people functioned in society.
+
+### Theoretical Framework of Concentric Circles
+
+The Visual Decoding of Quantitative Information on Graphical Displays of Data (Cleveland and McGill 1987)
+
+-   area ranks 6th
+
+-   Position along a common scale ranks 1st
+
+### Alternative Graphics
+
+## Historic Visual Accuracy
+
+## Visual Recreation
+
+## Methods
+
+## Results
+
+## Conclusion
+
+## Disclosure statement
+
+## Supplementary Material {.supplementary}
+
+Title:
+
+:   Brief description.
+    (file type)
+
+R-package for MYNEW routine:
+
+:   R-package MYNEW containing code to perform the diagnostic methods described in the article.
+    The package also contains all datasets used as examples in the article.
+    (GNU zipped tar file)
+
+HIV data set:
+
+:   Data set used in the illustration of MYNEW method in @sec-verify (.txt file).
+
+## BibTeX
