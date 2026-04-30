@@ -31,7 +31,11 @@ editor:
     wrap: sentence
 ---
 
-## Introduction 
+## Introduction
+
+-   explain that plotting data was not a thing people often did and there were no conventions around this
+
+-   over time, some forms stuck around and others did not so we want to look at the others to see if they randomly faded out of fashion or were just bad visualizations
 
 The 1870 Statistical Atlas created visualizations on a wide variety of data spanning 107 pages.
 Many of these visualizations would be considered out of the ordinary by today's standards and give us the opportunity to test the perceptual accuracy of these against more commonly used traditional graphics.
@@ -46,9 +50,27 @@ These visuals were then placed along a row, showing state to state population co
 ### Historical Context of disabled groups
 
 These visuals were created using data gathered and stored from the 9th US Census.
-The Census wanted this information to understand disability trends, try and find causes, and get qualitative examples of how these people functioned in society.
+The Census gathered this information to understand disability trends, try and find causes, and get qualitative examples of how these people functioned in society.
+
+-   SEE Historical Notes.qmd for lots of information from the census documents
+
+    -   Explain the terms they used and the context around the words to lay out a framework around why these words were used and then continue to use the words how they laid them out
+
+<!-- -->
+
+-   Talk about the reasoning why the Census tracked this information(this is all in a different write up section)
+
+    -   Find causes/trends with disabilities and the tasks that the disabled were able to complete/care needed for them
+
+    -   talk about the potential limitations they mentioned and errors in stats taken
+
+• 1864: Advocates like Willard argued that proper treatment saves money long term and benefits society in response to ”poorhouses” where the mentally ill were chained up in dark rooms
+
+• 1860s: Push for higher-quality care and rehabilitation for the mentally ill • 1870: Nebraska Asylum for the Insane opened to meet population needs and ensure public safety • 1869-1889: Six more facilities opened across Nebraska to serve scattered populations and various disabled groups • 1913: Bethphage Village was founded due to inadequate care for developmentally disabled populations • 1960s: Large institutional facilities became common • Later Decades: Shift toward smaller care facilities, but the 1990s funding cuts led to many being placed in prisons as cheaper alternatives • Despite societal and economic advancements, care for vulnerable populations has regressed back toward what Willard advocated against
 
 ### Theoretical Framework of Concentric Circles
+
+-   they had an assumption of sustained growth in populations as the charts only worked well if the populations grew
 
 The Visual Decoding of Quantitative Information on Graphical Displays of Data (Cleveland and McGill 1987)
 
@@ -59,6 +81,56 @@ The Visual Decoding of Quantitative Information on Graphical Displays of Data (C
 ### Alternative Graphics
 
 ## Historic Visual Accuracy
+
+The Statistical Atlas visuals were created using lithographic printing where images were drawn onto a stone tablet and printed off of it.
+This process is complex and more prone to human error which could result in blurry or inaccurately sized images.
+We downloaded the high resolution TIFF images from the Census website and used GIMP software to take pixel measurements of the width and height of each one of the circles.
+Upon analyzing the data, we found that the top and bottom of the circles were often thick and fuzzy.
+Additionally, a lot of the images were slightly misshapen so they are wider than they are tall.
+
+To assess how accurately these represented the true populations according Census data, we obtained 5% micro-sample data from IPUMS(cite ipums).
+These diameter measurements taken from the visuals were scaled into areas using the formula Area = pi \* r\^2.
+These were then divided by a scaling factor based off the known population derived from number of samples in the micro-sample data.
+
+-   the visuals relied on using lithographic printing
+
+<!-- -->
+
+-   relies on water and oil repelling each other
+
+-   is a complex process where you draw the image onto a stone and then basically print off of the stone
+
+    -   this could potentially lead to fuzzier lines then we are used to today
+
+    -   the top and bottom of the circles almost always had thick, fuzzy lines that resulted from this process
+
+        -   made taking pixel measurements less accurate and brought in a level of error and judgement on where the lines were on my part
+
+            -   basically the visuals were in low resolution
+
+<!-- -->
+
+-   Visuals were created using lithography so we were unsure on the accuracy in which they were made
+
+<!-- -->
+
+-   used TIFF images from US Census to take pixel measurements using GIMP and then scaled them to population data
+
+-   took height and width measurements and ran comparisons both ways
+
+    -   Found that a lot of the images aren't perfectly round and were often a little wider than tall
+
+-   Got IPUMS 5% microsample data to run comparison against images to test for accuracy
+
+    -   Since these disabilities are such rare events we found this not helpful to test for accuracy because of the massive variability of the micro sample data
+
+    -   Insert micro sample graphs
+
+-   Found 1870 100% population data for all 4 disability types to run the comparison
+
+    -   found that the images are largely accurate, however, Virginia's 1870 population was over represented in multiple instances
+
+    -   Insert 100% population data graphs
 
 ## Visual Recreation
 
