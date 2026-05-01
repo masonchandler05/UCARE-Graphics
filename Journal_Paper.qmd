@@ -69,15 +69,26 @@ The Census gathered this information to understand disability trends, try and fi
 
 ### Theoretical Framework of Concentric Circles
 
+We hypothesize that peoples ability to make judgement based on their perceptions of the concentric circle charts will be inaccurate compared to bar charts.
+Moreover, not only do we think there will be a higher absolute error, but also a bias to underestimate growth based on Cleveland and McGill(1984).
+
+-   Read Cleveland and McGill 1984 pages 537-538 for reasoning on why there is a bias
+
+    -   humans apply a non-linear power law mental scaling
+
+    -   length has no inherent bias to it
+
+<!-- -->
+
 -   they had an assumption of sustained growth in populations as the charts only worked well if the populations grew
 
 -   At some point mention how these concentric circle charts do not allow for understanding true populations, just growth/decline and state to state ratios.
 
-The Visual Decoding of Quantitative Information on Graphical Displays of Data (Cleveland and McGill 1987)
+The Visual Decoding of Quantitative Information on Graphical Displays of Data (Cleveland and McGill 1987) - page 197
 
 -   area ranks 6th
 
--   Position along a common scale ranks 1st
+-   length ranks 3rd
 
 ### Alternative Graphics
 
