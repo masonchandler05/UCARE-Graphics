@@ -33,13 +33,12 @@ editor:
 
 ## Introduction
 
--   explain that plotting data was not a thing people often did and there were no conventions around this
-
--   over time, some forms stuck around and others did not so we want to look at the others to see if they randomly faded out of fashion or were just bad visualizations
-
 The 1870 Statistical Atlas created visualizations on a wide variety of data spanning 107 pages.
 Many of these visualizations would be considered out of the ordinary by today's standards and give us the opportunity to test the perceptual accuracy of these against more commonly used traditional graphics.
-The purpose of this experiment is to expose potential flaws with other graphic types and be able to recommend alternatives.
+This is because there were no real conventions around visuals as people didn't commonly graph data so the Statistical Atlas was pioneer in terms of chart types.
+The purpose of this experiment is to analyze these visuals and understand there potential flaws based on graphical perception research that has taken place since.
+Over time some forms of visualizations stuck around around and continued to be used while others did not.
+We want to examine whether they randomly faded away or if was for good reason.
 
 We will be evaluating concentric circle visualizations created by Fred H. Wines, Secretary of the Illinois State Board of Charities, that show populations of various disabled groups in the 19th century.
 The 4 disabled groups represented are the Blind, Deaf-Mutes, Developmentally Disabled, and Mentally Ill.
@@ -72,6 +71,8 @@ The Census gathered this information to understand disability trends, try and fi
 
 -   they had an assumption of sustained growth in populations as the charts only worked well if the populations grew
 
+-   At some point mention how these concentric circle charts do not allow for understanding true populations, just growth/decline and state to state ratios.
+
 The Visual Decoding of Quantitative Information on Graphical Displays of Data (Cleveland and McGill 1987)
 
 -   area ranks 6th
@@ -79,6 +80,8 @@ The Visual Decoding of Quantitative Information on Graphical Displays of Data (C
 -   Position along a common scale ranks 1st
 
 ### Alternative Graphics
+
+-   ?
 
 ## Historic Visual Accuracy
 
@@ -111,9 +114,30 @@ This could be a result of human error in printing or receiving or using the wron
 ## Visual Recreation
 
 The visuals were recreated in R using the ggplot2 package using the Census data for the 2 disability types where the 1860 and 1870 data was available.
-The visuals were created from the same data sets in the 3 different types of concentric circle, bar charts, and overlaid bar charts.
+The visuals were created from the same data sets in the 3 different chart types being concentric circle, bar, and overlaid bar charts.
+In this Statistical Atlas there was not traditional bar charts throughout, but there were part to part bar charts looking at civil war costs(check accuracy)\*\*, so we wanted to compare the concentric circle charts to a reasonable counterpart.
+There are key differences, as our overlaid bar charts are part to whole comparisons, similar to the concentric circle charts, but the idea of using a visualization type from the time period remains the same.
+Having this same data graphed in 3 different visual forms allows for comparison of the quantitative accuracy in which people can derive the ratios of growth.
 
 ## Methods
+
+-   out of the graphs created, we chose 5 pairs of states (10 total states) and asked individuals to make a inner state growth/decline estimate for both states and a 1870 state to state population estimate (3 estimations per visual)
+
+-   participants were randomly given 3 of the 5 visuals so we could test ratios over a larger interval while also keeping total judgements to n \< 30 where people usually start to become disinterested and preform worse
+
+-   for the 3 visuals they received the data in all 3 graph formats(concentric circle, bar, overlaid bar) so we can test how well they compare within persons
+
+-   this is a total of 3 x 3 x 3 = 27 judgements per person
+
+-   study was developed using the Shiny package in R
+
+-   all judgements were an (A/B) where where is the smaller population and B is the larger so estimates were on a 0 to 1 scale
+
+-   true values of these estimates ranged from .18 to .95
+
+-   Study was ran on prolific and received 302 participants ( 302 x 27 = 8154 total judgments)
+
+## 
 
 ## Results
 
