@@ -88,51 +88,30 @@ We downloaded the high resolution TIFF images from the Census website and used G
 Upon analyzing the data, we found that the top and bottom of the circles were often thick and fuzzy.
 Additionally, a lot of the images were slightly misshapen so they are wider than they are tall.
 
-To assess how accurately these represented the true populations according Census data, we obtained 5% micro-sample data from IPUMS(cite ipums).
+To assess how accurately these represented the true populations according Census data, we obtained 5% micro-sample data from IPUMS(cite IPUMS).
 These diameter measurements taken from the visuals were scaled into areas using the formula Area = pi \* r\^2.
 These were then divided by a scaling factor based off the known population derived from number of samples in the micro-sample data.
+This gave us 1860 and 1870 population values for each state derived from the 2 types of diameter measurements of the concentric circle charts.
+The 5% micro-sample data and derived chart data were then compared by plotting the population against each other.
+The data should follow a straight y = x line if the data is accurate.
+However, we overlooked a crucial element and the micro-sample data was not helpful in determining the accuracy of the charts due to the rarity of the event of a person having one of these disabilities.
+The chance a person had any of the 4 disabilities was 0.235% so the sample size was not large enough and resulted in too much variance relative the rarity of these events.
 
--   the visuals relied on using lithographic printing
+-   INSERT GRAPHS
 
-<!-- -->
+This led us to looking for full population data and found it for all 4 disability types for the 1870 data so only the accuracy of that could be checked.
+Using the same technique described above with the micro-sample data, the 1870 full population data was analyzed.
+With 1 exception, we found only small errors, which could potentially be attributed to measurement error on our end or are a result of the blurriness of the images.
+However, the 1870 Virginia circles were represented as significantly larger than the Census data populations for several of the disability types.
+This closely echos (your research paper), where they found that the minnesota graph was very innacurate which illustrates the problems with these older methods of image creation.
+This could be a result of human error in printing or receiving or using the wrong data from the Census.
 
--   relies on water and oil repelling each other
-
--   is a complex process where you draw the image onto a stone and then basically print off of the stone
-
-    -   this could potentially lead to fuzzier lines then we are used to today
-
-    -   the top and bottom of the circles almost always had thick, fuzzy lines that resulted from this process
-
-        -   made taking pixel measurements less accurate and brought in a level of error and judgement on where the lines were on my part
-
-            -   basically the visuals were in low resolution
-
-<!-- -->
-
--   Visuals were created using lithography so we were unsure on the accuracy in which they were made
-
-<!-- -->
-
--   used TIFF images from US Census to take pixel measurements using GIMP and then scaled them to population data
-
--   took height and width measurements and ran comparisons both ways
-
-    -   Found that a lot of the images aren't perfectly round and were often a little wider than tall
-
--   Got IPUMS 5% microsample data to run comparison against images to test for accuracy
-
-    -   Since these disabilities are such rare events we found this not helpful to test for accuracy because of the massive variability of the micro sample data
-
-    -   Insert micro sample graphs
-
--   Found 1870 100% population data for all 4 disability types to run the comparison
-
-    -   found that the images are largely accurate, however, Virginia's 1870 population was over represented in multiple instances
-
-    -   Insert 100% population data graphs
+-   INSERT GRAPHS
 
 ## Visual Recreation
+
+The visuals were recreated in R using the ggplot2 package using the Census data for the 2 disability types where the 1860 and 1870 data was available.
+The visuals were created from the same data sets in the 3 different types of concentric circle, bar charts, and overlaid bar charts.
 
 ## Methods
 
